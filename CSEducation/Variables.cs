@@ -1,6 +1,6 @@
 ﻿namespace CSEducation
 {
-    internal class Program
+    internal class Variables
     {
         static void Main(string[] args)
         {
