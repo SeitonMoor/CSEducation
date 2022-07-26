@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CristalsShop.cs" />
     <Compile Include="Images.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="StringsManipulations.cs" />
