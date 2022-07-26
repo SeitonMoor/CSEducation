@@ -1,8 +1,8 @@
 ﻿namespace CSEducation
 {
-    internal class Variables
+    public class Variables
     {
-        static void Main(string[] args)
+        void Information()
         {
             byte userAge;
             int heroDamage;
