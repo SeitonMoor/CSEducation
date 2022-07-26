@@ -10,8 +10,8 @@ namespace CSEducation
     {
         static void Main(string[] args)
         {
-            Images images = new Images();
-            images.Solution();
+            SwappingValues swappingValues = new SwappingValues();
+            swappingValues.Swapping();
         }
     }
 }
