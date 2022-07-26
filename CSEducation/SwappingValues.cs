@@ -4,7 +4,7 @@ namespace CSEducation
 {
     internal class SwappingValues
     {
-        public void Swapping()
+        static void Main(string[] args)
         {
             int userAge = 1922;
             int userBirthYear = 100;
