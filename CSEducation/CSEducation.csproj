@@ -43,7 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CristalsShop.cs" />
+    <Compile Include="Images.cs" />
+    <Compile Include="StringsManipulations.cs" />
+    <Compile Include="SwappingValues.cs" />
+    <Compile Include="Variables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
