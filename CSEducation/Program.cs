@@ -10,8 +10,8 @@ namespace CSEducation
     {
         static void Main(string[] args)
         {
-            StringsManipulations stringsManipulations = new StringsManipulations();
-            stringsManipulations.Manipulations();
+            Images images = new Images();
+            images.Solution();
         }
     }
 }
