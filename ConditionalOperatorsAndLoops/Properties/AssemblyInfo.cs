@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CSEducation")]
+[assembly: AssemblyTitle("ConditionalOperatorsAndLoops")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CSEducation")]
+[assembly: AssemblyProduct("ConditionalOperatorsAndLoops")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("fd777576-10b6-41c5-a0b1-316f662394a7")]
+[assembly: Guid("3bfc5062-043a-4a7c-bd45-36d5cf0df5db")]
 
 // Version information for an assembly consists of the following four values:
 //
