@@ -4,7 +4,7 @@ namespace CSEducation
 {
     internal class CristalsShop
     {
-        static void Main(string[] args)
+        public void BuyCristals()
         {
             int crystalPrice = 100;
 
