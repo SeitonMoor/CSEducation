@@ -4,7 +4,7 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class MasteringСycles
     {
-        static void Main(string[] args)
+        void Mastering()
         {
             Console.Write("Укажите сообщение для программы: ");
             var userInput = Console.ReadLine();

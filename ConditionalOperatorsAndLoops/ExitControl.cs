@@ -2,7 +2,7 @@
 
 namespace ConditionalOperatorsAndLoops
 {
-    internal class OutputControl
+    internal class ExitControl
     {
         static void Main(string[] args)
         {
