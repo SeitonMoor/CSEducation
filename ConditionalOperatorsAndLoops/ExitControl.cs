@@ -8,13 +8,14 @@ namespace ConditionalOperatorsAndLoops
         {
             string userInput;
             bool canExit = false;
+            string exitCommand = "exit";
 
-            while (!canExit)
+            while (canExit == false)
             {
                 Console.WriteLine("Какое действие хотите совершить: create | update | delete | exit");
                 userInput = Console.ReadLine();
 
-                if (userInput == "exit")
+                if (userInput == exitCommand)
                 {
                     canExit = true;
                 }
