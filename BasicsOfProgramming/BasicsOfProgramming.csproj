@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FD777576-10B6-41C5-A0B1-316F662394A7}</ProjectGuid>
+    <ProjectGuid>{51186267-FF53-4C6D-AEDC-D0F2B4A0CBD9}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CSEducation</RootNamespace>
-    <AssemblyName>CSEducation</AssemblyName>
+    <RootNamespace>BasicsOfProgramming</RootNamespace>
+    <AssemblyName>BasicsOfProgramming</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -45,10 +45,11 @@
   <ItemGroup>
     <Compile Include="CristalsShop.cs" />
     <Compile Include="Images.cs" />
+    <Compile Include="Polyclinic.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringsManipulations.cs" />
     <Compile Include="SwappingValues.cs" />
     <Compile Include="Variables.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
