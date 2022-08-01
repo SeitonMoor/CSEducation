@@ -6,24 +6,28 @@ namespace ConditionalOperatorsAndLoops
     {
         static void Main(string[] args)
         {
-            double rubToUsd = 0.016, rubToJpy = 2.13, 
-                usdToRub = 62, usdToJpy = 131.97,
-                jpyToRub = 0.47, jpyToUsd = 0.0076;
-            double rub, usd, jpy;
+            double rubToUsd = 0.016;
+            double rubToJpy = 2.13;
+            double usdToRub = 62;
+            double usdToJpy = 131.97;
+            double jpyToRub = 0.47;
+            double jpyToUsd = 0.0076;
             double currencyCount;
-            string userInput;
-            bool canExit = false;
+            bool userWantExit = false;
 
             Console.WriteLine("Добро пожаловать в обменник валют. У нас вы можете обменять свои рубли, доллары и иены.");
 
             Console.Write("Введите баланс рублей: ");
+            double rub;
             rub = Convert.ToDouble(Console.ReadLine());
             Console.Write("Введите баланс долларов: ");
+            double usd;
             usd = Convert.ToDouble(Console.ReadLine());
             Console.Write("Введите баланс иен: ");
+            double jpy;
             jpy = Convert.ToDouble(Console.ReadLine());
 
-            while (canExit == false)
+            while (userWantExit == false)
             {
                 Console.WriteLine($"\nВаш баланс {rub} рублей | {usd} долларов | {jpy} иен");
 
@@ -35,7 +39,7 @@ namespace ConditionalOperatorsAndLoops
                     "\n6 - обменять иены на доллары" +
                     "\nexit - закончить операции по обмену" +
                     "\nПерейти к операции: ");
-                userInput = Console.ReadLine();
+                string userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
@@ -136,7 +140,7 @@ namespace ConditionalOperatorsAndLoops
                         break;
 
                     case "exit":
-                        canExit = true;
+                        userWantExit = true;
                         break;
                 }
             }
