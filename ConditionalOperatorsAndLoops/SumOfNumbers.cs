@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConditionalOperatorsAndLoops
 {
@@ -13,15 +9,19 @@ namespace ConditionalOperatorsAndLoops
             Random random = new Random();
 
             int sumOfNumbers = 0;
+            int divisibleNumber1 = 3;
+            int divisibleNumber2 = 5;
+            int minRandomValue = 0;
+            int maxRandomValue = 100;
 
-            int number = random.Next(0, 100);
+            int number = random.Next(minRandomValue, maxRandomValue);
 
             for (int i = 1; i <= number; i++)
             {
-                bool divisibleBy3 = (i % 3 == 0);
-                bool divisibleBy5 = (i % 5 == 0);
+                bool divisibleByNumber1 = (i % divisibleNumber1 == 0);
+                bool divisibleByNumber2 = (i % divisibleNumber2 == 0);
 
-                if (divisibleBy3 || divisibleBy5)
+                if (divisibleByNumber1 || divisibleByNumber2)
                     sumOfNumbers += i;
             }
 
