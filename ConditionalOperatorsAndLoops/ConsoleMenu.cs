@@ -17,7 +17,7 @@ namespace ConditionalOperatorsAndLoops
 
             while (isWorking)
             {
-                if (isLogin == true)
+                if (isLogin)
                 {
                     Console.Write("Доступные команды: fillProfile | printProfile | changePassword | logout | exit" +
                         "\nВведите команду: ");
@@ -63,57 +63,89 @@ namespace ConditionalOperatorsAndLoops
                         break;
 
                     case "fillProfile":
-                        Console.Write("\nЗаполнение профиля." +
-                            "\nВведите ваше имя: ");
-                        userName = Console.ReadLine();
-
-                        Console.Write("Введите вашу фамилию: ");
-                        userSurname = Console.ReadLine();
-
-                        Console.Write("Введите ваш возраст: ");
-                        userAge = Convert.ToByte(Console.ReadLine());
-
-                        Console.Write("Введите вашу должность на работе: ");
-                        userJob = Console.ReadLine();
-
-                        Console.WriteLine();
-                        break;
-
-                    case "printProfile":
-                        Console.WriteLine($"\nИнформация о профиле." +
-                            $"\n{ userName } { userSurname}" +
-                            $"\nВозраст: { userAge }" +
-                            $"\nДолжность: { userJob }\n");
-                        break;
-
-                    case "changePassword":
-                        Console.WriteLine("\nВы активировали смену пароля.");
-
-                        string userPassword = "";
-                        bool haveMistake = false;
-
-                        while (userInput != userPassword)
+                        if (isLogin)
                         {
-                            if (haveMistake)
-                                Console.WriteLine("Пароли не совпадают, попробуйте еще раз:");
-                            Console.Write("Введите новый пароль: ");
-                            userInput = Console.ReadLine();
+                            Console.Write("\nЗаполнение профиля." +
+                            "\nВведите ваше имя: ");
+                            userName = Console.ReadLine();
 
-                            Console.Write("Введите новый пароль еще раз: ");
-                            userPassword = Console.ReadLine();
+                            Console.Write("Введите вашу фамилию: ");
+                            userSurname = Console.ReadLine();
 
-                            haveMistake = true;
+                            Console.Write("Введите ваш возраст: ");
+                            userAge = Convert.ToByte(Console.ReadLine());
+
+                            Console.Write("Введите вашу должность на работе: ");
+                            userJob = Console.ReadLine();
+
+                            Console.WriteLine();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nНеизвестная команда\n");
+                            break;
                         }
 
-                        password = userPassword;
+                    case "printProfile":
+                        if (isLogin)
+                        {
+                            Console.WriteLine($"\nИнформация о профиле." +
+                            $"\n{userName} {userSurname}" +
+                            $"\nВозраст: {userAge}" +
+                            $"\nДолжность: {userJob}\n");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nНеизвестная команда\n");
+                            break;
+                        }
 
-                        Console.WriteLine();
-                        break;
+                    case "changePassword":
+                        if (isLogin)
+                        {
+                            Console.WriteLine("\nВы активировали смену пароля.");
+
+                            string userPassword = "";
+                            bool haveMistake = false;
+
+                            while (userInput != userPassword)
+                            {
+                                if (haveMistake)
+                                    Console.WriteLine("Пароли не совпадают, попробуйте еще раз:");
+                                Console.Write("Введите новый пароль: ");
+                                userInput = Console.ReadLine();
+
+                                Console.Write("Введите новый пароль еще раз: ");
+                                userPassword = Console.ReadLine();
+
+                                haveMistake = true;
+                            }
+
+                            password = userPassword;
+
+                            Console.WriteLine();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nНеизвестная команда\n");
+                            break;
+                        }
 
                     case "logout":
-                        Console.WriteLine("\nВы вышли из профиля.\n");
-                        isLogin = false;
-                        break;
+                        if (isLogin)
+                        {
+                            Console.WriteLine("\nВы вышли из профиля.\n");
+                            isLogin = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nНеизвестная команда\n");
+                            break;
+                        }
 
                     case "exit":
                         Console.WriteLine("\nВы вышли из приложения. Всего доброго!");
