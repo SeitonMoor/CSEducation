@@ -13,7 +13,7 @@ namespace ConditionalOperatorsAndLoops
             double jpyToRub = 0.47;
             double jpyToUsd = 0.0076;
             double currencyCount;
-            bool userWantExit = false;
+            bool isWorking = false;
 
             Console.WriteLine("Добро пожаловать в обменник валют. У нас вы можете обменять свои рубли, доллары и иены.");
 
@@ -27,7 +27,7 @@ namespace ConditionalOperatorsAndLoops
             double jpy;
             jpy = Convert.ToDouble(Console.ReadLine());
 
-            while (userWantExit == false)
+            while (isWorking == false)
             {
                 Console.WriteLine($"\nВаш баланс {rub} рублей | {usd} долларов | {jpy} иен");
 
@@ -140,7 +140,7 @@ namespace ConditionalOperatorsAndLoops
                         break;
 
                     case "exit":
-                        userWantExit = true;
+                        isWorking = true;
                         break;
                 }
             }
