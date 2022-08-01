@@ -54,10 +54,12 @@ namespace ConditionalOperatorsAndLoops
                             Console.WriteLine("Недопустимое количество рублей.");
                         }
                         break;
+
                     case "2":
                         Console.WriteLine("\nОбмен рублей на иены");
                         Console.Write("Сколько вы хотите обменять: ");
                         currencyCount = Convert.ToDouble(Console.ReadLine());
+
                         if (rub >= currencyCount)
                         {
                             rub -= currencyCount;
@@ -68,10 +70,12 @@ namespace ConditionalOperatorsAndLoops
                             Console.WriteLine("Недопустимое количество рублей.");
                         }
                         break;
+
                     case "3":
                         Console.WriteLine("\nОбмен долларов на рубли");
                         Console.Write("Сколько вы хотите обменять: ");
                         currencyCount = Convert.ToDouble(Console.ReadLine());
+
                         if (usd >= currencyCount)
                         {
                             usd -= currencyCount;
@@ -82,10 +86,12 @@ namespace ConditionalOperatorsAndLoops
                             Console.WriteLine("Недопустимое количество долларов.");
                         }
                         break;
+
                     case "4":
                         Console.WriteLine("\nОбмен долларов на иены");
                         Console.Write("Сколько вы хотите обменять: ");
                         currencyCount = Convert.ToDouble(Console.ReadLine());
+
                         if (usd >= currencyCount)
                         {
                             usd -= currencyCount;
@@ -96,10 +102,12 @@ namespace ConditionalOperatorsAndLoops
                             Console.WriteLine("Недопустимое количество долларов.");
                         }
                         break;
+
                     case "5":
                         Console.WriteLine("\nОбмен иенов на рубли");
                         Console.Write("Сколько вы хотите обменять: ");
                         currencyCount = Convert.ToDouble(Console.ReadLine());
+
                         if (jpy >= currencyCount)
                         {
                             jpy -= currencyCount;
@@ -110,10 +118,12 @@ namespace ConditionalOperatorsAndLoops
                             Console.WriteLine("Недопустимое количество иен.");
                         }
                         break;
+
                     case "6":
                         Console.WriteLine("\nОбмен иенов на доллары");
                         Console.Write("Сколько вы хотите обменять: ");
                         currencyCount = Convert.ToDouble(Console.ReadLine());
+
                         if (jpy >= currencyCount)
                         {
                             jpy -= currencyCount;
@@ -124,6 +134,7 @@ namespace ConditionalOperatorsAndLoops
                             Console.WriteLine("Недопустимое количество иен.");
                         }
                         break;
+
                     case "exit":
                         canExit = true;
                         break;
