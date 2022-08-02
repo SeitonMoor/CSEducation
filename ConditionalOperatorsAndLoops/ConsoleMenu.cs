@@ -13,11 +13,11 @@ namespace ConditionalOperatorsAndLoops
             string userJob = "";
             string password = "123456";
             bool isWorking = true;
-            bool isLogin = false;
+            bool isAuthorized = false;
 
             while (isWorking)
             {
-                if (isLogin)
+                if (isAuthorized)
                 {
                     Console.Write("Доступные команды: fillProfile | printProfile | changePassword | logout | exit" +
                         "\nВведите команду: ");
@@ -25,7 +25,7 @@ namespace ConditionalOperatorsAndLoops
                 }
                 else
                 {
-                    Console.Write("Доступные команды: login" +
+                    Console.Write("Доступные команды: login | exit" +
                         "\nВведите команду: ");
                     userInput = Console.ReadLine();
                 }
@@ -33,37 +33,38 @@ namespace ConditionalOperatorsAndLoops
                 switch (userInput)
                 {
                     case "login":
-                        if (isLogin)
+                        if (isAuthorized)
                         {
                             Console.WriteLine("\nНеизвестная команда\n");
-                            break;
                         }
-
-                        Console.WriteLine("\nАвторизация.");
-                        int tryCount = 3;
-
-                        for (int i = 1; i <= tryCount; i++)
+                        else
                         {
-                            Console.Write("Введите пароль: ");
-                            userInput = Console.ReadLine();
+                            Console.WriteLine("\nАвторизация.");
+                            int tryCount = 3;
 
-                            if (password == userInput)
+                            for (int i = 1; i <= tryCount; i++)
                             {
-                                Console.WriteLine("\nДобро пожаловать в приложение!\n");
-                                isLogin = true;
-                                isWorking = true;
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"У вас осталось попыток: { tryCount - i }");
-                                isWorking = false;
+                                Console.Write("Введите пароль: ");
+                                userInput = Console.ReadLine();
+
+                                if (password == userInput)
+                                {
+                                    Console.WriteLine("\nДобро пожаловать в приложение!\n");
+                                    isAuthorized = true;
+                                    isWorking = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"У вас осталось попыток: {tryCount - i}");
+                                    isWorking = false;
+                                }
                             }
                         }
                         break;
 
                     case "fillProfile":
-                        if (isLogin)
+                        if (isAuthorized)
                         {
                             Console.Write("\nЗаполнение профиля." +
                             "\nВведите ваше имя: ");
@@ -79,31 +80,29 @@ namespace ConditionalOperatorsAndLoops
                             userJob = Console.ReadLine();
 
                             Console.WriteLine();
-                            break;
                         }
                         else
                         {
                             Console.WriteLine("\nНеизвестная команда\n");
-                            break;
                         }
+                        break;
 
                     case "printProfile":
-                        if (isLogin)
+                        if (isAuthorized)
                         {
                             Console.WriteLine($"\nИнформация о профиле." +
                             $"\n{userName} {userSurname}" +
                             $"\nВозраст: {userAge}" +
                             $"\nДолжность: {userJob}\n");
-                            break;
                         }
                         else
                         {
                             Console.WriteLine("\nНеизвестная команда\n");
-                            break;
                         }
+                        break;
 
                     case "changePassword":
-                        if (isLogin)
+                        if (isAuthorized)
                         {
                             Console.WriteLine("\nВы активировали смену пароля.");
 
@@ -126,26 +125,24 @@ namespace ConditionalOperatorsAndLoops
                             password = userPassword;
 
                             Console.WriteLine();
-                            break;
                         }
                         else
                         {
                             Console.WriteLine("\nНеизвестная команда\n");
-                            break;
                         }
+                        break;
 
                     case "logout":
-                        if (isLogin)
+                        if (isAuthorized)
                         {
                             Console.WriteLine("\nВы вышли из профиля.\n");
-                            isLogin = false;
-                            break;
+                            isAuthorized = false;
                         }
                         else
                         {
                             Console.WriteLine("\nНеизвестная команда\n");
-                            break;
                         }
+                        break;
 
                     case "exit":
                         Console.WriteLine("\nВы вышли из приложения. Всего доброго!");
