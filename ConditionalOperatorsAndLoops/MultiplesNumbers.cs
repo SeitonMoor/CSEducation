@@ -8,13 +8,13 @@ namespace ConditionalOperatorsAndLoops
         {
             Random random = new Random();
 
-            int minRandomValue = 1;
-            int maxRandomValue = 28;
+            int minValue = 1;
+            int maxValue = 28;
             int maxNaturalNumber = 999;
             int count = 0;
-            int setNumber = random.Next(minRandomValue, maxRandomValue);
+            int randomNumber = random.Next(minValue, maxValue);
 
-            for (int i = 0; i <= maxNaturalNumber; i += setNumber)
+            for (int i = 0; i <= maxNaturalNumber; i += randomNumber)
             {
                 if (i >= 100) count++;
             }
