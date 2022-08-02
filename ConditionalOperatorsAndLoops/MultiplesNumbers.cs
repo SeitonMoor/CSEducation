@@ -8,22 +8,15 @@ namespace ConditionalOperatorsAndLoops
         {
             Random random = new Random();
 
+            int minRandomValue = 1;
             int maxRandomValue = 28;
-            int minNaturalNumber = 100;
             int maxNaturalNumber = 999;
             int count = 0;
-            int n = random.Next(maxRandomValue);
+            int setNumber = random.Next(minRandomValue, maxRandomValue);
 
-            for (int i = minNaturalNumber; i <= maxNaturalNumber; i++)
+            for (int i = 0; i <= maxNaturalNumber; i += setNumber)
             {
-                int multipleNumber = i;
-                while (multipleNumber > 0)
-                {
-                    multipleNumber -= n;
-                }
-
-                if (multipleNumber == 0)
-                    count++;
+                if (i >= 100) count++;
             }
 
             Console.WriteLine(count);
