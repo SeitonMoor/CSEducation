@@ -8,6 +8,7 @@ namespace ConditionalOperatorsAndLoops
         {
             string password = "t0pSecret";
             int tryCount = 3;
+            int tryRemain = 3;
             string userInput;
 
             for (int i = 1; i <= tryCount; i++)
@@ -19,11 +20,12 @@ namespace ConditionalOperatorsAndLoops
                 {
                     Console.WriteLine("\nДоступ к тайному сообщению получен!\n");
                     Console.WriteLine("Тайное сообщение ...");
-                    break;
+                    i = tryCount;
                 }
                 else
                 {
-                    Console.WriteLine($"У вас осталось попыток: {tryCount - i}");
+                    tryRemain--;
+                    Console.WriteLine($"У вас осталось попыток: { tryRemain }");
                 }
             }
         }
