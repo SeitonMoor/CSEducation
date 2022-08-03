@@ -4,11 +4,10 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class NameOutput
     {
-        static void Main(string[] args)
+        void Output()
         {
             int borderWidth = 1;
             string borderLine = "";
-            string nameLine = "";
 
             Console.Write("Введите имя: ");
             string userName = Console.ReadLine();
@@ -16,7 +15,7 @@ namespace ConditionalOperatorsAndLoops
             Console.Write("Введите символ для рамки: ");
             char userChar = Convert.ToChar(Console.ReadLine());
 
-            nameLine = userChar + userName + userChar;
+            string nameLine = userChar + userName + userChar;
 
             for (int i = 0; i <= userName.Length + borderWidth; i++)
             {

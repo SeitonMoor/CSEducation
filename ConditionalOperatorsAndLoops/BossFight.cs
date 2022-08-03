@@ -20,7 +20,7 @@ namespace ConditionalOperatorsAndLoops
             int bossHealth = 1000;
             int bossDamage = 10;
             int bossDealDamage = 0;
-            byte bossComboCount = 0;
+            byte bossAttackCounter = 0;
             byte bossComboSkill = 3;
             byte bossIncreaseDamage = 6;
             byte bossWaitingCounter = 0;
@@ -123,17 +123,17 @@ namespace ConditionalOperatorsAndLoops
                 }
                 else
                 {
-                    if (bossComboCount == bossComboSkill)
+                    if (bossAttackCounter == bossComboSkill)
                     {
                         Console.WriteLine($"\nБосс проводит комбо ударов.");
                         bossDealDamage = bossDamage * bossIncreaseDamage;
-                        bossComboCount = 0;
+                        bossAttackCounter = 0;
                     }
                     else
                     {
                         Console.WriteLine($"\nБосс совершает классический удар по вам.");
                         bossDealDamage = bossDamage;
-                        bossComboCount++;
+                        bossAttackCounter++;
                     }
                 }
 

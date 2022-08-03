@@ -4,17 +4,17 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class SumOfNumbers
     {
-        static void Main(string[] args)
+        void SumCalculating()
         {
             Random random = new Random();
 
             int sumOfNumbers = 0;
             int divisibleNumber1 = 3;
             int divisibleNumber2 = 5;
-            int minRandomValue = 0;
-            int maxRandomValue = 100;
+            int minValue = 0;
+            int maxValue = 100;
 
-            int number = random.Next(minRandomValue, maxRandomValue);
+            int number = random.Next(minValue, maxValue);
 
             for (int i = 1; i <= number; i++)
             {
