@@ -7,6 +7,7 @@ namespace ConditionalOperatorsAndLoops
         static void Main(string[] args)
         {
             int health = 100;
+            int maxHealth = 100;
             int damage = 80;
             int dealDamage = 0;
             int extraDamage = 100;
@@ -87,8 +88,8 @@ namespace ConditionalOperatorsAndLoops
                         isDisappeared = true;
 
                         int curedHealth = health;
-                        if (health + herbalHeal >= 100)
-                            health = 100;
+                        if (health + herbalHeal >= maxHealth)
+                            health = maxHealth;
                         else
                             health += herbalHeal;
 
