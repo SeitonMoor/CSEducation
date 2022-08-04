@@ -49,15 +49,14 @@ namespace ConditionalOperatorsAndLoops
                         {
                             Console.WriteLine("\nЗная слабу точку босса, вы совершаете точный выстрел.");
                             dealDamage = damage * damageIncrease;
-                            bossHealth -= dealDamage;
                         }
                         else
                         {
                             Console.WriteLine("\nДержась на растоянии вы выстреливаете по боссу.");
                             dealDamage = damage;
-                            bossHealth -= dealDamage;
                         }
 
+                        bossHealth -= dealDamage;
                         Console.WriteLine($"Вам удалось нанести: { dealDamage } урона");
                         break;
 
