@@ -4,7 +4,7 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class CurrencyConverter
     {
-        static void Main(string[] args)
+        void Converter()
         {
             double rubToUsd = 0.016;
             double rubToJpy = 2.13;
@@ -13,7 +13,7 @@ namespace ConditionalOperatorsAndLoops
             double jpyToRub = 0.47;
             double jpyToUsd = 0.0076;
             double currencyCount;
-            bool isWorking = false;
+            bool isWorking = true;
 
             Console.WriteLine("Добро пожаловать в обменник валют. У нас вы можете обменять свои рубли, доллары и иены.");
 
@@ -27,7 +27,7 @@ namespace ConditionalOperatorsAndLoops
             double jpy;
             jpy = Convert.ToDouble(Console.ReadLine());
 
-            while (isWorking == false)
+            while (isWorking)
             {
                 Console.WriteLine($"\nВаш баланс {rub} рублей | {usd} долларов | {jpy} иен");
 
@@ -140,7 +140,7 @@ namespace ConditionalOperatorsAndLoops
                         break;
 
                     case "exit":
-                        isWorking = true;
+                        isWorking = false;
                         break;
                 }
             }
