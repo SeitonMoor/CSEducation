@@ -4,7 +4,7 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class BracketsExpression
     {
-        static void Main(string[] args)
+        void DepthSearcher()
         {
             int maxBracketsDepth = 0;
             int foundDepth = 0;

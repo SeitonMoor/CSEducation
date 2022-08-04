@@ -4,7 +4,7 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class MultiplesNumbers
     {
-        static void Main(string[] args)
+        void MultiplesSearcher()
         {
             Random random = new Random();
 

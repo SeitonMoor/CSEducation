@@ -4,7 +4,7 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class ProtectedProgram
     {
-        static void Main(string[] args)
+        void PasswordProtected()
         {
             string password = "t0pSecret";
             int tryCount = 3;

@@ -4,7 +4,7 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class ConsoleMenu
     {
-        static void Main(string[] args)
+        void Menu()
         {
             string userInput;
             string userName = "";

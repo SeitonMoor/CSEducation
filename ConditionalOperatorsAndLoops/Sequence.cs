@@ -4,7 +4,7 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class Sequence
     {
-        static void Main(string[] args)
+        void SequenceLoop()
         {
             int firstValue = 5;
             int lastValue = 96;
