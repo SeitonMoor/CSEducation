@@ -4,20 +4,20 @@ namespace ConditionalOperatorsAndLoops
 {
     internal class ExitControl
     {
-        static void Main(string[] args)
+        void Control()
         {
             string userInput;
-            bool canExit = false;
+            bool isWorking = true;
             string exitCommand = "exit";
 
-            while (canExit == false)
+            while (isWorking)
             {
                 Console.WriteLine("Какое действие хотите совершить: create | update | delete | exit");
                 userInput = Console.ReadLine();
 
                 if (userInput == exitCommand)
                 {
-                    canExit = true;
+                    isWorking = false;
                 }
                 else
                 {
