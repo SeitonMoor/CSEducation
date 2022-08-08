@@ -7,14 +7,16 @@ namespace Arrays
         static void Main(string[] args)
         {
             Random random = new Random();
+
+            Console.Write("Задайте размер одномерного массива: ");
+            int inputSize = Convert.ToInt32(Console.ReadLine());
+
+            int[] array = new int[inputSize];
             int minValue = 1;
             int maxValue = 100;
             int checkDistance = 1;
             int startArrayIndex = 0;
-
-            Console.Write("Задайте размер одномерного массива: ");
-            int inputSize = Convert.ToInt32(Console.ReadLine());
-            int[] array = new int[inputSize];
+            int lastArrayIndex = array.Length - checkDistance;
 
             Console.WriteLine("Исходный массив:");
             for (int i = 0; i < array.Length; i++)
@@ -24,19 +26,15 @@ namespace Arrays
             }
 
             Console.WriteLine("\nВсе локальные максимумы:");
-            for (int i = 1; i < array.Length - checkDistance; i++)
-            {
-                if (i - checkDistance == startArrayIndex)
-                    if (array[i - checkDistance] > array[i])
-                        Console.Write(array[i - checkDistance] + " ");
+            if (array[startArrayIndex] > array[startArrayIndex + checkDistance])
+                Console.Write(array[startArrayIndex] + " ");
 
+            for (int i = 1; i < array.Length - checkDistance; i++)
                 if (array[i - checkDistance] < array[i] && array[i + checkDistance] < array[i])
                         Console.Write(array[i] + " ");
 
-                if (i + checkDistance == array.Length - checkDistance)
-                    if (array[i + checkDistance] > array[i])
-                        Console.Write(array[i + checkDistance] + " ");
-            }
+            if (array[lastArrayIndex] > array[lastArrayIndex - checkDistance])
+                    Console.Write(array[lastArrayIndex]);
 
             Console.WriteLine();
         }
