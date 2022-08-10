@@ -50,7 +50,7 @@
     <Compile Include="ShiftingArrayValues.cs" />
     <Compile Include="SortingNumbers.cs" />
     <Compile Include="SpecificRowsColumns.cs" />
-    <Compile Include="Split.cs" />
+    <Compile Include="StringSplitter.cs" />
     <Compile Include="SubarrayOfRepetitions.cs" />
   </ItemGroup>
   <ItemGroup>
