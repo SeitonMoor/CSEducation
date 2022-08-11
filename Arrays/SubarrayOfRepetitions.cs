@@ -54,6 +54,6 @@ namespace Arrays
             }
 
             Console.WriteLine($"\nЧисло {foundNumber} повторяется {foundQuantity} раз подряд");
-        }*/
+        }
     }
 }
