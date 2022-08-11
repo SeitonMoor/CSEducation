@@ -4,7 +4,7 @@ namespace Arrays
 {
     internal class LocalMaxima
     {
-        static void Main(string[] args)
+        void MaximaSearcher()
         {
             Random random = new Random();
 
@@ -16,7 +16,7 @@ namespace Arrays
             int maxValue = 100;
             int checkDistance = 1;
             int startArrayIndex = 0;
-            int lastArrayIndex = array.Length - checkDistance;
+            int lastArrayIndex = array.Length - 1;
 
             Console.WriteLine("Исходный массив:");
             for (int i = 0; i < array.Length; i++)
