@@ -4,7 +4,7 @@ namespace Arrays
 {
     internal class DynamicArray
     {
-        static void Main(string[] args)
+        void Dynamic()
         {
             int[] numbersArray = new int[0];
             bool isWorking = true;

@@ -4,7 +4,7 @@ namespace Arrays
 {
     internal class StringSplitter
     {
-        static void Main(string[] args)
+        void Splitter()
         {
             Console.Write("Напишите текст: ");
             string inputText = Console.ReadLine();

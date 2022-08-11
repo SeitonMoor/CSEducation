@@ -4,7 +4,7 @@ namespace Arrays
 {
     internal class SpecificRowsColumns
     {
-        static void Main(string[] args)
+        void SumAndProduct()
         {
             Random random = new Random();
 

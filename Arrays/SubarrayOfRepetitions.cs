@@ -4,7 +4,7 @@ namespace Arrays
 {
     internal class SubarrayOfRepetitions
     {
-        static void Main(string[] args)
+        void SearchRepetitions()
         {
             Random random = new Random();
 
@@ -54,6 +54,6 @@ namespace Arrays
             }
 
             Console.WriteLine($"\nЧисло {foundNumber} повторяется {foundQuantity} раз подряд");
-        }
+        }*/
     }
 }

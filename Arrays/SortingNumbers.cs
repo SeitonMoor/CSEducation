@@ -4,7 +4,7 @@ namespace Arrays
 {
     internal class SortingNumbers
     {
-        static void Main(string[] args)
+        void BubbleSort()
         {
             Random random = new Random();
 

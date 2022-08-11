@@ -4,7 +4,7 @@ namespace Arrays
 {
     internal class LargestElement
     {
-        static void Main(string[] args)
+        void FindLargest()
         {
             Random random = new Random();
 
