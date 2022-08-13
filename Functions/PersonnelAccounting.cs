@@ -18,7 +18,7 @@ namespace Functions
                 Console.Write("Меню команд:\n" +
                     "\nadd - добавить досье." +
                     "\nprintAll - вывести все досье." +
-                    "\ndeleate - удалить досье." +
+                    "\ndelete - удалить досье." +
                     "\nfind - поиск по фамилии." +
                     "\nexit - выход из программы." +
                     "\n\nВаше действие: ");
@@ -30,15 +30,15 @@ namespace Functions
                         break;
 
                     case "printAll":
-                        PrintAll(fullNames, positions, separateSymbol);
+                        Print(fullNames, positions, separateSymbol);
                         break;
 
-                    case "deleate":
+                    case "delete":
                         DeleteProfile(ref fullNames, ref positions);
                         break;
 
                     case "find":
-                        FindProfile(fullNames, positions);
+                        FindProfile(fullNames, positions, separateSymbol);
                         break;
 
                     case "exit":
@@ -57,51 +57,89 @@ namespace Functions
 
         static void AddProfile(ref string[] fullNames, ref string[] positions)
         {
+            int resizeValue = 1;
+
             Console.Write("Введите ФИО: ");
             string fullName = Console.ReadLine();
             Console.Write("Введите должность: ");
             string position = Console.ReadLine();
 
-            fullNames = AddToArray(fullNames, fullName);
-            positions = AddToArray(positions, position);
+            fullNames = ResizeArray(fullNames, resizeValue, fullName);
+            positions = ResizeArray(positions, resizeValue, position);
         }
 
-        static string[] AddToArray(string[] array, string inputValue)
-        {
-            int newArrayLength = array.Length + 1;
-            int lastArrayIndex = newArrayLength - 1;
-
-            string[] tempArray = new string[newArrayLength];
-            for (int i = 0; i < array.Length; i++)
-            {
-                tempArray[i] = array[i];
-            }
-
-            tempArray[lastArrayIndex] = inputValue;
-            array = tempArray;
-            return array;
-        }
-
-        static void PrintAll(string[] fullNames, string[] positions, char symbol)
+        static void Print(string[] fullNames, string[] positions, char symbol, int index = -1)
         {
             int ordinalNumber;
-            int firstOrderNumber = 1;
+            int firstOrdinal = 1;
             string separateSymbol = Convert.ToString(symbol);
-            for (int i = 0; i < fullNames.Length; i++)
+
+            if (index >= 0)
             {
-                ordinalNumber = firstOrderNumber + i;
-                Console.WriteLine(ordinalNumber + separateSymbol + fullNames[i] + separateSymbol + positions[i]);
+                ordinalNumber = firstOrdinal + index;
+                Console.WriteLine(ordinalNumber + separateSymbol + fullNames[index] + separateSymbol + positions[index]);
+            }
+            else
+            {
+                for (int i = 0; i < fullNames.Length; i++)
+                {
+                    ordinalNumber = firstOrdinal + i;
+                    Console.WriteLine(ordinalNumber + separateSymbol + fullNames[i] + separateSymbol + positions[i]);
+                }
             }
         }
 
         static void DeleteProfile(ref string[] fullNames, ref string[] positions)
         {
+            int resizeValue = -1;
 
+            fullNames = ResizeArray(fullNames, resizeValue);
+            positions = ResizeArray(positions, resizeValue);
         }
 
-        static void FindProfile(string[] fullNames, string[] positions)
+        static void FindProfile(string[] fullNames, string[] positions, char symbol)
         {
+            int ordinalNumber;
+            int firstOrdinal = 1;
+            int surnameIndex = 0;
+            string separateSymbol = Convert.ToString(symbol);
 
+            Console.Write("Введите фамилию для поиска: ");
+            string inputSurname = Console.ReadLine();
+
+            for (int i = 0; i < fullNames.Length; i++)
+            {
+                string surname = fullNames[i].Split(' ')[surnameIndex];
+
+                if (inputSurname == surname)
+                {
+                    ordinalNumber = firstOrdinal + i;
+                    Console.WriteLine(ordinalNumber + separateSymbol + fullNames[i] + separateSymbol + positions[i]);
+                }
+            }
+        }
+
+        static string[] ResizeArray(string[] array, int resizeValue, string inputValue = null)
+        {
+            int newArrayLength = array.Length + resizeValue;
+            int maxLength;
+            if (resizeValue > 0) { maxLength = array.Length; }
+            else { maxLength = newArrayLength; }
+
+            string[] tempArray = new string[newArrayLength];
+            for (int i = 0; i < maxLength; i++)
+            {
+                tempArray[i] = array[i];
+            }
+
+            if (inputValue != null)
+            {
+                int lastArrayIndex = newArrayLength - 1;
+                tempArray[lastArrayIndex] = inputValue;
+            }
+
+            array = tempArray;
+            return array;
         }
 
         static void WriteError(string text, ConsoleColor color = ConsoleColor.Red)
