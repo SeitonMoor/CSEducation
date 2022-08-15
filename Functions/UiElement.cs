@@ -11,9 +11,9 @@ namespace Functions
             Console.Write("Введите название бара: ");
             string barName = Console.ReadLine();
             Console.Write("Введите позицию бара по X: ");
-            int barX = Convert.ToInt32(Console.ReadLine());
+            int barPostionX = Convert.ToInt32(Console.ReadLine());
             Console.Write("Введите позицию бара по Y: ");
-            int barY = Convert.ToInt32(Console.ReadLine());
+            int barPositionY = Convert.ToInt32(Console.ReadLine());
 
             Console.Write("Введите число максимального показателя: ");
             int maxValue = Convert.ToInt32(Console.ReadLine());
@@ -23,7 +23,7 @@ namespace Functions
             Console.Clear();
 
             int percent = CalculatePercent(value, maxValue, maxPercent);
-            PrepareToDraw(barName, percent, maxPercent, barX, barY);
+            PrepareToDraw(barName, percent, maxPercent, barPostionX, barPositionY);
         }
 
         static void PrepareToDraw(string barName, int percent, int maxPercent, int positionX, int positionY)
