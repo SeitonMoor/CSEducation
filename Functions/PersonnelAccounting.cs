@@ -150,8 +150,14 @@ namespace Functions
         {
             int newArrayLength = array.Length + resizeValue;
             int maxLength;
-            if (resizeValue > 0) { maxLength = array.Length; }
-            else { maxLength = newArrayLength; }
+            if (resizeValue > 0)
+            { 
+                maxLength = array.Length;
+            }
+            else
+            {
+                maxLength = newArrayLength;
+            }
 
             string[] tempArray = new string[newArrayLength];
             for (int i = 0; i < maxLength; i++)
