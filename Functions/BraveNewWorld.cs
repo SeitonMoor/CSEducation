@@ -11,6 +11,7 @@ namespace Functions
             Console.CursorVisible = false;
             Random random = new Random();
             ConsoleColor winColor = ConsoleColor.Green;
+            ConsoleColor defeatColor = ConsoleColor.Red;
             bool isPlaying = true;
 
             char pacman = '@';
@@ -76,7 +77,7 @@ namespace Functions
             }
             else if (isAlive == false)
             {
-                WriteMessage("Вас съели!");
+                WriteMessage("Вас съели!", defeatColor);
             }
         }
 
@@ -176,8 +177,8 @@ namespace Functions
 
         static void ChangeDirection(Random random, ref int diractionX, ref int directionY)
         {
-            int ghostDir = random.Next(1, 5);
-            switch (ghostDir)
+            int ghostDirection = random.Next(1, 5);
+            switch (ghostDirection)
             {
                 case 1:
                     diractionX = -1;
