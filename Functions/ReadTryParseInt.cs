@@ -6,15 +6,15 @@ namespace Functions
     {
         static void Main(string[] args)
         {
-            GetNumber(out int inputNumber);
+            int inputNumber = GetNumber();
 
             Console.WriteLine($"Вы ввели число: {inputNumber}");
         }
 
-        static int GetNumber(out int inputNumber)
+        static int GetNumber()
         {
             bool beParsed = false;
-            inputNumber = 0;
+            int inputNumber = 0;
 
             while (beParsed == false)
             {
