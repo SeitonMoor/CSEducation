@@ -26,7 +26,7 @@ namespace Functions
             PrepareToDraw(barName, percent, maxPercent, barX, barY);
         }
 
-        static void PrepareToDraw(string barName, int percent, int maxPercent, int x, int y)
+        static void PrepareToDraw(string barName, int percent, int maxPercent, int positionX, int positionY)
         {
             string bar = $"{barName}: [";
             char valueSymbol = '#';
@@ -39,12 +39,12 @@ namespace Functions
             FillBar(ref bar, startIndex, value, valueSymbol);
             FillBar(ref bar, value, maxValue, barSymbol);
 
-            DrawBar(bar, x, y);
+            DrawBar(bar, positionX, positionY);
         }
 
-        static void DrawBar(string bar, int x, int y)
+        static void DrawBar(string bar, int positionX, int positionY)
         {
-            Console.SetCursorPosition(y, x);
+            Console.SetCursorPosition(positionY, positionX);
             Console.Write(bar);
         }
 
