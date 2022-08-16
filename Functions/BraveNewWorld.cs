@@ -16,17 +16,17 @@ namespace Functions
 
             char pacman = '@';
             bool isAlive = true;
-            int pacmanDX = 0;
-            int pacmanDY = 1;
+            int pacmanDirectionX = 0;
+            int pacmanDirectionY = 1;
 
             int allDots = 0;
             int collectDots = 0;
 
             char ghost = 'O';
-            int ghostDX = 0;
-            int ghostDY = -1;
+            int ghostDirectionX = 0;
+            int ghostDirectionY = -1;
 
-            char[,] map = ReadMap("Original pac-man map", out int pacmanX, out int pacmanY, out int ghostX, out int ghostY, ref allDots);
+            char[,] map = ReadMap("Original pac-man map", out int pacmanPositionX, out int pacmanPositionY, out int ghostPositionX, out int ghostPositionY, ref allDots);
 
             DrawMap(map);
 
@@ -36,27 +36,27 @@ namespace Functions
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
 
-                    ChangeDirection(key, ref pacmanDX, ref pacmanDY);
+                    ChangeDirection(key, ref pacmanDirectionX, ref pacmanDirectionY);
                 }
 
-                if (map[pacmanX + pacmanDX, pacmanY + pacmanDY] != '#')
+                if (map[pacmanPositionX + pacmanDirectionX, pacmanPositionY + pacmanDirectionY] != '#')
                 {
-                    CollectDots(map, pacmanX, pacmanY, ref collectDots);
+                    CollectDots(map, pacmanPositionX, pacmanPositionY, ref collectDots);
 
-                    Move(map, pacman, ref pacmanX, ref pacmanY, pacmanDX, pacmanDY);
+                    Move(map, pacman, ref pacmanPositionX, ref pacmanPositionY, pacmanDirectionX, pacmanDirectionY);
 
-                    DidPacmanGetEaten(ref isAlive, pacmanX, pacmanY, ghostX, ghostY);
+                    DidPacmanGetEaten(ref isAlive, pacmanPositionX, pacmanPositionY, ghostPositionX, ghostPositionY);
                 }
 
-                if (map[ghostX + ghostDX, ghostY + ghostDY] != '#')
+                if (map[ghostPositionX + ghostDirectionX, ghostPositionY + ghostDirectionY] != '#')
                 {
-                    Move(map, ghost, ref ghostX, ref ghostY, ghostDX, ghostDY);
+                    Move(map, ghost, ref ghostPositionX, ref ghostPositionY, ghostDirectionX, ghostDirectionY);
 
-                    DidPacmanGetEaten(ref isAlive, pacmanX, pacmanY, ghostX, ghostY);
+                    DidPacmanGetEaten(ref isAlive, pacmanPositionX, pacmanPositionY, ghostPositionX, ghostPositionY);
                 }
                 else
                 {
-                    ChangeDirection(random, ref ghostDX, ref ghostDY);
+                    ChangeDirection(random, ref ghostDirectionX, ref ghostDirectionY);
                 }
 
                 System.Threading.Thread.Sleep(200);
@@ -81,12 +81,12 @@ namespace Functions
             }
         }
 
-        static char[,] ReadMap(string mapName, out int pacmanX, out int pacmanY, out int ghostX, out int ghostY, ref int allDots)
+        static char[,] ReadMap(string mapName, out int pacmanPositionX, out int pacmanPositionY, out int ghostPositionX, out int ghostPositionY, ref int allDots)
         {
-            pacmanX = 0;
-            pacmanY = 0;
-            ghostX = 0;
-            ghostY = 0;
+            pacmanPositionX = 0;
+            pacmanPositionY = 0;
+            ghostPositionX = 0;
+            ghostPositionY = 0;
             string[] newFile = File.ReadAllLines($"Maps/{mapName}.txt");
             char[,] map = new char[newFile.Length, newFile[0].Length];
 
@@ -98,14 +98,14 @@ namespace Functions
 
                     if (map[i, j] == '@')
                     {
-                        pacmanX = i;
-                        pacmanY = j;
+                        pacmanPositionX = i;
+                        pacmanPositionY = j;
                         InitializeDot(map, ref allDots, i, j);
                     }
                     else if (map[i, j] == 'O')
                     {
-                        ghostX = i;
-                        ghostY = j;
+                        ghostPositionX = i;
+                        ghostPositionY = j;
                         InitializeDot(map, ref allDots, i, j);
                     }
                     else if (map[i, j] == ' ')
@@ -202,18 +202,18 @@ namespace Functions
             }
         }
 
-        static void CollectDots(char[,] map, int pacmanX, int pacmanY, ref int collectDots)
+        static void CollectDots(char[,] map, int pacmanPositionX, int pacmanPositionY, ref int collectDots)
         {
-            if (map[pacmanX, pacmanY] == '.')
+            if (map[pacmanPositionX, pacmanPositionY] == '.')
             {
-                map[pacmanX, pacmanY] = ' ';
+                map[pacmanPositionX, pacmanPositionY] = ' ';
                 collectDots++;
             }
         }
 
-        static void DidPacmanGetEaten(ref bool isAlive, int pacmanX, int pacmanY, int ghostX, int ghostY)
+        static void DidPacmanGetEaten(ref bool isAlive, int pacmanPositionX, int pacmanPositionY, int ghostPositionX, int ghostPositionY)
         {
-            if (ghostX == pacmanX && ghostY == pacmanY)
+            if (ghostPositionX == pacmanPositionX && ghostPositionY == pacmanPositionY)
             {
                 isAlive = false;
             }
