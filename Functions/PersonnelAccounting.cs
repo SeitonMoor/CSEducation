@@ -4,7 +4,7 @@ namespace Functions
 {
     internal class PersonnelAccounting
     {
-        static void Main(string[] args)
+        void Application()
         {
             string[] fullNames = new string[0];
             string[] positions = new string[0];

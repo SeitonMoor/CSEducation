@@ -4,7 +4,7 @@ namespace Functions
 {
     internal class KansasCityShuffle
     {
-        static void Main(string[] args)
+        void ShuffleApplication()
         {
             Random random = new Random();
 

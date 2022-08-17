@@ -4,7 +4,7 @@ namespace Functions
 {
     internal class UiElement
     {
-        static void Main(string[] args)
+        void UiBar()
         {
             int maxPercent = 100;
 

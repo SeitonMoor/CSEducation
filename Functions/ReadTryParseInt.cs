@@ -4,7 +4,7 @@ namespace Functions
 {
     internal class ReadTryParseInt
     {
-        static void Main(string[] args)
+        void Function()
         {
             int inputNumber = GetNumber();
 
