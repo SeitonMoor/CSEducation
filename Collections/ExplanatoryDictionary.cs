@@ -9,9 +9,16 @@ namespace Collections
         {
             Dictionary<string, string> dictionary = InitializeDictionary();
 
-            string inputWord = SelectWord();
+            bool isWorking = true;
 
-            FindWordMeaning(inputWord, dictionary);
+            while (isWorking)
+            {
+                string inputWord = SelectWord();
+
+                FindWordMeaning(ref isWorking, inputWord, dictionary);
+                Console.ReadKey();
+                Console.Clear();
+            }
         }
 
         static Dictionary<string, string> InitializeDictionary()
@@ -36,11 +43,12 @@ namespace Collections
             return word;
         }
 
-        static void FindWordMeaning(string word, Dictionary<string, string> dictionary)
+        static void FindWordMeaning(ref bool isWorking, string word, Dictionary<string, string> dictionary)
         {
             if (dictionary.ContainsKey(word))
             {
                 WriteMessage($"Значение {word} - {dictionary[word]}", ConsoleColor.Green);
+                isWorking = false;
             }
             else
             {
