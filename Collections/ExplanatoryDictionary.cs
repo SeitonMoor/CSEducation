@@ -13,11 +13,11 @@ namespace Collections
 
             while (isWorking)
             {
+                Console.Clear();
                 string inputWord = SelectWord();
 
                 FindWordMeaning(ref isWorking, inputWord, dictionary);
                 Console.ReadKey();
-                Console.Clear();
             }
         }
 
@@ -25,13 +25,26 @@ namespace Collections
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
-            dictionary.Add("Программирование", "написание инструкций, которые выполняет компьютер.");
-            dictionary.Add("Индекс", "число, представляющее позицию элемента в итерируемом объекте.");
-            dictionary.Add("Список", "контейнер, хранящий объекты в определенном порядке.");
-            dictionary.Add("Словарь", "встроенный контейнер для хранения объектов. Связывает один объект ключом, с другим объектом - значением.");
-            dictionary.Add("Цикл", "фрагмент кода, непрерывно выполняющий инструкции, пока удовлетворено определенное в коде условие.");
+            AddNewWord(dictionary, "Программирование", "написание инструкций, которые выполняет компьютер.");
+            AddNewWord(dictionary, "Программирование", "сложная штука для избранных.");
+            AddNewWord(dictionary, "Индекс", "число, представляющее позицию элемента в итерируемом объекте.");
+            AddNewWord(dictionary, "Список", "контейнер, хранящий объекты в определенном порядке.");
+            AddNewWord(dictionary, "Словарь", "встроенный контейнер для хранения объектов. Связывает один объект ключом, с другим объектом - значением.");
+            AddNewWord(dictionary, "Цикл", "фрагмент кода, непрерывно выполняющий инструкции, пока удовлетворено определенное в коде условие.");
 
             return dictionary;
+        }
+
+        static void AddNewWord(Dictionary<string, string> dictionary, string word, string meaning)
+        {
+            if (dictionary.ContainsKey(word))
+            {
+                Console.WriteLine($"Значение слова: {word} - уже имеется в нашем словаре");
+            }
+            else
+            {
+                dictionary.Add(word, meaning);
+            }
         }
 
         static string SelectWord()
