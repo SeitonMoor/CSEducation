@@ -35,8 +35,7 @@ namespace Collections
                         break;
 
                     case "exit":
-                        isWorking = false;
-                        WriteMessage("Завершение программы!");
+                        EndProgram(ref isWorking);
                         break;
 
                     default:
@@ -58,9 +57,16 @@ namespace Collections
             Console.Write("Введите должность: ");
             string position = Console.ReadLine();
 
-            employeesProfile.Add(fullName, position);
+            if (employeesProfile.ContainsKey(fullName))
+            {
+                WriteMessage($"Досье сотрудника: {fullName} - уже имеется в нашей базе");
+            }
+            else
+            {
+                employeesProfile.Add(fullName, position);
 
-            WriteMessage($"{fullName} успешно добавлен.", addColor);
+                WriteMessage($"{fullName} успешно добавлен.", addColor);
+            }
         }
 
         static void PrepareToPrint(Dictionary<string, string> employeesProfile)
@@ -117,6 +123,12 @@ namespace Collections
             int firstOrdinal = 1;
             int ordinalNumber = firstOrdinal + index;
             Console.WriteLine(ordinalNumber + separateSymbol + fullName + separateSymbol + position);
+        }
+
+        static void EndProgram(ref bool isWorking)
+        {
+            isWorking = false;
+            WriteMessage("Завершение программы!");
         }
 
         static void WriteMessage(string text, ConsoleColor color = ConsoleColor.Red)
