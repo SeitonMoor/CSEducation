@@ -31,28 +31,20 @@ namespace Collections
             switch (userInput)
             {
                 case "sum":
-                    GetAmount(numbers);
+                    PrintAmount(numbers);
                     break;
 
                 case "exit":
-                    isWorking = false;
-                    Console.WriteLine("\nВыход из программы...");
+                    EndProgram(ref isWorking);
                     break;
 
                 default:
-                    if (IsNumber(userInput, out int inputNumber))
-                    {
-                        AddNumber(numbers, inputNumber);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"\n{userInput} - неизвестная команда и не является числом.");
-                    }
+                    AddNumber(numbers, userInput);
                     break;
             }
         }
 
-        static void GetAmount(List<int> numbers)
+        static void PrintAmount(List<int> numbers)
         {
             int sum = 0;
 
@@ -64,23 +56,24 @@ namespace Collections
             Console.WriteLine($"\nСумма введеных чисел: {sum}");
         }
 
-        static bool IsNumber(string userInput, out int inputNumber)
+        static void AddNumber(List<int> numbers, string userInput)
         {
-            if (int.TryParse(userInput, out inputNumber))
+            if (int.TryParse(userInput, out int inputNumber))
             {
-                return true;
+                numbers.Add(inputNumber);
+
+                Console.WriteLine($"\nЧисло {inputNumber} было добавлено.");
             }
             else
             {
-                return false;
+                Console.WriteLine($"\n{userInput} - неизвестная команда и не является числом.");
             }
         }
 
-        static void AddNumber(List<int> numbers, int inputNumber)
+        static void EndProgram(ref bool isWorking)
         {
-            numbers.Add(inputNumber);
-
-            Console.WriteLine($"\nЧисло {inputNumber} было добавлено.");
+            isWorking = false;
+            Console.WriteLine("\nВыход из программы...");
         }
     }
 }
