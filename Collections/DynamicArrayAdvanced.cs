@@ -5,7 +5,7 @@ namespace Collections
 {
     internal class DynamicArrayAdvanced
     {
-        static void Main(string[] args)
+        static void DynamicAdvanced()
         {
             List<int> numbers = new List<int>();
             bool isWorking = true;

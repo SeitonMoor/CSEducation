@@ -5,7 +5,7 @@ namespace Collections
 {
     internal class MergingIntoOneCollection
     {
-        static void Main(string[] args)
+        static void MergingArrays()
         {
             string[] array1 = { "1", "2", "1" };
             string[] array2 = { "1", "2", "3" };

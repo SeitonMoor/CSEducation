@@ -5,7 +5,7 @@ namespace Collections
 {
     internal class ExplanatoryDictionary
     {
-        static void Main(string[] args)
+        static void DictionaryOfWords()
         {
             Dictionary<string, string> dictionary = InitializeDictionary();
 
@@ -13,11 +13,11 @@ namespace Collections
 
             while (isWorking)
             {
-                Console.Clear();
                 string inputWord = SelectWord();
 
                 FindWordMeaning(ref isWorking, inputWord, dictionary);
                 Console.ReadKey();
+                Console.Clear();
             }
         }
 

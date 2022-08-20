@@ -5,7 +5,7 @@ namespace Collections
 {
     internal class QueueAtTheStore
     {
-        static void Main(string[] args)
+        static void Store()
         {
             Queue<int> purchasesAmount = InitializeQueue();
 
