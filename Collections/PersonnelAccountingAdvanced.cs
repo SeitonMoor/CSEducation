@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Collections
 {
@@ -6,8 +7,7 @@ namespace Collections
     {
         static void Main(string[] args)
         {
-            string[] fullNames = new string[0];
-            string[] positions = new string[0];
+            Dictionary<string, string> employeesProfile = new Dictionary<string, string>();
             bool isWorking = true;
 
             while (isWorking)
@@ -17,26 +17,21 @@ namespace Collections
                     "\nadd - добавить досье." +
                     "\nprintAll - вывести все досье." +
                     "\ndelete - удалить досье." +
-                    "\nfind - поиск по фамилии." +
                     "\nexit - выход из программы." +
                     "\n\nВаше действие: ");
 
                 switch (Console.ReadLine())
                 {
                     case "add":
-                        AddProfile(ref fullNames, ref positions);
+                        AddProfile(employeesProfile);
                         break;
 
                     case "printAll":
-                        PrepareToPrint(fullNames, positions);
+                        PrepareToPrint(employeesProfile);
                         break;
 
                     case "delete":
-                        DeleteProfile(ref fullNames, ref positions);
-                        break;
-
-                    case "find":
-                        FindProfile(fullNames, positions);
+                        DeleteProfile(employeesProfile);
                         break;
 
                     case "exit":
@@ -54,9 +49,8 @@ namespace Collections
             }
         }
 
-        static void AddProfile(ref string[] fullNames, ref string[] positions)
+        static void AddProfile(Dictionary<string, string> employeesProfile)
         {
-            int resizeValue = 1;
             ConsoleColor addColor = ConsoleColor.Green;
 
             Console.Write("Введите ФИО: ");
@@ -64,115 +58,65 @@ namespace Collections
             Console.Write("Введите должность: ");
             string position = Console.ReadLine();
 
-            fullNames = ResizeArray(fullNames, resizeValue, fullName);
-            positions = ResizeArray(positions, resizeValue, position);
+            employeesProfile.Add(fullName, position);
 
             WriteMessage($"{fullName} успешно добавлен.", addColor);
         }
 
-        static void PrepareToPrint(string[] fullNames, string[] positions, int index = -1)
+        static void PrepareToPrint(Dictionary<string, string> employeesProfile)
         {
-            if (fullNames.Length == 0)
+            if (employeesProfile.Count == 0)
             {
                 WriteMessage("Список досье пуст.");
             }
             else
             {
                 string separateSymbol = "-";
-
-                if (index >= 0)
+                int index = 0;
+                foreach (var profile in employeesProfile)
                 {
-                    PrintProfile(fullNames, positions, separateSymbol, index);
-                }
-                else
-                {
-                    for (int i = 0; i < fullNames.Length; i++)
-                    {
-                        PrintProfile(fullNames, positions, separateSymbol, i);
-                    }
+                    PrintProfile(profile.Key, profile.Value, separateSymbol, index);
+                    index++;
                 }
             }
         }
 
-        static void DeleteProfile(ref string[] fullNames, ref string[] positions)
+        static void DeleteProfile(Dictionary<string, string> employeesProfile)
         {
-            if (fullNames.Length == 0)
+            if (employeesProfile.Count == 0)
             {
                 WriteMessage("Удаление невозможно! Список досье пуст.");
             }
             else
             {
-                int resizeValue = -1;
-                int lastIndex = fullNames.Length - 1;
-                string fullName = fullNames[lastIndex];
-                ConsoleColor deleteColor = ConsoleColor.DarkYellow;
+                bool isDeleted = false;
 
-                fullNames = ResizeArray(fullNames, resizeValue);
-                positions = ResizeArray(positions, resizeValue);
-
-                WriteMessage($"{fullName} успешно удален.", deleteColor);
-            }
-        }
-
-        static void FindProfile(string[] fullNames, string[] positions)
-        {
-            int surnameIndex = 0;
-            bool isFound = false;
-
-            Console.Write("Введите фамилию для поиска: ");
-            string inputSurname = Console.ReadLine();
-
-            for (int i = 0; i < fullNames.Length; i++)
-            {
-                string surname = fullNames[i].Split(' ')[surnameIndex];
-
-                if (inputSurname == surname)
+                while (isDeleted == false)
                 {
-                    PrepareToPrint(fullNames, positions, i);
-                    isFound = true;
+                    Console.Write("Введите ФИО: ");
+                    string fullName = Console.ReadLine();
+                    ConsoleColor deleteColor = ConsoleColor.DarkYellow;
+
+                    if (employeesProfile.ContainsKey(fullName))
+                    {
+                        employeesProfile.Remove(fullName);
+
+                        WriteMessage($"{fullName} успешно удален.", deleteColor);
+                        isDeleted = true;
+                    }
+                    else
+                    {
+                        WriteMessage($"{fullName} такого досье нет.");
+                    }
                 }
             }
-
-            if (isFound == false)
-            {
-                WriteMessage($"Досье с фамилией '{inputSurname}' не найдено.");
-            }
         }
 
-        static void PrintProfile(string[] fullNames, string[] positions, string separateSymbol, int index)
+        static void PrintProfile(string fullName, string position, string separateSymbol, int index)
         {
             int firstOrdinal = 1;
             int ordinalNumber = firstOrdinal + index;
-            Console.WriteLine(ordinalNumber + separateSymbol + fullNames[index] + separateSymbol + positions[index]);
-        }
-
-        static string[] ResizeArray(string[] array, int resizeValue, string inputValue = null)
-        {
-            int newArrayLength = array.Length + resizeValue;
-            int maxLength;
-            if (resizeValue > 0)
-            {
-                maxLength = array.Length;
-            }
-            else
-            {
-                maxLength = newArrayLength;
-            }
-
-            string[] tempArray = new string[newArrayLength];
-            for (int i = 0; i < maxLength; i++)
-            {
-                tempArray[i] = array[i];
-            }
-
-            if (inputValue != null)
-            {
-                int lastArrayIndex = newArrayLength - 1;
-                tempArray[lastArrayIndex] = inputValue;
-            }
-
-            array = tempArray;
-            return array;
+            Console.WriteLine(ordinalNumber + separateSymbol + fullName + separateSymbol + position);
         }
 
         static void WriteMessage(string text, ConsoleColor color = ConsoleColor.Red)
