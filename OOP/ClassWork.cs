@@ -6,6 +6,8 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            Player player = new Player(0, 21, "StPe");
+            player.PrintInformation();
         }
 
         class Player
@@ -14,8 +16,16 @@ namespace OOP
             int level;
             string nickname;
 
-            static void PrintInformation()
+            public Player(int id, int level, string nickname)
             {
+                this.id = id;
+                this.level = level;
+                this.nickname = nickname;
+            }
+
+            public void PrintInformation()
+            {
+                Console.WriteLine($"Игрок{id} с ником {nickname} имеет {level} уровень.");
             }
         }
     }
