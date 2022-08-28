@@ -4,14 +4,14 @@ namespace OOP
 {
     internal class PropertiesWork
     {
-        static void Main(string[] args)
+        /*static void Main(string[] args)
         {
             Renderer renderer = new Renderer();
 
             Player player = new Player(12, 19);
             
             renderer.DrawCharacter(player);
-        }
+        }*/
 
         class Player
         {
