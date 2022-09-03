@@ -7,6 +7,10 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            Storage storage = new Storage();
+
+            storage.Add(new Book("Война и мир", "Толстой", 1865));
+            storage.Print();
         }
 
         class Book
@@ -14,6 +18,13 @@ namespace OOP
             string name;
             string author;
             int releaseYear;
+
+            public Book(string name, string author, int releaseYear)
+            {
+                this.name = name;
+                this.author = author;
+                this.releaseYear = releaseYear;
+            }
 
             public string GetName()
             {
