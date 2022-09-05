@@ -4,11 +4,11 @@ namespace OOP
 {
     internal class ClassWork
     {
-        /*static void Main(string[] args)
+        static void Main(string[] args)
         {
             Player player = new Player(0, 21, "StPe");
             player.PrintInformation();
-        }*/
+        }
 
         class Player
         {
