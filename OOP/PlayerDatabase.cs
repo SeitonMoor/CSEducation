@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class PlayerDatabase
     {
-        /*static void Main(string[] args)
+        static void Main(string[] args)
         {
             Database database = new Database();
             Player som = new Player(0, 2, "som");
@@ -22,7 +22,7 @@ namespace OOP
             database.Unban(klr);
 
             database.Delete(trex);
-        }*/
+        }
 
         class Database
         {

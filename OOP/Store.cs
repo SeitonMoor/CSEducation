@@ -5,13 +5,13 @@ namespace OOP
 {
     internal class Store
     {
-        /*static void Main(string[] args)
+        static void Main(string[] args)
         {
             Player player = new Player();
             Seller seller = new Seller();
 
             seller.ShowProducts();
-        }*/
+        }
 
         class Player
         {
