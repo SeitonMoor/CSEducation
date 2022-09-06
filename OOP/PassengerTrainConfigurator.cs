@@ -5,9 +5,9 @@ namespace OOP
 {
     internal class PassengerTrainConfigurator
     {
-        static void Main(string[] args)
+        /*static void Main(string[] args)
         {
-        }
+        }*/
 
         class Station
         {

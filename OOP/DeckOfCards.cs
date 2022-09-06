@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class DeckOfCards
     {
-        static void Main(string[] args)
+        /*static void Main(string[] args)
         {
             Player player = new Player();
             Deck deck = new Deck();
@@ -14,7 +14,7 @@ namespace OOP
 
             deck.ShowDeck();
             player.ShowDeck();
-        }
+        }*/
 
         class Player
         {

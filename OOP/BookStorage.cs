@@ -5,13 +5,13 @@ namespace OOP
 {
     internal class BookStorage
     {
-        static void Main(string[] args)
+        /*static void Main(string[] args)
         {
             Storage storage = new Storage();
 
             storage.Add(new Book("Война и мир", "Толстой", 1865));
             storage.Print();
-        }
+        }*/
 
         class Book
         {
