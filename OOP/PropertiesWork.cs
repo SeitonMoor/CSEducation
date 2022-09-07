@@ -15,23 +15,23 @@ namespace OOP
 
         class Player
         {
-            int positionX;
-            int positionY;
+            private int _positionX;
+            private int _positionY;
 
             public Player(int positionX, int positionY)
             {
-                this.positionX = positionX;
-                this.positionY = positionY;
+                this._positionX = positionX;
+                this._positionY = positionY;
             }
 
             public int GetPositionX()
             {
-                return positionX;
+                return _positionX;
             }
 
             public int GetPositionY()
             {
-                return positionY;
+                return _positionY;
             }
         }
 
