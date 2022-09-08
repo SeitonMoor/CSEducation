@@ -7,30 +7,51 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            bool isWorking = true;
             Database database = new Database();
+
             Player som = new Player(0, 2, "som");
             Player trex = new Player(1, 13, "trexxx");
             Player klr = new Player(2, 78, "klr");
 
-            database.Add(som);
-            database.Add(trex);
-            database.Add(klr);
+            while (isWorking)
+            {
+                Console.Write("Введите команду: ");
 
-            database.Ban(trex);
-            database.Ban(klr);
+                switch(Console.ReadLine())
+                {
+                    case "add":
+                        database.Add(som);
+                        database.Add(trex);
+                        database.Add(klr);
+                        break;
 
-            database.Unban(klr);
+                    case "ban":
+                        database.Ban(trex);
+                        database.Ban(klr);
+                        break;
 
-            database.Delete(trex);
+                    case "unban":
+                        database.Unban(klr);
+                        break;
+
+                    case "delete":
+                        database.Delete(trex);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
 
         class Database
         {
-            List<Player> playerDb = new List<Player>();
+            private List<Player> _playerDb = new List<Player>();
 
             public void Add(Player player)
             {
-                playerDb.Add(player);
+                _playerDb.Add(player);
             }
 
             public void Ban(Player player)
@@ -45,28 +66,28 @@ namespace OOP
 
             public void Delete(Player player)
             {
-                playerDb.Remove(player);
+                _playerDb.Remove(player);
             }
         }
 
         class Player
         {
-            int id;
-            int level;
-            string nickname;
-            bool isBanned;
+            private int _id;
+            private int _level;
+            private string _nickname;
+            private bool _isBanned;
 
             public Player(int id, int level, string nickname, bool isBanned = false)
             {
-                this.id = id;
-                this.level = level;
-                this.nickname = nickname;
-                this.isBanned = isBanned;
+                this._id = id;
+                this._level = level;
+                this._nickname = nickname;
+                this._isBanned = isBanned;
             }
 
             public void SetIsBanned(bool isBanned)
             {
-                this.isBanned = isBanned;
+                this._isBanned = isBanned;
             }
         }
     }
