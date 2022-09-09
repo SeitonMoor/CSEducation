@@ -63,8 +63,8 @@ namespace OOP
 
         class Direction
         {
-            string startStation;
-            string endStation;
+            private string _startStation;
+            private string _endStation;
         }
 
         class Passenger

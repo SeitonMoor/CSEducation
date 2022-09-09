@@ -10,9 +10,9 @@ namespace OOP
 
         class Fighter
         {
-            string name;
-            int health;
-            int demage;
+            private string _name;
+            private int _health;
+            private int _demage;
         }
 
         class Warrior : Fighter

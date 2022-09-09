@@ -18,16 +18,16 @@ namespace OOP
 
         class Player
         {
-            List<Card> cards = new List<Card>();
+            private List<Card> _cards = new List<Card>();
 
             public void GetCards(Deck deck)
             {
-                cards.Add(deck.TakeCard());
+                _cards.Add(deck.TakeCard());
             }
 
             public void ShowDeck()
             {
-                foreach (var card in cards)
+                foreach (var card in _cards)
                 {
                     Console.WriteLine(card.GetRank() + "|" + card.GetSuit());
                 }
@@ -36,7 +36,7 @@ namespace OOP
 
         class Deck
         {
-            List<Card> cards = new List<Card>();
+            private List<Card> _cards = new List<Card>();
 
             public Deck()
             {
@@ -47,7 +47,7 @@ namespace OOP
                 {
                     foreach (var suit in suitValues)
                     {
-                        cards.Add(new Card(rank.ToString(), suit.ToString()));
+                        _cards.Add(new Card(rank.ToString(), suit.ToString()));
                     }
                 }
             }
@@ -62,10 +62,10 @@ namespace OOP
                 while (isNotTookCard)
                 {
                     int cardIndex = random.Next(minCardIndex, maxCardIndex);
-                    if (cards[cardIndex] is null == false)
+                    if (_cards[cardIndex] is null == false)
                     {
-                        Card takenCard = cards[cardIndex];
-                        cards.Remove(cards[cardIndex]);
+                        Card takenCard = _cards[cardIndex];
+                        _cards.Remove(_cards[cardIndex]);
                         return takenCard;
                     }
                 }
@@ -75,7 +75,7 @@ namespace OOP
 
             public void ShowDeck()
             {
-                foreach (var card in cards)
+                foreach (var card in _cards)
                 {
                     Console.WriteLine(card.GetRank() + "|" + card.GetSuit());
                 }

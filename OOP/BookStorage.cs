@@ -15,45 +15,45 @@ namespace OOP
 
         class Book
         {
-            string name;
-            string author;
-            int releaseYear;
+            private string _name;
+            private string _author;
+            private int _releaseYear;
 
             public Book(string name, string author, int releaseYear)
             {
-                this.name = name;
-                this.author = author;
-                this.releaseYear = releaseYear;
+                this._name = name;
+                this._author = author;
+                this._releaseYear = releaseYear;
             }
 
             public string GetName()
             {
-                return name;
+                return _name;
             }
 
             public string GetAuthor()
             {
-                return author;
+                return _author;
             }
 
             public int GetReleaseYear()
             {
-                return releaseYear;
+                return _releaseYear;
             }
         }
 
         class Storage
         {
-            List<Book> books = new List<Book>();
+            private List<Book> _books = new List<Book>();
 
             public void Add(Book book)
             {
-                books.Add(book);
+                _books.Add(book);
             }
 
             public void Delete(Book book)
             {
-                books.Remove(book);
+                _books.Remove(book);
             }
 
             public void Print(Book book)
@@ -63,7 +63,7 @@ namespace OOP
 
             public void Print()
             {
-                foreach (Book book in books)
+                foreach (Book book in _books)
                 {
                     Console.WriteLine($"Книга - {book.GetName()} от автора {book.GetAuthor()}. Год выпуска: {book.GetReleaseYear()}.");
                 }
