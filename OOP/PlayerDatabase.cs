@@ -21,14 +21,11 @@ namespace OOP
                 switch(Console.ReadLine())
                 {
                     case "add":
-                        database.Add(som);
-                        database.Add(trex);
-                        database.Add(klr);
+                        database.Add();
                         break;
 
                     case "ban":
                         database.Ban(trex);
-                        database.Ban(klr);
                         break;
 
                     case "unban":
@@ -49,8 +46,13 @@ namespace OOP
         {
             private List<Player> _playerDb = new List<Player>();
 
-            public void Add(Player player)
+            public void Add()
             {
+                int id = 0;
+                int level = 2;
+                string name = "som";
+                Player player = new Player(id, level, name);
+
                 _playerDb.Add(player);
             }
 
