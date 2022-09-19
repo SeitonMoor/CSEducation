@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
+using System.Linq;
 
 namespace OOP
 {
@@ -34,7 +34,7 @@ namespace OOP
                         break;
 
                     case "delete":
-                        database.Delete(trex);
+                        database.Delete();
                         break;
 
                     default:
@@ -45,28 +45,37 @@ namespace OOP
 
         class Database
         {
-            private List<Player> _playerDb = new List<Player>();
+            private Dictionary<string, Player> _playerDb = new Dictionary<string, Player>();
 
             public void Add()
             {
-                Player player = GetPlayer();
+                string name = GetPlayerName();
+                Player player = CreatePlayer(name);
 
-                _playerDb.Add(player);
+                _playerDb.Add(name, player);
             }
 
-            public void Ban(Player player)
+            public void Ban()
             {
+                string name = GetPlayerName();
+                _playerDb.TryGetValue(name, out Player player);
+
                 player.SetIsBanned(true);
             }
 
-            public void Unban(Player player)
+            public void Unban()
             {
+                string name = GetPlayerName();
+                _playerDb.TryGetValue(name, out Player player);
+
                 player.SetIsBanned(false);
             }
 
-            public void Delete(Player player)
+            public void Delete()
             {
-                _playerDb.Remove(player);
+                string name = GetPlayerName();
+
+                _playerDb.Remove(name);
             }
 
             private string GetPlayerName()
@@ -77,15 +86,12 @@ namespace OOP
                 return name;
             }
 
-            private Player GetPlayer()
+            private Player CreatePlayer(string name)
             {
                 int id = _playerDb.Count;
 
                 Console.Write("Напишите уровень игрока: ");
                 Int32.TryParse(Console.ReadLine(), out int level);
-
-                Console.Write("Напишите имя игрока: ");
-                string name = Console.ReadLine();
 
                 Player player = new Player(id, level, name);
 
