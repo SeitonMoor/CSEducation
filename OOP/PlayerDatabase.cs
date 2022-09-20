@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OOP
 {
@@ -11,13 +10,15 @@ namespace OOP
             bool isWorking = true;
             Database database = new Database();
 
-            Player som = new Player(0, 2, "som");
-            Player trex = new Player(1, 13, "trexxx");
-            Player klr = new Player(2, 78, "klr");
-
             while (isWorking)
             {
-                Console.Write("Введите команду: ");
+                Console.WriteLine("База данных игроков\n");
+                Console.Write("Меню команд:\n" +
+                    "\nadd - добавить игрока." +
+                    "\nban - забанить игрока." +
+                    "\nunban - разбанить игрока." +
+                    "\ndelete - удалить игрока." +
+                    "\n\nВведите команду: ");
 
                 switch(Console.ReadLine())
                 {
@@ -26,11 +27,11 @@ namespace OOP
                         break;
 
                     case "ban":
-                        database.Ban(trex);
+                        database.Ban();
                         break;
 
                     case "unban":
-                        database.Unban(klr);
+                        database.Unban();
                         break;
 
                     case "delete":
