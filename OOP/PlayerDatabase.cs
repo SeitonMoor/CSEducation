@@ -12,9 +12,9 @@ namespace OOP
 
             while (isWorking)
             {
-                Console.WriteLine("База данных игроков\n");
-                Console.Write("Меню команд:\n" +
-                    "\nadd - добавить игрока." +
+                Console.WriteLine("База данных игроков");
+                Console.Write("\nМеню команд:" +
+                    "\n\nadd - добавить игрока." +
                     "\nban - забанить игрока." +
                     "\nunban - разбанить игрока." +
                     "\ndelete - удалить игрока." +
@@ -46,53 +46,54 @@ namespace OOP
 
         class Database
         {
-            private Dictionary<string, Player> _playerDb = new Dictionary<string, Player>();
+            private Dictionary<int, Player> _playerDb = new Dictionary<int, Player>();
 
             public void Add()
             {
-                string name = GetPlayerName();
-                Player player = CreatePlayer(name);
+                int id = _playerDb.Count;
+                Player player = CreatePlayer(id);
 
-                _playerDb.Add(name, player);
+                _playerDb.Add(id, player);
             }
 
             public void Ban()
             {
-                string name = GetPlayerName();
-                _playerDb.TryGetValue(name, out Player player);
+                int id = GetPlayerId();
+                _playerDb.TryGetValue(id, out Player player);
 
                 player.SetIsBanned(true);
             }
 
             public void Unban()
             {
-                string name = GetPlayerName();
-                _playerDb.TryGetValue(name, out Player player);
+                int id = GetPlayerId();
+                _playerDb.TryGetValue(id, out Player player);
 
                 player.SetIsBanned(false);
             }
 
             public void Delete()
             {
-                string name = GetPlayerName();
+                int id = GetPlayerId();
 
-                _playerDb.Remove(name);
+                _playerDb.Remove(id);
             }
 
-            private string GetPlayerName()
+            private int GetPlayerId()
             {
                 Console.Write("Напишите имя игрока: ");
-                string name = Console.ReadLine();
-
-                return name;
-            }
-
-            private Player CreatePlayer(string name)
-            {
                 int id = _playerDb.Count;
 
+                return id;
+            }
+
+            private Player CreatePlayer(int id)
+            {
                 Console.Write("Напишите уровень игрока: ");
                 Int32.TryParse(Console.ReadLine(), out int level);
+
+                Console.Write("Напишите имя игрока: ");
+                string name = Console.ReadLine();
 
                 Player player = new Player(id, level, name);
 
