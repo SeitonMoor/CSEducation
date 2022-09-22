@@ -7,12 +7,35 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            bool isNeededCard = true;
             Player player = new Player();
             Deck deck = new Deck();
 
-            player.GetCards(deck);
+            while (isNeededCard)
+            {
+                Console.WriteLine("Колода карта");
+                Console.Write("\nВы можете:" +
+                    "\n\ntake - взять еще карту." +
+                    "\nend - закончить брать карты и просмотреть взятые." +
+                    "\n\nВаш выбор: ");
 
-            deck.ShowDeck();
+                switch (Console.ReadLine())
+                {
+                    case "take":
+                        player.GetCards(deck);
+                        break;
+
+                    case "end":
+                        isNeededCard = false;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                Console.Clear();
+            }
+
             player.ShowDeck();
         }
 
@@ -71,14 +94,6 @@ namespace OOP
                 }
 
                 return null;
-            }
-
-            public void ShowDeck()
-            {
-                foreach (var card in _cards)
-                {
-                    Console.WriteLine(card.GetRank() + "|" + card.GetSuit());
-                }
             }
         }
 
