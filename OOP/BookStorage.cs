@@ -8,9 +8,47 @@ namespace OOP
         static void Main(string[] args)
         {
             Storage storage = new Storage();
+            bool isWorking = true;
 
-            storage.Add(new Book("Война и мир", "Толстой", 1865));
-            storage.Print();
+            while (isWorking)
+            {
+                Console.WriteLine("Хранилище книг");
+                Console.Write("\nВы можете:" +
+                    "\n\nadd - добавить книгу." +
+                    "\ndelete - удалить книгу." +
+                    "\nviewAll - просмотреть все книги в хранилище." +
+                    "\nview - просмотреть книги по указанному параметру." +
+                    "\nend - закончить работу с хранилищем." +
+                    "\n\nВаш выбор: ");
+
+                switch (Console.ReadLine())
+                {
+                    case "add":
+                        storage.Add(new Book("Война и мир", "Толстой", 1865));
+                        break;
+
+                    case "delete":
+                        storage.Delete(new Book("Война и мир", "Толстой", 1865));
+                        break;
+
+                    case "viewAll":
+                        storage.Print();
+                        break;
+
+                    case "view":
+                        storage.Find();
+                        break;
+
+                    case "end":
+                        isWorking = false;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                Console.Clear();
+            }
         }
 
         class Book
