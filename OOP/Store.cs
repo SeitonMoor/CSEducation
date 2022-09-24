@@ -9,8 +9,42 @@ namespace OOP
         {
             Player player = new Player();
             Seller seller = new Seller();
+            bool isWorking = true;
 
-            seller.ShowProducts();
+            while (isWorking)
+            {
+                Console.WriteLine("Магазин");
+                Console.Write("\nВы можете:" +
+                    "\n\nsee - посмотреть список товаров." +
+                    "\nbuy - купить товар." +
+                    "\nview - посмотреть купленные товары." +
+                    "\nend - закончить покупку." +
+                    "\n\nВаш выбор: ");
+
+                switch (Console.ReadLine())
+                {
+                    case "see":
+                        seller.ShowProducts();
+                        break;
+
+                    case "buy":
+                        seller.SellProduct(player, new Product("банан", 60, 4));
+                        break;
+
+                    case "view":
+                        player.ViewInventory();
+                        break;
+
+                    case "end":
+                        isWorking = false;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                Console.Clear();
+            }
         }
 
         class Player
