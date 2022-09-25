@@ -7,32 +7,55 @@ namespace OOP
     {
         static void Main(string[] args)
         {
-        }
+            Station station = new Station();
+            bool isWorking = true;
 
-        class Station
-        {
-
-            public void SelectCommand()
+            while (isWorking)
             {
-                switch(1)
+                Console.WriteLine("Конфигуратор пассажирских поездов");
+
+                station.ShowDirectionInfo();
+
+                Console.Write("\nВы можете:" +
+                    "\n\ncreate - создать направление." +
+                    "\nsell - продать билеты." +
+                    "\nform - сформировать поезд." +
+                    "\nsend- отправить поезд." +
+                    "\nend - закончить работу." +
+                    "\n\nВаш выбор: ");
+
+                switch (Console.ReadLine())
                 {
-                    case 1:
+                    case "create":
+                        station.CreateDirection();
                         break;
 
-                    case 2:
+                    case "sell":
+                        station.SellTickets();
                         break;
 
-                    case 3:
+                    case "form":
+                        station.FormTrain();
                         break;
 
-                    case 4:
+                    case "send":
+                        station.SendTrain();
+                        break;
+
+                    case "end":
+                        isWorking = false;
                         break;
 
                     default:
                         break;
                 }
-            }
 
+                Console.Clear();
+            }
+        }
+
+        class Station
+        {
             public void CreateDirection()
             {
 
@@ -51,6 +74,11 @@ namespace OOP
             }
 
             public void SendTrain()
+            {
+
+            }
+
+            public void ShowDirectionInfo()
             {
 
             }
