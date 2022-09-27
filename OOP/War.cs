@@ -7,6 +7,13 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Моделирование боя");
+
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+            }
         }
 
         class Solder

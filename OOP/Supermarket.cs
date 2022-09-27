@@ -8,7 +8,14 @@ namespace OOP
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Администрирование супермаркетом");
+
             Queue<Client> clientsQueue = new Queue<Client>();
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+            }
         }
 
         class Client
