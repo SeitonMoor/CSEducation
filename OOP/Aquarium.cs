@@ -7,8 +7,9 @@ namespace OOP
     {
         static void Main(string[] args)
         {
-            while(true)
+            while (true)
             {
+                Console.WriteLine("Рыбы в аквариуме: ");
             }
         }
 
