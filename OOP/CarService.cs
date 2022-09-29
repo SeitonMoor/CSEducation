@@ -7,6 +7,29 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            while (true)
+            {
+                Console.WriteLine("Автосервис");
+                Console.Write("\nПоломка автомобиля - поломка, цена починки: 0" +
+                        "\nВы можете:" +
+                        "\n\nrepair - произвести починку." +
+                        "\ncancel - отказать клиенту." +
+                        "\n\nВаш выбор: ");
+
+                switch (Console.ReadLine())
+                {
+                    case "repair":
+                        break;
+
+                    case "cancel":
+                        break;
+
+                    default:
+                        break;
+                }
+
+                Console.Clear();
+            }
         }
 
         class Service
