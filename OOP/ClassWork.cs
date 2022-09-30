@@ -4,7 +4,7 @@ namespace OOP
 {
     internal class ClassWork
     {
-        static void Main(string[] args)
+        void Work()
         {
             Player player = new Player(0, 21, "StPe");
             player.PrintInformation();
