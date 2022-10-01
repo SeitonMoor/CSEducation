@@ -81,8 +81,8 @@ namespace OOP
 
             private int GetPlayerId()
             {
-                Console.Write("Напишите имя игрока: ");
-                int id = _playerDb.Count;
+                Console.Write("Напишите ид игрока: ");
+                Int32.TryParse(Console.ReadLine(), out int id);
 
                 return id;
             }
