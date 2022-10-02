@@ -81,8 +81,23 @@ namespace OOP
 
             private int GetPlayerId()
             {
-                Console.Write("Напишите ид игрока: ");
-                Int32.TryParse(Console.ReadLine(), out int id);
+                bool isReceived = false;
+                int id;
+
+                do
+                {
+                    Console.Write("Напишите ид игрока: ");
+
+                    if (Int32.TryParse(Console.ReadLine(), out id))
+                    {
+                        isReceived = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ид введен не верно.\n");
+                    }
+                }
+                while (isReceived == false);
 
                 return id;
             }
