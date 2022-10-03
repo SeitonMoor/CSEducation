@@ -59,7 +59,7 @@ namespace OOP
             public void Ban()
             {
                 int id = GetPlayerId();
-                _playerDb.TryGetValue(id, out Player player);
+                Player player = GetPlayer(id);
 
                 player.SetIsBanned(true);
             }
@@ -67,7 +67,7 @@ namespace OOP
             public void Unban()
             {
                 int id = GetPlayerId();
-                _playerDb.TryGetValue(id, out Player player);
+                Player player = GetPlayer(id);
 
                 player.SetIsBanned(false);
             }
@@ -77,6 +77,27 @@ namespace OOP
                 int id = GetPlayerId();
 
                 _playerDb.Remove(id);
+            }
+
+            private Player GetPlayer(int id)
+            {
+                bool isReceived = false;
+                Player player;
+
+                do
+                {
+                    if (_playerDb.TryGetValue(id, out player))
+                    {
+                        isReceived = true;
+                    }
+                    else
+                    {
+                        id = GetPlayerId();
+                    }
+                }
+                while (isReceived == false);
+
+                return player;
             }
 
             private int GetPlayerId()
