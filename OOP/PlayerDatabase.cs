@@ -74,7 +74,13 @@ namespace OOP
 
             public void Delete()
             {
-                int id = GetPlayerId();
+                int id;
+
+                do
+                {
+                    id = GetPlayerId();
+                }
+                while (_playerDb.ContainsKey(id) == false);
 
                 _playerDb.Remove(id);
             }
