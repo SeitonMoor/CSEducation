@@ -18,6 +18,7 @@ namespace OOP
                     "\nban - забанить игрока." +
                     "\nunban - разбанить игрока." +
                     "\ndelete - удалить игрока." +
+                    "\nexit - выйти из программы." +
                     "\n\nВведите команду: ");
 
                 switch(Console.ReadLine())
@@ -36,6 +37,10 @@ namespace OOP
 
                     case "delete":
                         database.Delete();
+                        break;
+
+                    case "exit":
+                        isWorking = false;
                         break;
 
                     default:
