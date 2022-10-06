@@ -7,7 +7,9 @@ namespace OOP
     {
         static void Main(string[] args)
         {
-            while (true)
+            bool isWorking = true;
+
+            while (isWorking)
             {
                 Console.WriteLine("Зоопарк");
                 Console.Write("\nВы можете:" +
@@ -15,6 +17,7 @@ namespace OOP
                         "\n2 - подойти к вальеру №2." +
                         "\n3 - подойти к вальеру №3." +
                         "\n4- подойти к вальеру №4." +
+                        "\nexit - закончить работу." +
                         "\n\nВаш выбор: ");
 
                 switch (Console.ReadLine())
@@ -29,6 +32,10 @@ namespace OOP
                         break;
 
                     case "4":
+                        break;
+
+                    case "exit":
+                        isWorking = false;
                         break;
 
                     default:

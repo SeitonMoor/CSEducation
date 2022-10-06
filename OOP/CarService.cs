@@ -7,13 +7,16 @@ namespace OOP
     {
         static void Main(string[] args)
         {
-            while (true)
+            bool isWorking = true;
+
+            while (isWorking)
             {
                 Console.WriteLine("Автосервис");
                 Console.Write("\nПоломка автомобиля - поломка, цена починки: 0" +
                         "\nВы можете:" +
                         "\n\nrepair - произвести починку." +
                         "\ncancel - отказать клиенту." +
+                        "\nexit - закончить работу." +
                         "\n\nВаш выбор: ");
 
                 switch (Console.ReadLine())
@@ -22,6 +25,10 @@ namespace OOP
                         break;
 
                     case "cancel":
+                        break;
+
+                    case "exit":
+                        isWorking = false;
                         break;
 
                     default:

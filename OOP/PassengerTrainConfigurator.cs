@@ -21,7 +21,7 @@ namespace OOP
                     "\nsell - продать билеты." +
                     "\nform - сформировать поезд." +
                     "\nsend- отправить поезд." +
-                    "\nend - закончить работу." +
+                    "\nexit - закончить работу." +
                     "\n\nВаш выбор: ");
 
                 switch (Console.ReadLine())
@@ -42,7 +42,7 @@ namespace OOP
                         station.SendTrain();
                         break;
 
-                    case "end":
+                    case "exit":
                         isWorking = false;
                         break;
 

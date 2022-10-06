@@ -16,7 +16,7 @@ namespace OOP
                 Console.WriteLine("Колода карта");
                 Console.Write("\nВы можете:" +
                     "\n\ntake - взять еще карту." +
-                    "\nend - закончить брать карты и просмотреть взятые." +
+                    "\nexit - закончить брать карты и просмотреть взятые." +
                     "\n\nВаш выбор: ");
 
                 switch (Console.ReadLine())
@@ -25,7 +25,7 @@ namespace OOP
                         player.GetCards(deck);
                         break;
 
-                    case "end":
+                    case "exit":
                         isNeededCard = false;
                         break;
 

@@ -18,7 +18,7 @@ namespace OOP
                     "\n\nsee - посмотреть список товаров." +
                     "\nbuy - купить товар." +
                     "\nview - посмотреть купленные товары." +
-                    "\nend - закончить покупку." +
+                    "\nexit - закончить покупку." +
                     "\n\nВаш выбор: ");
 
                 switch (Console.ReadLine())
@@ -35,7 +35,7 @@ namespace OOP
                         player.ViewInventory();
                         break;
 
-                    case "end":
+                    case "exit":
                         isWorking = false;
                         break;
 
