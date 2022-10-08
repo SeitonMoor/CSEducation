@@ -11,9 +11,8 @@ namespace OOP
             Console.WriteLine("Администрирование супермаркетом");
 
             Queue<Client> clientsQueue = new Queue<Client>();
-            bool isWorking = true;
 
-            while (isWorking)
+            while (clientsQueue.Count == 0)
             {
             }
         }
