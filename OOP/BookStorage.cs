@@ -24,7 +24,7 @@ namespace OOP
                 switch (Console.ReadLine())
                 {
                     case "add":
-                        storage.Add(new Book("Война и мир", "Толстой", 1865));
+                        storage.Add();
                         break;
 
                     case "delete":
@@ -84,8 +84,10 @@ namespace OOP
         {
             private List<Book> _books = new List<Book>();
 
-            public void Add(Book book)
+            public void Add()
             {
+                Book book = CreateBook();
+
                 _books.Add(book);
             }
 
@@ -110,6 +112,22 @@ namespace OOP
             public void Find()
             {
 
+            }
+
+            private Book CreateBook()
+            {
+                Console.Write("Напишите название книги: ");
+                string name = Console.ReadLine();
+
+                Console.Write("Укажите автора, написавшего книгу: ");
+                string author = Console.ReadLine();
+
+                Console.Write("Напишите год выпуска книги: ");
+                Int32.TryParse(Console.ReadLine(), out int releaseYear);
+
+                Book book = new Book(name, author, releaseYear);
+
+                return book;
             }
         }
     }
