@@ -91,8 +91,9 @@ namespace OOP
                 _books.Add(book);
             }
 
-            public void Delete(Book book)
+            public void Delete()
             {
+                Book book = GetBook();
                 _books.Remove(book);
             }
 
@@ -128,6 +129,24 @@ namespace OOP
                 Book book = new Book(name, author, releaseYear);
 
                 return book;
+            }
+
+            private Book GetBook()
+            {
+                Book foundBook = null;
+
+                Console.Write("Напишите название книги: ");
+                string name = Console.ReadLine();
+
+                foreach (Book book in _books)
+                {
+                    if (book.GetName() == name)
+                    {
+                        foundBook = book;
+                    }
+                }
+
+                return foundBook;
             }
         }
     }
