@@ -136,8 +136,23 @@ namespace OOP
 
             private Player CreatePlayer(int id)
             {
-                Console.Write("Напишите уровень игрока: ");
-                Int32.TryParse(Console.ReadLine(), out int level);
+                bool isReceived = false;
+                int level;
+
+                do
+                {
+                    Console.Write("Напишите уровень игрока: ");
+
+                    if (Int32.TryParse(Console.ReadLine(), out level))
+                    {
+                        isReceived = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Уровень введен не верно.\n");
+                    }
+                }
+                while (isReceived == false);
 
                 Console.Write("Напишите имя игрока: ");
                 string name = Console.ReadLine();
