@@ -28,7 +28,7 @@ namespace OOP
                         break;
 
                     case "delete":
-                        storage.Delete(new Book("Война и мир", "Толстой", 1865));
+                        storage.Delete();
                         break;
 
                     case "viewAll":
@@ -93,7 +93,7 @@ namespace OOP
 
             public void Delete()
             {
-                Book book = GetBook();
+                Book book = GetBookByName();
                 _books.Remove(book);
             }
 
@@ -112,7 +112,29 @@ namespace OOP
 
             public void Find()
             {
+                Console.Write("\nВы можете совершить поиск:" +
+                    "\n\nname - по названию." +
+                    "\nauthor - по автору." +
+                    "\nreleaseYear - по году выпуска." +
+                    "\n\nВаш выбор: ");
 
+                switch (Console.ReadLine())
+                {
+                    case "name":
+                        Print(GetBookByName());
+                        break;
+
+                    case "author":
+                        Print(GetBookByAuthor());
+                        break;
+
+                    case "releaseYear":
+                        Print(GetBookByReleaseYear());
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
             private Book CreateBook()
@@ -131,7 +153,7 @@ namespace OOP
                 return book;
             }
 
-            private Book GetBook()
+            private Book GetBookByName()
             {
                 Book foundBook = null;
 
@@ -141,6 +163,42 @@ namespace OOP
                 foreach (Book book in _books)
                 {
                     if (book.GetName() == name)
+                    {
+                        foundBook = book;
+                    }
+                }
+
+                return foundBook;
+            }
+
+            private Book GetBookByAuthor()
+            {
+                Book foundBook = null;
+
+                Console.Write("Напишите автора книги: ");
+                string author = Console.ReadLine();
+
+                foreach (Book book in _books)
+                {
+                    if (book.GetAuthor() == author)
+                    {
+                        foundBook = book;
+                    }
+                }
+
+                return foundBook;
+            }
+
+            private Book GetBookByReleaseYear()
+            {
+                Book foundBook = null;
+
+                Console.Write("Напишите год выпуска книги: ");
+                Int32.TryParse(Console.ReadLine(), out int releaseYear);
+
+                foreach (Book book in _books)
+                {
+                    if (book.GetReleaseYear() == releaseYear)
                     {
                         foundBook = book;
                     }
