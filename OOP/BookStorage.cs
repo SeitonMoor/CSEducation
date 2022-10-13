@@ -99,7 +99,7 @@ namespace OOP
 
             public void Print(Book book)
             {
-
+                Console.WriteLine($"Книга - {book.GetName()} от автора {book.GetAuthor()}. Год выпуска: {book.GetReleaseYear()}.");
             }
 
             public void Print()
