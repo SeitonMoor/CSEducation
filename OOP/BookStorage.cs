@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 
 namespace OOP
 {
@@ -145,8 +146,23 @@ namespace OOP
                 Console.Write("Укажите автора, написавшего книгу: ");
                 string author = Console.ReadLine();
 
-                Console.Write("Напишите год выпуска книги: ");
-                Int32.TryParse(Console.ReadLine(), out int releaseYear);
+                bool isReceived = false;
+                int releaseYear;
+
+                do
+                {
+                    Console.Write("Напишите год выпуска книги: ");
+
+                    if (Int32.TryParse(Console.ReadLine(), out releaseYear))
+                    {
+                        isReceived = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Год выпуска книги введен не верно.\n");
+                    }
+                }
+                while (isReceived == false);
 
                 Book book = new Book(name, author, releaseYear);
 
