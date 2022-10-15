@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace OOP
 {
@@ -101,6 +100,8 @@ namespace OOP
             public void Print(Book book)
             {
                 Console.WriteLine($"Книга - {book.GetName()} от автора {book.GetAuthor()}. Год выпуска: {book.GetReleaseYear()}.");
+
+                Console.ReadKey();
             }
 
             public void Print()
@@ -108,6 +109,8 @@ namespace OOP
                 foreach (Book book in _books)
                 {
                     Console.WriteLine($"Книга - {book.GetName()} от автора {book.GetAuthor()}. Год выпуска: {book.GetReleaseYear()}.");
+
+                    Console.ReadKey();
                 }
             }
 
