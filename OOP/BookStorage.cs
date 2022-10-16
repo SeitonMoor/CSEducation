@@ -175,17 +175,23 @@ namespace OOP
             private Book GetBookByName()
             {
                 Book foundBook = null;
+                bool isFound = false;
 
-                Console.Write("Напишите название книги: ");
-                string name = Console.ReadLine();
-
-                foreach (Book book in _books)
+                do
                 {
-                    if (book.GetName() == name)
+                    Console.Write("Напишите название книги: ");
+                    string name = Console.ReadLine();
+
+                    foreach (Book book in _books)
                     {
-                        foundBook = book;
+                        if (book.GetName() == name)
+                        {
+                            foundBook = book;
+                            isFound = true;
+                        }
                     }
                 }
+                while (isFound == false);
 
                 return foundBook;
             }
@@ -193,17 +199,23 @@ namespace OOP
             private Book GetBookByAuthor()
             {
                 Book foundBook = null;
+                bool isFound = false;
 
-                Console.Write("Напишите автора книги: ");
-                string author = Console.ReadLine();
-
-                foreach (Book book in _books)
+                do
                 {
-                    if (book.GetAuthor() == author)
+                    Console.Write("Напишите автора книги: ");
+                    string author = Console.ReadLine();
+
+                    foreach (Book book in _books)
                     {
-                        foundBook = book;
+                        if (book.GetAuthor() == author)
+                        {
+                            foundBook = book;
+                            isFound = true;
+                        }
                     }
                 }
+                while (isFound == false);
 
                 return foundBook;
             }
@@ -211,17 +223,23 @@ namespace OOP
             private Book GetBookByReleaseYear()
             {
                 Book foundBook = null;
+                bool isFound = false;
 
-                Console.Write("Напишите год выпуска книги: ");
-                Int32.TryParse(Console.ReadLine(), out int releaseYear);
-
-                foreach (Book book in _books)
+                do
                 {
-                    if (book.GetReleaseYear() == releaseYear)
+                    Console.Write("Напишите год выпуска книги: ");
+                    Int32.TryParse(Console.ReadLine(), out int releaseYear);
+
+                    foreach (Book book in _books)
                     {
-                        foundBook = book;
+                        if (book.GetReleaseYear() == releaseYear)
+                        {
+                            foundBook = book;
+                            isFound = true;
+                        }
                     }
                 }
+                while (isFound == false);
 
                 return foundBook;
             }
