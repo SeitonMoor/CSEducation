@@ -44,9 +44,11 @@ namespace OOP
                         break;
 
                     default:
+                        Console.WriteLine("Данная команда неизвестна");
                         break;
                 }
 
+                Console.ReadKey();
                 Console.Clear();
             }
         }
@@ -88,12 +90,17 @@ namespace OOP
             {
                 Book book = CreateBook();
 
+                Console.WriteLine($"\nКнига {book.GetName()} добавлена.");
+
                 _books.Add(book);
             }
 
             public void Delete()
             {
                 Book book = GetBookByName();
+
+                Console.WriteLine($"\nКнига {book.GetName()} удалена.");
+
                 _books.Remove(book);
             }
 
@@ -109,8 +116,6 @@ namespace OOP
                 foreach (Book book in _books)
                 {
                     Console.WriteLine($"Книга - {book.GetName()} от автора {book.GetAuthor()}. Год выпуска: {book.GetReleaseYear()}.");
-
-                    Console.ReadKey();
                 }
             }
 
@@ -137,6 +142,7 @@ namespace OOP
                         break;
 
                     default:
+                        Console.WriteLine("Данная команда неизвестна");
                         break;
                 }
             }
