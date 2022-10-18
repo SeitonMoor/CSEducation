@@ -28,7 +28,7 @@ namespace OOP
                         break;
 
                     case "buy":
-                        seller.SellProduct(player, new Product("банан", 60, 4));
+                        seller.SellProduct(player);
                         break;
 
                     case "view":
@@ -82,9 +82,35 @@ namespace OOP
                 }
             }
 
-            public void SellProduct(Player player, Product product)
+            public void SellProduct(Player player)
             {
+                Product product = GetProduct();
 
+                _products.Remove(product);
+            }
+
+            private Product GetProduct()
+            {
+                Product foundProduct = null;
+                bool isFound = false;
+
+                do
+                {
+                    Console.Write("Выберите продукт для покупки: ");
+                    string name = Console.ReadLine();
+
+                    foreach (Product product in _products)
+                    {
+                        if (product.GetName() == name)
+                        {
+                            foundProduct = product;
+                            isFound = true;
+                        }
+                    }
+                }
+                while (isFound == false);
+
+                return foundProduct;
             }
         }
 
