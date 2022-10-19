@@ -43,6 +43,7 @@ namespace OOP
                         break;
                 }
 
+                Console.ReadKey();
                 Console.Clear();
             }
         }
@@ -55,8 +56,13 @@ namespace OOP
             {
                 foreach (Product item in _items)
                 {
-                    Console.Write($"");
+                    Console.WriteLine($"{item.GetName()} по цене {item.GetPrice()}, в наличии: {item.GetCout()}");
                 }
+            }
+
+            public void TakeItem(Product product)
+            {
+                _items.Add(product);
             }
         }
 
@@ -85,6 +91,8 @@ namespace OOP
             public void SellProduct(Player player)
             {
                 Product product = GetProduct();
+
+                player.TakeItem(product);
 
                 _products.Remove(product);
             }
