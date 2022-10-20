@@ -40,6 +40,7 @@ namespace OOP
                         break;
 
                     default:
+                        Console.WriteLine("Данная команда неизвестна");
                         break;
                 }
 
