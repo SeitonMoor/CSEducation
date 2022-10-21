@@ -92,10 +92,37 @@ namespace OOP
             public void SellProduct(Player player)
             {
                 Product product = GetProduct();
+                bool isSold = false;
 
-                player.TakeItem(product);
+                do
+                {
+                    Console.Write($"Напишите количество {product.GetName()} для покупки: ");
 
-                _products.Remove(product);
+                    if (Int32.TryParse(Console.ReadLine(), out int count))
+                    {
+                        if (product.GetCout() < count)
+                        {
+                            Console.WriteLine($"Данного количества товара нет в наличии, максимально возможное - {product.GetCout()}.\n");
+                        }
+                        else if (product.GetCout() == count)
+                        {
+                            player.TakeItem(product);
+
+                            _products.Remove(product);
+
+                            isSold = true;
+                        }
+                        else
+                        {
+                            isSold = true;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Количество указано не верно.\n");
+                    }
+                }
+                while (isSold == false);
             }
 
             private Product GetProduct()
