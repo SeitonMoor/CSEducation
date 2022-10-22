@@ -114,6 +114,12 @@ namespace OOP
                         }
                         else
                         {
+                            product.ChangeCount(count);
+
+                            Product playerProduct = new Product(product.GetName(), product.GetPrice(), count);
+
+                            player.TakeItem(playerProduct);
+
                             isSold = true;
                         }
                     }
@@ -158,9 +164,9 @@ namespace OOP
 
             public Product(string name, int price, int count)
             {
-                this._name = name;
-                this._price = price;
-                this._count = count;
+                _name = name;
+                _price = price;
+                _count = count;
             }
 
             public string GetName()
@@ -176,6 +182,11 @@ namespace OOP
             public int GetCout()
             {
                 return _count;
+            }
+
+            public void ChangeCount(int count)
+            {
+                _count -= count;
             }
         }
     }
