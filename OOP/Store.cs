@@ -61,9 +61,24 @@ namespace OOP
                 }
             }
 
-            public void TakeItem(Product product)
+            public void TakeItem(Product product, int count)
             {
-                _items.Add(product);
+                bool isFound = false;
+
+                foreach (Product item in _items)
+                {
+                    if (product.GetName() == item.GetName())
+                    {
+                        item.AddCount(count);
+
+                        isFound = true;
+                    }
+                }
+
+                if (isFound == false)
+                {
+                    _items.Add(product);
+                }
             }
         }
 
@@ -106,7 +121,7 @@ namespace OOP
                         }
                         else if (product.GetCout() == count)
                         {
-                            player.TakeItem(product);
+                            player.TakeItem(product, count);
 
                             _products.Remove(product);
 
@@ -114,11 +129,11 @@ namespace OOP
                         }
                         else
                         {
-                            product.ChangeCount(count);
+                            product.ReduceCount(count);
 
                             Product playerProduct = new Product(product.GetName(), product.GetPrice(), count);
 
-                            player.TakeItem(playerProduct);
+                            player.TakeItem(playerProduct, count);
 
                             isSold = true;
                         }
@@ -184,7 +199,12 @@ namespace OOP
                 return _count;
             }
 
-            public void ChangeCount(int count)
+            public void AddCount(int count)
+            {
+                _count += count;
+            }
+
+            public void ReduceCount(int count)
             {
                 _count -= count;
             }
