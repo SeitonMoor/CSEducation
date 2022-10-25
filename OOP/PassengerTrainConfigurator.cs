@@ -59,7 +59,13 @@ namespace OOP
         {
             public void CreateDirection()
             {
+                Console.Write("Напишите станцию отправления: ");
+                string startStation = Console.ReadLine();
 
+                Console.Write("Напишите станцию прибытия: ");
+                string endStation = Console.ReadLine();
+
+                Direction direction = new Direction(startStation, endStation);
             }
 
             public int SellTickets()
@@ -94,6 +100,12 @@ namespace OOP
         {
             private string _startStation;
             private string _endStation;
+
+            public Direction(string startStation, string endStation)
+            {
+                _startStation = startStation;
+                _endStation = endStation;
+            }
         }
 
         class Passenger
