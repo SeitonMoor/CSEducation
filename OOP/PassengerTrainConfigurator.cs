@@ -57,6 +57,8 @@ namespace OOP
 
         class Station
         {
+            private List<Direction> _directions;
+
             public void CreateDirection()
             {
                 Console.Write("Напишите станцию отправления: ");
@@ -66,6 +68,8 @@ namespace OOP
                 string endStation = Console.ReadLine();
 
                 Direction direction = new Direction(startStation, endStation);
+
+                _directions.Add(direction);
             }
 
             public int SellTickets()
