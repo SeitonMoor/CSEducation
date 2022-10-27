@@ -58,6 +58,7 @@ namespace OOP
         class Station
         {
             private List<Direction> _directions;
+            Random random = new Random();
 
             public void CreateDirection()
             {
@@ -74,7 +75,7 @@ namespace OOP
 
             public int SellTickets()
             {
-                int purchasedTickets = 0;
+                int purchasedTickets = random.Next(1, 836);
 
                 return purchasedTickets;
             }
