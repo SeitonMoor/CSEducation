@@ -73,11 +73,13 @@ namespace OOP
                 _directions.Add(direction);
             }
 
-            public int SellTickets()
+            public void SellTickets()
             {
                 int purchasedTickets = random.Next(1, 836);
 
-                return purchasedTickets;
+                Direction direction = GetDirection();
+
+                direction.SetTicketsCount(purchasedTickets);
             }
 
             public void FormTrain()
@@ -94,6 +96,30 @@ namespace OOP
             {
 
             }
+
+            private Direction GetDirection()
+            {
+                Direction foundDirection = null;
+                bool isFound = false;
+
+                do
+                {
+                    Console.Write("Напишите станцию прибытия: ");
+                    string endStation = Console.ReadLine();
+
+                    foreach (Direction direction in _directions)
+                    {
+                        if (direction.GetEndStation() == endStation)
+                        {
+                            foundDirection = direction;
+                            isFound = true;
+                        }
+                    }
+                }
+                while (isFound == false);
+
+                return foundDirection;
+            }
         }
 
         class Train
@@ -105,11 +131,22 @@ namespace OOP
         {
             private string _startStation;
             private string _endStation;
+            private int _purchasedTickets;
 
             public Direction(string startStation, string endStation)
             {
                 _startStation = startStation;
                 _endStation = endStation;
+            }
+
+            public string GetEndStation()
+            {
+                return _endStation;
+            }
+
+            public void SetTicketsCount(int purchasedTickets)
+            {
+                _purchasedTickets = purchasedTickets;
             }
         }
 
