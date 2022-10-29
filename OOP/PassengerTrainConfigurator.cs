@@ -84,7 +84,9 @@ namespace OOP
 
             public void FormTrain()
             {
+                Direction direction = GetDirection();
 
+                Train train = new Train(direction.GetTicketsCount());
             }
 
             public void SendTrain()
@@ -124,7 +126,29 @@ namespace OOP
 
         class Train
         {
-            
+            private List<Carriage> _carriages = new List<Carriage>();
+
+            public Train(int passengers)
+            {
+                while (passengers > 0)
+                {
+                    Carriage carriage = new Carriage();
+
+                    passengers -= carriage.GetMaxPassengers();
+
+                    _carriages.Add(carriage);
+                }
+            }
+        }
+        
+        class Carriage
+        {
+            private int _maxPassengers = 68;
+
+            public int GetMaxPassengers()
+            {
+                return _maxPassengers;
+            }
         }
 
         class Direction
@@ -147,6 +171,11 @@ namespace OOP
             public void SetTicketsCount(int purchasedTickets)
             {
                 _purchasedTickets = purchasedTickets;
+            }
+
+            public int GetTicketsCount()
+            {
+                return _purchasedTickets;
             }
         }
 
