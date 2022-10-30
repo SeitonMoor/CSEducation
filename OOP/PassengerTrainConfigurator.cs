@@ -96,7 +96,10 @@ namespace OOP
 
             public void ShowDirectionInfo()
             {
+                Direction direction = GetDirection();
 
+                Console.WriteLine($"Текущий рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
+                    $"\nКоличество пассажиров: {direction.GetTicketsCount()}");
             }
 
             private Direction GetDirection()
@@ -161,6 +164,11 @@ namespace OOP
             {
                 _startStation = startStation;
                 _endStation = endStation;
+            }
+
+            public string GetStartStation()
+            {
+                return _startStation;
             }
 
             public string GetEndStation()
