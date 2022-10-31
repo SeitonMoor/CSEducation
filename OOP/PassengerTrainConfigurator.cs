@@ -91,7 +91,12 @@ namespace OOP
 
             public void SendTrain()
             {
+                Direction direction = GetDirection();
 
+                Console.WriteLine($"Рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
+                    $"с количеством пассажиров: {direction.GetTicketsCount()} - отправлен.");
+
+                _directions.Clear();
             }
 
             public void ShowDirectionInfo()
@@ -109,16 +114,10 @@ namespace OOP
 
                 do
                 {
-                    Console.Write("Напишите станцию прибытия: ");
-                    string endStation = Console.ReadLine();
-
                     foreach (Direction direction in _directions)
                     {
-                        if (direction.GetEndStation() == endStation)
-                        {
-                            foundDirection = direction;
-                            isFound = true;
-                        }
+                        foundDirection = direction;
+                        isFound = true;
                     }
                 }
                 while (isFound == false);
