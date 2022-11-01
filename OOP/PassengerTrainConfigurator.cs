@@ -185,10 +185,5 @@ namespace OOP
                 return _purchasedTickets;
             }
         }
-
-        class Passenger
-        {
-
-        }
     }
 }
