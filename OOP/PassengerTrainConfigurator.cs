@@ -51,13 +51,14 @@ namespace OOP
                         break;
                 }
 
+                Console.ReadKey();
                 Console.Clear();
             }
         }
 
         class Station
         {
-            private List<Direction> _directions;
+            private List<Direction> _directions = new List<Direction>(1);
             Random random = new Random();
 
             public void CreateDirection()
@@ -75,52 +76,75 @@ namespace OOP
 
             public void SellTickets()
             {
-                int purchasedTickets = random.Next(1, 836);
+                if (_directions.Count == 0)
+                {
+                    Console.WriteLine("Направление еще не было создано.");
+                }
+                else
+                {
+                    int purchasedTickets = random.Next(1, 836);
 
-                Direction direction = GetDirection();
+                    Direction direction = GetDirection();
 
-                direction.SetTicketsCount(purchasedTickets);
+                    direction.SetTicketsCount(purchasedTickets);
+                }
             }
 
             public void FormTrain()
             {
-                Direction direction = GetDirection();
+                if (_directions.Count == 0)
+                {
+                    Console.WriteLine("Направление еще не было создано.");
+                }
+                else
+                {
+                    Direction direction = GetDirection();
 
-                Train train = new Train(direction.GetTicketsCount());
+                    Train train = new Train(direction.GetTicketsCount());
+                }
             }
 
             public void SendTrain()
             {
-                Direction direction = GetDirection();
+                if (_directions.Count == 0)
+                {
+                    Console.WriteLine("Направление еще не было создано.");
+                }
+                else
+                {
+                    Direction direction = GetDirection();
 
-                Console.WriteLine($"Рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
-                    $"с количеством пассажиров: {direction.GetTicketsCount()} - отправлен.");
+                    Console.WriteLine($"Рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
+                        $" с количеством пассажиров: {direction.GetTicketsCount()} - отправлен.");
 
-                _directions.Clear();
+                    _directions.Clear();
+                }
             }
 
             public void ShowDirectionInfo()
             {
                 Direction direction = GetDirection();
 
-                Console.WriteLine($"Текущий рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
-                    $"\nКоличество пассажиров: {direction.GetTicketsCount()}");
+                if (direction != null)
+                {
+                    Console.WriteLine($"\nТекущий рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
+                    $"\nКоличество пассажиров: {direction.GetTicketsCount()}" +
+                    $"\nКоличество вагонов: __");
+                }
+                else
+                {
+                    Console.WriteLine("\nРейс не создан.");
+                }
             }
 
             private Direction GetDirection()
             {
                 Direction foundDirection = null;
-                bool isFound = false;
 
-                do
+                foreach (Direction direction in _directions)
                 {
-                    foreach (Direction direction in _directions)
-                    {
-                        foundDirection = direction;
-                        isFound = true;
-                    }
+                    foundDirection = direction;
                 }
-                while (isFound == false);
 
                 return foundDirection;
             }
