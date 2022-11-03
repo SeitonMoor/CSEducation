@@ -101,6 +101,8 @@ namespace OOP
                     Direction direction = GetDirection();
 
                     Train train = new Train(direction.GetTicketsCount());
+
+                    direction.SetTrain(train);
                 }
             }
 
@@ -129,7 +131,7 @@ namespace OOP
                 {
                     Console.WriteLine($"\nТекущий рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
                     $"\nКоличество пассажиров: {direction.GetTicketsCount()}" +
-                    $"\nКоличество вагонов: __");
+                    $"\nКоличество вагонов: {direction.GetCarriagesCount()}");
                 }
                 else
                 {
@@ -165,6 +167,11 @@ namespace OOP
                     _carriages.Add(carriage);
                 }
             }
+
+            public List<Carriage> GetCarriages()
+            {
+                return _carriages;
+            }
         }
         
         class Carriage
@@ -182,6 +189,7 @@ namespace OOP
             private string _startStation;
             private string _endStation;
             private int _purchasedTickets;
+            private Train _train;
 
             public Direction(string startStation, string endStation)
             {
@@ -207,6 +215,25 @@ namespace OOP
             public int GetTicketsCount()
             {
                 return _purchasedTickets;
+            }
+
+            public void SetTrain(Train train)
+            {
+                _train = train;
+            }
+
+            public int GetCarriagesCount()
+            {
+                if (_train == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    List<Carriage> carriages = _train.GetCarriages();
+
+                    return carriages.Count;
+                }
             }
         }
     }
