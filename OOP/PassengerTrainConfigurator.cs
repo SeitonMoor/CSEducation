@@ -72,13 +72,15 @@ namespace OOP
                 Direction direction = new Direction(startStation, endStation);
 
                 _directions.Add(direction);
+
+                Console.WriteLine($"\nРейс по направлению: {startStation} - {startStation} - успешно создано");
             }
 
             public void SellTickets()
             {
                 if (_directions.Count == 0)
                 {
-                    Console.WriteLine("Направление еще не было создано.");
+                    Console.WriteLine("\nНаправление еще не было создано.");
                 }
                 else
                 {
@@ -87,6 +89,8 @@ namespace OOP
                     Direction direction = GetDirection();
 
                     direction.SetTicketsCount(purchasedTickets);
+
+                    Console.WriteLine($"\nНа текущий рейс продано - {purchasedTickets} билетов");
                 }
             }
 
@@ -94,7 +98,7 @@ namespace OOP
             {
                 if (_directions.Count == 0)
                 {
-                    Console.WriteLine("Направление еще не было создано.");
+                    Console.WriteLine("\nНаправление еще не было создано.");
                 }
                 else
                 {
@@ -103,6 +107,8 @@ namespace OOP
                     Train train = new Train(direction.GetTicketsCount());
 
                     direction.SetTrain(train);
+
+                    Console.WriteLine($"\nПоезд сформирован и готов к отправке, количество вагонов - {train.GetCarriages().Count}");
                 }
             }
 
@@ -110,13 +116,13 @@ namespace OOP
             {
                 if (_directions.Count == 0)
                 {
-                    Console.WriteLine("Направление еще не было создано.");
+                    Console.WriteLine("\nНаправление еще не было создано.");
                 }
                 else
                 {
                     Direction direction = GetDirection();
 
-                    Console.WriteLine($"Рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
+                    Console.WriteLine($"\nРейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
                         $" с количеством пассажиров: {direction.GetTicketsCount()} - отправлен.");
 
                     _directions.Clear();
