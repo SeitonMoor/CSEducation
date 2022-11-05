@@ -44,6 +44,7 @@ namespace OOP
 
                     case "exit":
                         isWorking = false;
+                        Console.WriteLine("\nЗавершение программы!");
                         break;
 
                     default:
@@ -73,7 +74,7 @@ namespace OOP
 
                 _directions.Add(direction);
 
-                Console.WriteLine($"\nРейс по направлению: {startStation} - {startStation} - успешно создано");
+                Console.WriteLine($"\nРейс по направлению: {startStation} - {endStation} - успешно создано");
             }
 
             public void SellTickets()
@@ -104,11 +105,18 @@ namespace OOP
                 {
                     Direction direction = GetDirection();
 
-                    Train train = new Train(direction.GetTicketsCount());
+                    if (direction.GetTicketsCount() <= 0)
+                    {
+                        Console.WriteLine("\nБилеты на рейс еще не проданы.");
+                    }
+                    else
+                    {
+                        Train train = new Train(direction.GetTicketsCount());
 
-                    direction.SetTrain(train);
+                        direction.SetTrain(train);
 
-                    Console.WriteLine($"\nПоезд сформирован и готов к отправке, количество вагонов - {train.GetCarriages().Count}");
+                        Console.WriteLine($"\nПоезд сформирован и готов к отправке, количество вагонов - {train.GetCarriages().Count}");
+                    }
                 }
             }
 
@@ -122,10 +130,21 @@ namespace OOP
                 {
                     Direction direction = GetDirection();
 
-                    Console.WriteLine($"\nРейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
+                    if (direction.GetTicketsCount() <= 0)
+                    {
+                        Console.WriteLine("\nБилеты на рейс еще не проданы.");
+                    }
+                    else if (direction.GetCarriagesCount() <= 0)
+                    {
+                        Console.WriteLine("\nПоезд еще не сформирован.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\nРейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
                         $" с количеством пассажиров: {direction.GetTicketsCount()} - отправлен.");
 
-                    _directions.Clear();
+                        _directions.Clear();
+                    }
                 }
             }
 
