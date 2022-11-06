@@ -111,7 +111,45 @@ namespace OOP
                     }
                     else
                     {
-                        Train train = new Train(direction.GetTicketsCount());
+                        Train train = new Train();
+                        int passengers = direction.GetTicketsCount();
+                        int carriageCount = 1;
+
+                        while (passengers > 0)
+                        {
+                            int maxPassengers;
+                            bool isReceived = false;
+
+                            do
+                            {
+                                Console.Write($"\nУкажите максимальное количество посадочных мест в вагоне №{carriageCount}: ");
+
+                                if (Int32.TryParse(Console.ReadLine(), out maxPassengers))
+                                {
+                                    isReceived = true;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Число мест указано не верно.");
+                                }
+                            }
+                            while (isReceived == false);
+
+                            Carriage carriage = new Carriage(maxPassengers);
+
+                            if (passengers - maxPassengers < 0)
+                            {
+                                passengers = 0;
+                            }
+                            else
+                            {
+                                passengers -= maxPassengers;
+                            }
+
+                            train.AddCarriage(carriage);
+                            Console.WriteLine($"Вагон №{carriageCount} добавлен к поезду. Пассажиров осталось к размещению: {passengers}");
+                            carriageCount++;
+                        }
 
                         direction.SetTrain(train);
 
@@ -181,16 +219,9 @@ namespace OOP
         {
             private List<Carriage> _carriages = new List<Carriage>();
 
-            public Train(int passengers)
+            public void AddCarriage(Carriage carriage)
             {
-                while (passengers > 0)
-                {
-                    Carriage carriage = new Carriage();
-
-                    passengers -= carriage.GetMaxPassengers();
-
-                    _carriages.Add(carriage);
-                }
+                _carriages.Add(carriage);
             }
 
             public List<Carriage> GetCarriages()
@@ -201,11 +232,11 @@ namespace OOP
         
         class Carriage
         {
-            private int _maxPassengers = 68;
+            private int _maxPassengers;
 
-            public int GetMaxPassengers()
+            public Carriage(int maxPassengers)
             {
-                return _maxPassengers;
+                _maxPassengers = maxPassengers;
             }
         }
 
