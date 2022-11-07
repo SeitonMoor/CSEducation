@@ -64,17 +64,24 @@ namespace OOP
 
             public void CreateDirection()
             {
-                Console.Write("Напишите станцию отправления: ");
-                string startStation = Console.ReadLine();
+                if (_directions.Count > 0)
+                {
+                    Console.WriteLine("\nНаправление уже создано.");
+                }
+                else
+                {
+                    Console.Write("Напишите станцию отправления: ");
+                    string startStation = Console.ReadLine();
 
-                Console.Write("Напишите станцию прибытия: ");
-                string endStation = Console.ReadLine();
+                    Console.Write("Напишите станцию прибытия: ");
+                    string endStation = Console.ReadLine();
 
-                Direction direction = new Direction(startStation, endStation);
+                    Direction direction = new Direction(startStation, endStation);
 
-                _directions.Add(direction);
+                    _directions.Add(direction);
 
-                Console.WriteLine($"\nРейс по направлению: {startStation} - {endStation} - успешно создано");
+                    Console.WriteLine($"\nРейс по направлению: {startStation} - {endStation} - успешно создано");
+                }
             }
 
             public void SellTickets()
