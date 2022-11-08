@@ -48,7 +48,7 @@ namespace OOP
                         break;
 
                     default:
-                        Console.WriteLine("Данная команда неизвестна");
+                        Console.WriteLine("\nДанная команда неизвестна");
                         break;
                 }
 
@@ -70,7 +70,7 @@ namespace OOP
                 }
                 else
                 {
-                    Console.Write("Напишите станцию отправления: ");
+                    Console.Write("\nНапишите станцию отправления: ");
                     string startStation = Console.ReadLine();
 
                     Console.Write("Напишите станцию прибытия: ");
@@ -154,7 +154,7 @@ namespace OOP
                             }
 
                             train.AddCarriage(carriage);
-                            Console.WriteLine($"Вагон №{carriageCount} добавлен к поезду. Пассажиров осталось к размещению: {passengers}");
+                            Console.WriteLine($"\nВагон №{carriageCount} добавлен к поезду. Пассажиров осталось к размещению: {passengers}");
                             carriageCount++;
                         }
 
