@@ -17,7 +17,13 @@ namespace OOP
 
             for (int i = 0; i < clientNumbers; i++)
             {
-                Client client = new Client(random.Next(100,15000));
+                Client client = new Client(random.Next(100,10000));
+
+                client.TakeItem(new Product("Кофе", 620));
+                client.TakeItem(new Product("Яблоко", 140));
+                client.TakeItem(new Product("Конфеты", 370));
+                client.TakeItem(new Product("Мясо", 1700));
+
                 clientsQueue.Enqueue(client);
             }
 
