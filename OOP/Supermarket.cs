@@ -29,6 +29,7 @@ namespace OOP
 
             while (clientsQueue.Count == 0)
             {
+                Client client = clientsQueue.Dequeue();
             }
         }
 
@@ -50,6 +51,25 @@ namespace OOP
             public int GetMoney()
             {
                 return _money;
+            }
+
+            public bool TryToBuy()
+            {
+                int bill = 0;
+
+                foreach (Product product in _items)
+                {
+                    bill += product.GetPrice();
+                }
+
+                if (_money - bill < 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
 
