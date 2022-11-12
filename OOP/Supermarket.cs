@@ -53,14 +53,21 @@ namespace OOP
                 return _money;
             }
 
-            public bool TryToBuy()
+            public void BuyProducts()
             {
-                int bill = 0;
-
-                foreach (Product product in _items)
+                if (CanBuy())
                 {
-                    bill += product.GetPrice();
+                    int bill = GetBill();
+
+                    _money -= bill;
+
+                    _items.Clear();
                 }
+            }
+
+            private bool CanBuy()
+            {
+                int bill = GetBill();
 
                 if (_money - bill < 0)
                 {
@@ -70,6 +77,18 @@ namespace OOP
                 {
                     return true;
                 }
+            }
+
+            private int GetBill()
+            {
+                int bill = 0;
+
+                foreach (Product product in _items)
+                {
+                    bill += product.GetPrice();
+                }
+
+                return bill;
             }
         }
 
