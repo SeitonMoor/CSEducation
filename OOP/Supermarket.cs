@@ -27,14 +27,22 @@ namespace OOP
                 clientsQueue.Enqueue(client);
             }
 
-            while (clientsQueue.Count == 0)
+            int count = 1;
+            while (clientsQueue.Count != 0)
             {
                 Client client = clientsQueue.Dequeue();
+
+                Console.Write($"Клиент №{count} ");
+                client.BuyProducts();
+
+                count++;
             }
         }
 
         class Client
         {
+            Random random = new Random();
+
             private List<Product> _items = new List<Product>();
             private int _money;
 
@@ -61,7 +69,14 @@ namespace OOP
 
                     _money -= bill;
 
+                    Console.Write($"совершил покупку {_items.Count} продуктов на сумму {bill}. Его остаток на счете: {_money}\n");
+
                     _items.Clear();
+                }
+                else
+                {
+                    RemoveProduct();
+                    BuyProducts();
                 }
             }
 
@@ -89,6 +104,14 @@ namespace OOP
                 }
 
                 return bill;
+            }
+
+            private void RemoveProduct()
+            {
+                int count = _items.Count;
+                int id = random.Next(count);
+
+                _items.RemoveAt(id);
             }
         }
 
