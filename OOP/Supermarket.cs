@@ -63,7 +63,11 @@ namespace OOP
 
             public void BuyProducts()
             {
-                if (CanBuy())
+                if (_items.Count == 0)
+                {
+                    Console.Write($"выложил все имеющиеся в корзине продукты и решил вернуться к покупкам позже. Его счет: {_money}\n");
+                }
+                else if (CanBuy())
                 {
                     int bill = GetBill();
 
