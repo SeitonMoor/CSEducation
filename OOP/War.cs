@@ -35,14 +35,16 @@ namespace OOP
         {
             private List<Solder> _solders = new List<Solder>();
 
-            public Troop()
+            public void AddSolder(Solder solder)
             {
+                _solders.Add(solder);
             }
         }
 
         class Faction
         {
             private string _name;
+            private Troop _troop = new Troop();
 
             public Faction (string name)
             {
