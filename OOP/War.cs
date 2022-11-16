@@ -50,6 +50,16 @@ namespace OOP
             {
                 this._name = name;
             }
+
+            public string GetName()
+            {
+                return _name;
+            }
+
+            public void AddSolder(Solder solder)
+            {
+                _troop.AddSolder(solder);
+            }
         }
     }
 }
