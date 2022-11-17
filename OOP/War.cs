@@ -11,6 +11,9 @@ namespace OOP
 
             bool isWorking = true;
 
+            Faction faction1 = new Faction("Фракция №1");
+            Faction faction2 = new Faction("Фракция №2");
+
             while (isWorking)
             {
             }
