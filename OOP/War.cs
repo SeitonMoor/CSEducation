@@ -9,12 +9,10 @@ namespace OOP
         {
             Console.WriteLine("Моделирование боя");
 
-            bool isWorking = true;
-
             Faction faction1 = new Faction("Фракция №1");
             Faction faction2 = new Faction("Фракция №2");
 
-            while (isWorking)
+            while (faction1.GetSoldersCount() > 0 || faction2.GetSoldersCount() > 0)
             {
             }
         }
@@ -42,6 +40,11 @@ namespace OOP
             {
                 _solders.Add(solder);
             }
+
+            public int GetSoldersCount()
+            {
+                return _solders.Count;
+            }
         }
 
         class Faction
@@ -62,6 +65,11 @@ namespace OOP
             public void AddSolder(Solder solder)
             {
                 _troop.AddSolder(solder);
+            }
+
+            public int GetSoldersCount()
+            {
+                return _troop.GetSoldersCount();
             }
         }
     }
