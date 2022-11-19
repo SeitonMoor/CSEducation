@@ -24,11 +24,21 @@ namespace OOP
             private int _damage;
             private int _force;
 
-            public Solder(int health, int maxHealth, int damage)
+            public Solder(int maxHealth, int damage)
             {
-                _health = health;
+                _health = maxHealth;
                 _maxHealth = maxHealth;
                 _damage = damage;
+            }
+
+            public void TakeDamage(int damage)
+            {
+                _health -= damage;
+            }
+
+            public int GetDamage()
+            {
+                return _damage;
             }
         }
 
