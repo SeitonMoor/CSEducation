@@ -12,8 +12,17 @@ namespace OOP
             Faction faction1 = new Faction("Фракция №1");
             Faction faction2 = new Faction("Фракция №2");
 
-            while (faction1.GetSoldersCount() > 0 || faction2.GetSoldersCount() > 0)
+            while (faction1.GetTroop().GetSoldersCount() > 0 || faction2.GetTroop().GetSoldersCount() > 0)
             {
+                foreach(Solder solder in faction1.GetTroop().GetSolders())
+                {
+                    solder.Attack(faction2.GetTroop().GetRandomSolder());
+                }
+
+                foreach(Solder solder in faction2.GetTroop().GetSolders())
+                {
+                    solder.Attack(faction1.GetTroop().GetRandomSolder());
+                }
             }
         }
 
@@ -40,20 +49,38 @@ namespace OOP
             {
                 return _damage;
             }
+
+            public void Attack(Solder solder)
+            {
+                solder.TakeDamage(_damage);
+            }
         }
 
         class Troop
         {
             private List<Solder> _solders = new List<Solder>();
+            Random random = new Random();
 
             public void AddSolder(Solder solder)
             {
                 _solders.Add(solder);
             }
 
+            public List<Solder> GetSolders()
+            {
+                return _solders;
+            }
+
             public int GetSoldersCount()
             {
                 return _solders.Count;
+            }
+
+            public Solder GetRandomSolder()
+            {
+                int index = random.Next(_solders.Count);
+                Solder randomSolder = _solders[index];
+                return randomSolder;
             }
         }
 
@@ -72,14 +99,9 @@ namespace OOP
                 return _name;
             }
 
-            public void AddSolder(Solder solder)
+            public Troop GetTroop()
             {
-                _troop.AddSolder(solder);
-            }
-
-            public int GetSoldersCount()
-            {
-                return _troop.GetSoldersCount();
+                return _troop;
             }
         }
     }
