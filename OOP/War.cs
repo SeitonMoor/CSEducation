@@ -11,18 +11,11 @@ namespace OOP
 
             Faction faction1 = new Faction("Фракция №1");
             Faction faction2 = new Faction("Фракция №2");
-
+                
             while (faction1.GetTroop().GetSoldersCount() > 0 || faction2.GetTroop().GetSoldersCount() > 0)
             {
-                foreach(Solder solder in faction1.GetTroop().GetSolders())
-                {
-                    solder.Attack(faction2.GetTroop().GetRandomSolder());
-                }
-
-                foreach(Solder solder in faction2.GetTroop().GetSolders())
-                {
-                    solder.Attack(faction1.GetTroop().GetRandomSolder());
-                }
+                faction1.Attack(faction2);
+                faction2.Attack(faction1);
             }
         }
 
@@ -102,6 +95,14 @@ namespace OOP
             public Troop GetTroop()
             {
                 return _troop;
+            }
+
+            public void Attack(Faction faction)
+            {
+                foreach (Solder solder in _troop.GetSolders())
+                {
+                    solder.Attack(faction.GetTroop().GetRandomSolder());
+                }
             }
         }
     }
