@@ -47,6 +47,18 @@ namespace OOP
             {
                 solder.TakeDamage(_damage);
             }
+
+            public bool IsAlive()
+            {
+                if (_health > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         class Troop
