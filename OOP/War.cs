@@ -12,21 +12,21 @@ namespace OOP
             Faction faction1 = new Faction("Фракция №1");
             Faction faction2 = new Faction("Фракция №2");
                 
-            while (faction1.GetTroop().GetSoldersCount() > 0 || faction2.GetTroop().GetSoldersCount() > 0)
+            while (faction1.GetTroop().GetSoldiersCount() > 0 || faction2.GetTroop().GetSoldiersCount() > 0)
             {
                 faction1.Attack(faction2);
                 faction2.Attack(faction1);
             }
         }
 
-        class Solder
+        class Soldier
         {
             private int _health;
             private int _maxHealth;
             private int _damage;
             private int _force;
 
-            public Solder(int maxHealth, int damage)
+            public Soldier(int maxHealth, int damage)
             {
                 _health = maxHealth;
                 _maxHealth = maxHealth;
@@ -43,9 +43,9 @@ namespace OOP
                 return _damage;
             }
 
-            public void Attack(Solder solder)
+            public void Attack(Soldier soldier)
             {
-                solder.TakeDamage(_damage);
+                soldier.TakeDamage(_damage);
             }
 
             public bool IsAlive()
@@ -63,29 +63,34 @@ namespace OOP
 
         class Troop
         {
-            private List<Solder> _solders = new List<Solder>();
+            private List<Soldier> _soldiers = new List<Soldier>();
             Random random = new Random();
 
-            public void AddSolder(Solder solder)
+            public void AddSoldier(Soldier soldier)
             {
-                _solders.Add(solder);
+                _soldiers.Add(soldier);
             }
 
-            public List<Solder> GetSolders()
+            public List<Soldier> GetSoldiers()
             {
-                return _solders;
+                return _soldiers;
             }
 
-            public int GetSoldersCount()
+            public int GetSoldiersCount()
             {
-                return _solders.Count;
+                return _soldiers.Count;
             }
 
-            public Solder GetRandomSolder()
+            public Soldier GetRandomSoldier()
             {
-                int index = random.Next(_solders.Count);
-                Solder randomSolder = _solders[index];
-                return randomSolder;
+                int index = random.Next(_soldiers.Count);
+                Soldier randomSoldier = _soldiers[index];
+                return randomSoldier;
+            }
+
+            public void DeleteSoldier(Soldier soldier)
+            {
+                _soldiers.Remove(soldier);
             }
         }
 
@@ -111,9 +116,16 @@ namespace OOP
 
             public void Attack(Faction faction)
             {
-                foreach (Solder solder in _troop.GetSolders())
+                foreach (Soldier soldier in _troop.GetSoldiers())
                 {
-                    solder.Attack(faction.GetTroop().GetRandomSolder());
+                    Soldier randomSoldier = faction.GetTroop().GetRandomSoldier();
+
+                    soldier.Attack(randomSoldier);
+
+                    if (randomSoldier.IsAlive() == false)
+                    {
+                        faction.GetTroop().DeleteSoldier(randomSoldier);
+                    }
                 }
             }
         }
