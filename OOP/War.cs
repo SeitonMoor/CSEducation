@@ -11,7 +11,19 @@ namespace OOP
 
             Faction faction1 = new Faction("Фракция №1");
             Faction faction2 = new Faction("Фракция №2");
-                
+
+            faction1.GetTroop().AddSoldier(new Soldier(100, 19));
+            faction1.GetTroop().AddSoldier(new Soldier(30, 50));
+            faction1.GetTroop().AddSoldier(new Soldier(140, 14));
+            faction1.GetTroop().AddSoldier(new Soldier(190, 5));
+            faction1.GetTroop().AddSoldier(new Soldier(160, 11));
+
+            faction2.GetTroop().AddSoldier(new Soldier(100, 21));
+            faction2.GetTroop().AddSoldier(new Soldier(200, 3));
+            faction2.GetTroop().AddSoldier(new Soldier(120, 24));
+            faction2.GetTroop().AddSoldier(new Soldier(150, 25));
+            faction2.GetTroop().AddSoldier(new Soldier(50, 32));
+
             while (faction1.GetTroop().GetSoldiersCount() > 0 || faction2.GetTroop().GetSoldiersCount() > 0)
             {
                 faction1.Attack(faction2);
