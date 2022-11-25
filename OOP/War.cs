@@ -24,7 +24,7 @@ namespace OOP
             faction2.GetTroop().AddSoldier(new Soldier(150, 25));
             faction2.GetTroop().AddSoldier(new Soldier(50, 32));
 
-            while (faction1.GetTroop().GetSoldiersCount() > 0 || faction2.GetTroop().GetSoldiersCount() > 0)
+            while (faction1.GetTroop().GetSoldiersCount() > 0 && faction2.GetTroop().GetSoldiersCount() > 0)
             {
                 faction1.Attack(faction2);
                 faction2.Attack(faction1);
@@ -113,7 +113,7 @@ namespace OOP
 
             public Faction (string name)
             {
-                this._name = name;
+                _name = name;
             }
 
             public string GetName()
@@ -130,13 +130,16 @@ namespace OOP
             {
                 foreach (Soldier soldier in _troop.GetSoldiers())
                 {
-                    Soldier randomSoldier = faction.GetTroop().GetRandomSoldier();
-
-                    soldier.Attack(randomSoldier);
-
-                    if (randomSoldier.IsAlive() == false)
+                    if (faction.GetTroop().GetSoldiersCount() > 0)
                     {
-                        faction.GetTroop().DeleteSoldier(randomSoldier);
+                        Soldier randomSoldier = faction.GetTroop().GetRandomSoldier();
+
+                        soldier.Attack(randomSoldier);
+
+                        if (randomSoldier.IsAlive() == false)
+                        {
+                            faction.GetTroop().DeleteSoldier(randomSoldier);
+                        }
                     }
                 }
             }
