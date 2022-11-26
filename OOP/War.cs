@@ -29,6 +29,17 @@ namespace OOP
                 faction1.Attack(faction2);
                 faction2.Attack(faction1);
             }
+
+            if (faction1.GetTroop().GetSoldiersCount() > 0)
+            {
+                Console.WriteLine($"{faction1.GetName()} одержала полную победу над {faction2.GetName()}" +
+                    $"\nКоличество оставшихся бойцов: {faction1.GetTroop().GetSoldiersCount()}");
+            }
+            else if (faction2.GetTroop().GetSoldiersCount() > 0)
+            {
+                Console.WriteLine($"{faction2.GetName()} одержала полную победу над {faction1.GetName()}" +
+                    $"\nКоличество оставшихся бойцов: {faction2.GetTroop().GetSoldiersCount()}");
+            }
         }
 
         class Soldier
