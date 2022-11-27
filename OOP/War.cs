@@ -24,8 +24,13 @@ namespace OOP
             faction2.GetTroop().AddSoldier(new Soldier(150, 25));
             faction2.GetTroop().AddSoldier(new Soldier(50, 32));
 
+            Console.WriteLine($"{faction1.GetName()} vs {faction2.GetName()}\n");
+
             while (faction1.GetTroop().GetSoldiersCount() > 0 && faction2.GetTroop().GetSoldiersCount() > 0)
             {
+                Console.WriteLine($"{faction1.GetName()} количество бойцов: {faction1.GetTroop().GetSoldiersCount()}" +
+                    $"\n{faction2.GetName()} количество бойцов: {faction2.GetTroop().GetSoldiersCount()}\n");
+
                 faction1.Attack(faction2);
                 faction2.Attack(faction1);
             }
