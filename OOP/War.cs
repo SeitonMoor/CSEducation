@@ -37,14 +37,16 @@ namespace OOP
 
             if (faction1.GetTroop().GetSoldiersCount() > 0)
             {
-                Console.WriteLine($"{faction1.GetName()} одержала полную победу над {faction2.GetName()}" +
-                    $"\nКоличество оставшихся бойцов: {faction1.GetTroop().GetSoldiersCount()}");
+                PrintWinningFaction(faction1, faction2);
             }
             else if (faction2.GetTroop().GetSoldiersCount() > 0)
             {
-                Console.WriteLine($"{faction2.GetName()} одержала полную победу над {faction1.GetName()}" +
-                    $"\nКоличество оставшихся бойцов: {faction2.GetTroop().GetSoldiersCount()}");
+                PrintWinningFaction(faction2, faction1);
             }
+
+            void PrintWinningFaction(Faction winningFaction, Faction losingFaction) => 
+                Console.WriteLine($"{winningFaction.GetName()} одержала полную победу над {losingFaction.GetName()}" +
+                        $"\nКоличество оставшихся бойцов: {winningFaction.GetTroop().GetSoldiersCount()}");
         }
 
         class Soldier
