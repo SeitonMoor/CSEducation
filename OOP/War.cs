@@ -52,14 +52,12 @@ namespace OOP
         class Soldier
         {
             private int _health;
-            private int _maxHealth;
             private int _damage;
             private int _force;
 
             public Soldier(int maxHealth, int damage)
             {
                 _health = maxHealth;
-                _maxHealth = maxHealth;
                 _damage = damage;
             }
 
