@@ -7,6 +7,8 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            FishTank fishTank = new FishTank(22);
+
             while (true)
             {
                 Console.WriteLine("Рыбы в аквариуме: ");
@@ -21,6 +23,11 @@ namespace OOP
             public FishTank(int maxSpace)
             {
                 _maxSpace = maxSpace;
+            }
+
+            public void AddFish(Fish fish)
+            {
+                _fishes.Add(fish);
             }
         }
 
