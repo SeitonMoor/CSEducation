@@ -11,7 +11,14 @@ namespace OOP
 
             while (true)
             {
-                Console.WriteLine("Рыбы в аквариуме: ");
+                Console.WriteLine($"Рыбы в аквариуме:\n");
+
+                int fishCount = 1;
+                foreach (Fish fish in fishTank.GetFishes())
+                {
+                    Console.Write($"Рыба№{fishCount} - возраст: {fish.GetAge()} / {fish.GetMaxAge()}");
+                    fishCount++;
+                }
             }
         }
 
@@ -23,6 +30,11 @@ namespace OOP
             public FishTank(int maxSpace)
             {
                 _maxSpace = maxSpace;
+            }
+
+            public List<Fish> GetFishes()
+            {
+                return _fishes;
             }
 
             public void AddFish(Fish fish)
@@ -40,6 +52,16 @@ namespace OOP
             {
                 _age = age;
                 _maxAge = maxAge;
+            }
+
+            public int GetAge()
+            {
+                return _age;
+            }
+
+            public int GetMaxAge()
+            {
+                return _maxAge;
             }
         }
     }
