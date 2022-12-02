@@ -11,7 +11,11 @@ namespace OOP
 
             while (true)
             {
-                Console.WriteLine($"Рыбы в аквариуме:\n");
+                Console.WriteLine($"Рыбы в аквариуме:\n" +
+                    $"add - добавить рыбу в аквариум\n" +
+                    $"remove - достать рыбу из аквариума\n");
+
+                String command = Console.ReadLine();
 
                 int fishCount = 1;
                 foreach (Fish fish in fishTank.GetFishes())
@@ -19,6 +23,8 @@ namespace OOP
                     Console.Write($"Рыба№{fishCount} - возраст: {fish.GetAge()} / {fish.GetMaxAge()}");
                     fishCount++;
                 }
+
+                Console.ReadKey();
             }
         }
 
@@ -40,6 +46,11 @@ namespace OOP
             public void AddFish(Fish fish)
             {
                 _fishes.Add(fish);
+            }
+
+            public void RemoveFish(Fish fish)
+            {
+                _fishes.Remove(fish);
             }
         }
 
