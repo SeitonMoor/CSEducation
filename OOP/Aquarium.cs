@@ -15,7 +15,20 @@ namespace OOP
                     $"add - добавить рыбу в аквариум\n" +
                     $"remove - достать рыбу из аквариума\n");
 
-                String command = Console.ReadLine();
+                switch (Console.ReadLine())
+                {
+                    case "add":
+                        fishTank.AddFish(new Fish(2, 10));
+                        break;
+
+                    case "remove":
+                        fishTank.RemoveFish(new Fish(2, 10));
+                        break;
+
+                    default:
+                        Console.WriteLine("Данная команда неизвестна");
+                        break;
+                }
 
                 int fishCount = 1;
                 foreach (Fish fish in fishTank.GetFishes())
