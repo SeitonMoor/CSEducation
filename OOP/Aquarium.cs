@@ -11,14 +11,15 @@ namespace OOP
 
             while (true)
             {
-                Console.WriteLine($"Рыбы в аквариуме:\n" +
-                    $"add - добавить рыбу в аквариум\n" +
-                    $"remove - достать рыбу из аквариума\n");
+                Console.Write("Управление аквариумом:\n" +
+                    "add - добавить рыбу в аквариум\n" +
+                    "remove - достать рыбу из аквариума\n\n" +
+                    "Ваш выбор: ");
 
                 switch (Console.ReadLine())
                 {
                     case "add":
-                        fishTank.AddFish(new Fish(2, 10));
+                        fishTank.AddFish();
                         break;
 
                     case "remove":
@@ -30,6 +31,7 @@ namespace OOP
                         break;
                 }
 
+                Console.WriteLine("Рыбы в аквариуме:");
                 int fishCount = 1;
                 foreach (Fish fish in fishTank.GetFishes())
                 {
@@ -56,14 +58,48 @@ namespace OOP
                 return _fishes;
             }
 
-            public void AddFish(Fish fish)
+            public void AddFish()
             {
+                Fish fish = CreateFish();
+
+                Console.WriteLine("\nРыба добавлена.");
+
                 _fishes.Add(fish);
             }
 
             public void RemoveFish(Fish fish)
             {
                 _fishes.Remove(fish);
+            }
+
+            private Fish CreateFish()
+            {
+                bool isReceived = false;
+                int fishAge;
+                int fishMaxAge = 0;
+
+                do
+                {
+                    Console.Write("Напишите текущий возраст рыбы: ");
+                    String inputAge = Console.ReadLine();
+
+                    Console.Write("\nНапишите максимальный возраст рыбы: ");
+                    String inputMaxAge = Console.ReadLine();
+
+                    if (Int32.TryParse(inputAge, out fishAge) && Int32.TryParse(inputMaxAge, out fishMaxAge))
+                    {
+                        isReceived = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Возраст рыбы введен не верно.\n");
+                    }
+                }
+                while (isReceived == false);
+
+                Fish fish = new Fish(fishAge, fishMaxAge);
+
+                return fish;
             }
         }
 
