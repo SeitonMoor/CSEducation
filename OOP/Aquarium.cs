@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OOP
 {
@@ -23,7 +24,7 @@ namespace OOP
                         break;
 
                     case "remove":
-                        fishTank.RemoveFish(new Fish(2, 10));
+                        fishTank.RemoveFish();
                         break;
 
                     default:
@@ -67,8 +68,12 @@ namespace OOP
                 _fishes.Add(fish);
             }
 
-            public void RemoveFish(Fish fish)
+            public void RemoveFish()
             {
+                Fish fish = GetFish();
+
+                Console.WriteLine("\nВы достали рыбу.");
+
                 _fishes.Remove(fish);
             }
 
@@ -100,6 +105,38 @@ namespace OOP
                 Fish fish = new Fish(fishAge, fishMaxAge);
 
                 return fish;
+            }
+
+            private Fish GetFish()
+            {
+                int fishCount = 1;
+
+                foreach (Fish fish in _fishes)
+                {
+                    Console.WriteLine($"Рыба№{fishCount} - возраст {fish.GetAge()} / {fish.GetMaxAge()}");
+                }
+
+                bool isReceived = false;
+                int fishIndex;
+
+                do
+                {
+                    Console.Write("\nНапишите номер рыбы: ");
+
+                    if (Int32.TryParse(Console.ReadLine(), out fishIndex) && fishIndex <= _fishes.Count)
+                    {
+                        isReceived = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Номер рыбы введен не верно.\n");
+                    }
+                }
+                while (isReceived == false);
+
+                Fish foundFish = _fishes[fishIndex - 1];
+
+                return foundFish;
             }
         }
 
