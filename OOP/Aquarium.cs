@@ -8,13 +8,23 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            bool isWorking = true;
             FishTank fishTank = new FishTank(22);
 
-            while (true)
+            while (isWorking)
             {
-                Console.Write("Управление аквариумом:\n" +
+                Console.WriteLine($"Рыбы в аквариуме: {fishTank.GetFishes().Count} / {fishTank.GetMaxSpace()}\n");
+                int fishCount = 1;
+                foreach (Fish fish in fishTank.GetFishes())
+                {
+                    Console.WriteLine($"Рыба№{fishCount} - возраст: {fish.GetAge()} / {fish.GetMaxAge()}");
+                    fishCount++;
+                }
+
+                Console.Write("\nУправление аквариумом:\n" +
                     "add - добавить рыбу в аквариум\n" +
-                    "remove - достать рыбу из аквариума\n\n" +
+                    "remove - достать рыбу из аквариума\n" +
+                    "exit - закончить симуляцию\n\n" +
                     "Ваш выбор: ");
 
                 switch (Console.ReadLine())
@@ -27,20 +37,17 @@ namespace OOP
                         fishTank.RemoveFish();
                         break;
 
+                    case "exit":
+                        isWorking = false;
+                        break;
+
                     default:
                         Console.WriteLine("Данная команда неизвестна");
                         break;
                 }
 
-                Console.WriteLine("Рыбы в аквариуме:");
-                int fishCount = 1;
-                foreach (Fish fish in fishTank.GetFishes())
-                {
-                    Console.Write($"Рыба№{fishCount} - возраст: {fish.GetAge()} / {fish.GetMaxAge()}");
-                    fishCount++;
-                }
-
                 Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -57,6 +64,11 @@ namespace OOP
             public List<Fish> GetFishes()
             {
                 return _fishes;
+            }
+
+            public int GetMaxSpace()
+            {
+                return _maxSpace;
             }
 
             public void AddFish()
@@ -88,7 +100,7 @@ namespace OOP
                     Console.Write("Напишите текущий возраст рыбы: ");
                     String inputAge = Console.ReadLine();
 
-                    Console.Write("\nНапишите максимальный возраст рыбы: ");
+                    Console.Write("Напишите максимальный возраст рыбы: ");
                     String inputMaxAge = Console.ReadLine();
 
                     if (Int32.TryParse(inputAge, out fishAge) && Int32.TryParse(inputMaxAge, out fishMaxAge))
