@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OOP
 {
@@ -46,6 +45,8 @@ namespace OOP
                         break;
                 }
 
+                fishTank.RecalculateLiveYear();
+
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -87,6 +88,14 @@ namespace OOP
                 Console.WriteLine("\nВы достали рыбу.");
 
                 _fishes.Remove(fish);
+            }
+
+            public void RecalculateLiveYear()
+            {
+                foreach (Fish fish in _fishes)
+                {
+                    fish.MakeOlder();
+                }
             }
 
             private Fish CreateFish()
@@ -171,6 +180,11 @@ namespace OOP
             public int GetMaxAge()
             {
                 return _maxAge;
+            }
+
+            public void MakeOlder()
+            {
+                _age += 1;
             }
         }
     }
