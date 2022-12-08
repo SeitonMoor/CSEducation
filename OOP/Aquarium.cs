@@ -7,8 +7,9 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            int maxFishCount = 22;
             bool isWorking = true;
-            FishTank fishTank = new FishTank(22);
+            FishTank fishTank = new FishTank(maxFishCount);
 
             while (isWorking)
             {
@@ -23,6 +24,7 @@ namespace OOP
                 Console.Write("\nУправление аквариумом:\n" +
                     "add - добавить рыбу в аквариум\n" +
                     "remove - достать рыбу из аквариума\n" +
+                    "skip - пропустить год\n" +
                     "exit - закончить симуляцию\n\n" +
                     "Ваш выбор: ");
 
@@ -34,6 +36,9 @@ namespace OOP
 
                     case "remove":
                         fishTank.RemoveFish();
+                        break;
+
+                    case "skip":
                         break;
 
                     case "exit":
@@ -74,20 +79,34 @@ namespace OOP
 
             public void AddFish()
             {
-                Fish fish = CreateFish();
+                if (_fishes.Count >= _maxSpace)
+                {
+                    Console.WriteLine("\nАквариум переполнен.");
+                }
+                else
+                {
+                    Fish fish = CreateFish();
 
-                Console.WriteLine("\nРыба добавлена.");
+                    Console.WriteLine("\nРыба добавлена.");
 
-                _fishes.Add(fish);
+                    _fishes.Add(fish);
+                }
             }
 
             public void RemoveFish()
             {
-                Fish fish = GetFish();
+                if (_fishes.Count <= 0)
+                {
+                    Console.WriteLine("\nАквариум пуст.");
+                }
+                else
+                {
+                    Fish fish = GetFish();
 
-                Console.WriteLine("\nВы достали рыбу.");
+                    Console.WriteLine("\nВы достали рыбу.");
 
-                _fishes.Remove(fish);
+                    _fishes.Remove(fish);
+                }
             }
 
             public void RecalculateLiveYear()
@@ -144,7 +163,7 @@ namespace OOP
                 {
                     Console.Write("\nНапишите номер рыбы: ");
 
-                    if (Int32.TryParse(Console.ReadLine(), out fishIndex) && fishIndex <= _fishes.Count)
+                    if (Int32.TryParse(Console.ReadLine(), out fishIndex) && 0 < fishIndex && fishIndex <= _fishes.Count)
                     {
                         isReceived = true;
                     }
