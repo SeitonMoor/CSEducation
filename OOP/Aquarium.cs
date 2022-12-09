@@ -24,7 +24,7 @@ namespace OOP
                 Console.Write("\nУправление аквариумом:\n" +
                     "add - добавить рыбу в аквариум\n" +
                     "remove - достать рыбу из аквариума\n" +
-                    "skip - пропустить год\n" +
+                    "skip or any key - пропустить год\n" +
                     "exit - закончить симуляцию\n\n" +
                     "Ваш выбор: ");
 
@@ -38,15 +38,11 @@ namespace OOP
                         fishTank.RemoveFish();
                         break;
 
-                    case "skip":
-                        break;
-
                     case "exit":
                         isWorking = false;
                         break;
 
                     default:
-                        Console.WriteLine("Данная команда неизвестна");
                         break;
                 }
 
