@@ -15,23 +15,13 @@ namespace OOP
 
         class Player
         {
-            private int _positionX;
-            private int _positionY;
+            public int PositionX { get; private set; }
+            public int PositionY { get; private set; }
 
             public Player(int positionX, int positionY)
             {
-                this._positionX = positionX;
-                this._positionY = positionY;
-            }
-
-            public int GetPositionX()
-            {
-                return _positionX;
-            }
-
-            public int GetPositionY()
-            {
-                return _positionY;
+                PositionX = positionX;
+                PositionY = positionY;
             }
         }
 
@@ -39,7 +29,7 @@ namespace OOP
         {
             public void DrawCharacter(Player player)
             {
-                Console.WriteLine($"Игрок отрисован по координатам: {player.GetPositionX()}.{player.GetPositionY()}");
+                Console.WriteLine($"Игрок отрисован по координатам: {player.PositionX}.{player.PositionY}");
             }
         }
     }
