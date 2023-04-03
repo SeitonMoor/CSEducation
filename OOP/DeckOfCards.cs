@@ -11,7 +11,6 @@ namespace OOP
             Player player = new Player();
             Deck deck = new Deck();
 
-            
             while (isNeededCard)
             {
                 Console.WriteLine("Колода карта");
