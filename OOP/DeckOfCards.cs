@@ -11,6 +11,7 @@ namespace OOP
             Player player = new Player();
             Deck deck = new Deck();
 
+            
             while (isNeededCard)
             {
                 Console.WriteLine("Колода карта");
@@ -26,6 +27,7 @@ namespace OOP
                         break;
 
                     case "exit":
+                        Console.WriteLine("Вы показываете свои собранные карты...");
                         isNeededCard = false;
                         break;
 
@@ -33,6 +35,7 @@ namespace OOP
                         break;
                 }
 
+                Console.ReadKey();
                 Console.Clear();
             }
 
@@ -45,14 +48,18 @@ namespace OOP
 
             public void GetCards(Deck deck)
             {
-                _cards.Add(deck.TakeCard());
+                if (deck.TakeCard() is Card takenCard)
+                {
+                    _cards.Add(takenCard);
+                    Console.WriteLine("Вы взяли карту из колоды.");
+                }
             }
 
             public void ShowDeck()
             {
                 foreach (var card in _cards)
                 {
-                    Console.WriteLine(card.GetRank() + "|" + card.GetSuit());
+                    Console.WriteLine(card.Rank + "|" + card.Suit);
                 }
             }
         }
@@ -66,30 +73,36 @@ namespace OOP
                 var rankValues = Enum.GetValues(typeof(Rank));
                 var suitValues = Enum.GetValues(typeof(Suit));
 
-                foreach(var rank in rankValues)
+                foreach(Rank rank in rankValues)
                 {
-                    foreach (var suit in suitValues)
+                    foreach (Suit suit in suitValues)
                     {
-                        _cards.Add(new Card(rank.ToString(), suit.ToString()));
+                        _cards.Add(new Card(rank, suit));
                     }
                 }
             }
 
             public Card TakeCard()
             {
-                Random random = new Random();
-                int minCardIndex = 0;
-                int maxCardIndex = 54;
-
-                bool isNotTookCard = true;
-                while (isNotTookCard)
+                if (_cards.Count == 0)
                 {
-                    int cardIndex = random.Next(minCardIndex, maxCardIndex);
-                    if (_cards[cardIndex] is null == false)
+                    Console.WriteLine("Карт в колоде больше нет.");
+                }
+                else
+                {
+                    Random random = new Random();
+                    int minCardIndex = 0;
+                    int maxCardIndex = _cards.Count;
+
+                    bool isNotTookCard = true;
+                    while (isNotTookCard)
                     {
-                        Card takenCard = _cards[cardIndex];
-                        _cards.Remove(_cards[cardIndex]);
-                        return takenCard;
+                        int cardIndex = random.Next(minCardIndex, maxCardIndex);
+                        if (_cards[cardIndex] is Card takenCard)
+                        {
+                            _cards.Remove(_cards[cardIndex]);
+                            return takenCard;
+                        }
                     }
                 }
 
@@ -99,23 +112,13 @@ namespace OOP
 
         class Card
         {
-            string rank;
-            string suit;
+            public Rank Rank { get; private set; }
+            public Suit Suit { get; private set; }
 
-            public Card(string rank, string suit)
+            public Card(Rank rank, Suit suit)
             {
-                this.rank = rank;
-                this.suit = suit;
-            }
-
-            public string GetRank()
-            {
-                return rank;
-            }
-
-            public string GetSuit()
-            {
-                return suit;
+                Rank = rank;
+                Suit = suit;
             }
         }
 
