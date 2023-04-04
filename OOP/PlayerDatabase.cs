@@ -14,6 +14,12 @@ namespace OOP
 
     class Database
     {
+        private const string AddCommand = "add";
+        private const string BanCommand = "ban";
+        private const string UnbanCommand = "unban";
+        private const string DeleteCommand = "delete";
+        private const string ExitCommand = "exit";
+
         private Dictionary<int, Player> _players = new Dictionary<int, Player>();
 
         public void Work()
@@ -23,32 +29,32 @@ namespace OOP
             {
                 Console.WriteLine("База данных игроков");
                 Console.Write("\nМеню команд:" +
-                    "\n\nadd - добавить игрока." +
-                    "\nban - забанить игрока." +
-                    "\nunban - разбанить игрока." +
-                    "\ndelete - удалить игрока." +
-                    "\nexit - выйти из программы." +
+                    $"\n\n{AddCommand} - добавить игрока." +
+                    $"\n{BanCommand} - забанить игрока." +
+                    $"\n{UnbanCommand} - разбанить игрока." +
+                    $"\n{DeleteCommand} - удалить игрока." +
+                    $"\n{ExitCommand} - выйти из программы." +
                     "\n\nВведите команду: ");
 
                 switch (Console.ReadLine())
                 {
-                    case "add":
+                    case AddCommand:
                         AddPlayer();
                         break;
 
-                    case "ban":
-                        BanPlayer();
+                    case BanCommand:
+                        PrepareBanUnban(BanCommand);
                         break;
 
-                    case "unban":
-                        UnbanPlayer();
+                    case UnbanCommand:
+                        PrepareBanUnban(UnbanCommand);
                         break;
 
-                    case "delete":
+                    case DeleteCommand:
                         DeletePlayer();
                         break;
 
-                    case "exit":
+                    case ExitCommand:
                         isWorking = false;
                         break;
 
@@ -67,51 +73,67 @@ namespace OOP
             Player player = CreatePlayer();
 
             _players.Add(player.Id, player);
+            Console.WriteLine("Игрок добавлен в базу данных");
         }
 
-        private void BanPlayer()
+        private void PrepareBanUnban(string command)
         {
-            bool isBanned = true;
-
-            ChangePlayerStatus(isBanned);
-        }
-
-        private void UnbanPlayer()
-        {
-            bool isBanned = false;
-
-            ChangePlayerStatus(isBanned);
-        }
-
-        private void ChangePlayerStatus(bool isBanned)
-        {
-            bool isChanged = false;
-
-            while (isChanged == false)
+            if (_players.Count == 0)
+            {
+                Console.WriteLine("База игроков пуста.");
+            }
+            else
             {
                 int id = GetPlayerId();
                 Player player = GetPlayer(id);
 
-                isChanged = player.CheckIdRequest(id, isBanned);
-
-                if (isChanged == false)
+                if (command == BanCommand)
                 {
-                    Console.WriteLine("Ид введен не верно.\n");
+                    BanPlayer(player);
+                }
+                else if (command == UnbanCommand)
+                {
+                    UnbanPlayer(player);
                 }
             }
         }
 
+        private void BanPlayer(Player player)
+        {
+            player.GetBan();
+            Console.WriteLine("Игрок забанен");
+        }
+
+        private void UnbanPlayer(Player player)
+        {
+            player.GetUnban();
+            Console.WriteLine("Игрок разбанен");
+        }
+
         private void DeletePlayer()
         {
-            int id;
-
-            do
+            if (_players.Count == 0)
             {
-                id = GetPlayerId();
+                Console.WriteLine("База игроков пуста.");
             }
-            while (_players.ContainsKey(id) == false);
+            else
+            {
+                int id;
 
-            _players.Remove(id);
+                do
+                {
+                    id = GetPlayerId();
+
+                    if (_players.ContainsKey(id) == false)
+                    {
+                        Console.WriteLine("Игрок с таким ид не существует.\n");
+                    }
+                }
+                while (_players.ContainsKey(id) == false);
+
+                Console.WriteLine("Игрок удален.");
+                _players.Remove(id);
+            }
         }
 
         private Player GetPlayer(int id)
@@ -127,7 +149,7 @@ namespace OOP
                 }
                 else
                 {
-                    Console.WriteLine("Пользователя с таким ид не существует.\n");
+                    Console.WriteLine("Игрок с таким ид не существует.\n");
                     id = GetPlayerId();
                 }
             }
@@ -194,33 +216,12 @@ namespace OOP
 
         public int Id { get; private set; }
 
-        public bool CheckIdRequest(int id, bool isBanned)
-        {
-            if (Id == id)
-            {
-                if (isBanned)
-                {
-                    SetBan();
-                }
-                else
-                {
-                    SetUnban();
-                }
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private void SetBan()
+        public void GetBan()
         {
             _isBanned = true;
         }
 
-        private void SetUnban()
+        public void GetUnban()
         {
             _isBanned = false;
         }
