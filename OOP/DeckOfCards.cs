@@ -6,144 +6,155 @@ namespace OOP
     internal class DeckOfCards
     {
         static void Main(string[] args)
+        {   
+            CardPlayer player = new CardPlayer();
+            Deck deck = new Deck();
+
+            deck.StartGame(player);
+
+            player.ShowTakenCards();
+        }
+    }
+
+    enum Rank
+    {
+        Rank2,
+        Rank3,
+        Rank4,
+        Rank5,
+        Rank6,
+        Rank7,
+        Rank8,
+        Rank9,
+        Rank10,
+        Jack,
+        Queen,
+        King,
+        Ace,
+    }
+
+    enum Suit
+    {
+        Clubs,
+        Diamonds,
+        Hearts,
+        Spades,
+    }
+
+    class CardPlayer
+    {
+        private List<Card> _cards = new List<Card>();
+
+        public void TakeCard(Card takenCard)
+        {
+            _cards.Add(takenCard);
+            Console.WriteLine("Вы взяли карту из колоды.");
+        }
+
+        public void ShowTakenCards()
+        {
+            foreach (var card in _cards)
+            {
+                Console.WriteLine(card.Rank + "|" + card.Suit);
+            }
+        }
+    }
+
+    class Deck
+    {
+        private const string TakeCommand = "take";
+        private const string ExitCommand = "exit";
+
+        private List<Card> _cards = new List<Card>();
+
+        public Deck()
+        {
+        }
+
+        public void StartGame(CardPlayer player)
         {
             bool isNeededCard = true;
-            Player player = new Player();
-            Deck deck = new Deck();
+            CreateNewDeck();
 
             while (isNeededCard)
             {
                 Console.WriteLine("Колода карта");
                 Console.Write("\nВы можете:" +
-                    "\n\ntake - взять еще карту." +
-                    "\nexit - закончить брать карты и просмотреть взятые." +
+                    $"\n\n{TakeCommand} - взять еще карту." +
+                    $"\n{ExitCommand} - закончить брать карты и просмотреть взятые." +
                     "\n\nВаш выбор: ");
 
                 switch (Console.ReadLine())
                 {
-                    case "take":
-                        player.GetCards(deck);
+                    case TakeCommand:
+                        GiveCard(player);
                         break;
 
-                    case "exit":
+                    case ExitCommand:
                         Console.WriteLine("Вы показываете свои собранные карты...");
                         isNeededCard = false;
                         break;
 
                     default:
+                        Console.WriteLine("Вы ничего не делаете.");
                         break;
                 }
 
                 Console.ReadKey();
                 Console.Clear();
             }
-
-            player.ShowDeck();
         }
 
-        enum Rank
+        public void GiveCard(CardPlayer player)
         {
-            Rank_2,
-            Rank_3,
-            Rank_4,
-            Rank_5,
-            Rank_6,
-            Rank_7,
-            Rank_8,
-            Rank_9,
-            Rank_10,
-            Jack,
-            Queen,
-            King,
-            Ace,
-        }
-
-        enum Suit
-        {
-            Clubs,
-            Diamonds,
-            Hearts,
-            Spades,
-        }
-
-        class Player
-        {
-            private List<Card> _cards = new List<Card>();
-
-            public void GetCards(Deck deck)
+            if (_cards.Count == 0)
             {
-                if (deck.TakeCard() is Card takenCard)
-                {
-                    _cards.Add(takenCard);
-                    Console.WriteLine("Вы взяли карту из колоды.");
-                }
+                Console.WriteLine("Карт в колоде больше нет.");
             }
-
-            public void ShowDeck()
+            else
             {
-                foreach (var card in _cards)
+                Random random = new Random();
+                int minCardIndex = 0;
+                int maxCardIndex = _cards.Count;
+
+                bool isNotTookCard = true;
+                while (isNotTookCard)
                 {
-                    Console.WriteLine(card.Rank + "|" + card.Suit);
-                }
-            }
-        }
-
-        class Deck
-        {
-            private List<Card> _cards = new List<Card>();
-
-            public Deck()
-            {
-                var rankValues = Enum.GetValues(typeof(Rank));
-                var suitValues = Enum.GetValues(typeof(Suit));
-
-                foreach(Rank rank in rankValues)
-                {
-                    foreach (Suit suit in suitValues)
+                    int cardIndex = random.Next(minCardIndex, maxCardIndex);
+                    if (_cards[cardIndex] is Card givenCard)
                     {
-                        _cards.Add(new Card(rank, suit));
+                        _cards.Remove(_cards[cardIndex]);
+                        player.TakeCard(givenCard);
+                        isNotTookCard = false;
                     }
                 }
             }
-
-            public Card TakeCard()
-            {
-                if (_cards.Count == 0)
-                {
-                    Console.WriteLine("Карт в колоде больше нет.");
-                }
-                else
-                {
-                    Random random = new Random();
-                    int minCardIndex = 0;
-                    int maxCardIndex = _cards.Count;
-
-                    bool isNotTookCard = true;
-                    while (isNotTookCard)
-                    {
-                        int cardIndex = random.Next(minCardIndex, maxCardIndex);
-                        if (_cards[cardIndex] is Card takenCard)
-                        {
-                            _cards.Remove(_cards[cardIndex]);
-                            return takenCard;
-                        }
-                    }
-                }
-
-                return null;
-            }
         }
 
-        class Card
+        private void CreateNewDeck()
         {
-            public Card(Rank rank, Suit suit)
-            {
-                Rank = rank;
-                Suit = suit;
-            }
+            Array rankValues = Enum.GetValues(typeof(Rank));
+            Array suitValues = Enum.GetValues(typeof(Suit));
 
-            public Rank Rank { get; private set; }
-            public Suit Suit { get; private set; }
+            foreach (Rank rank in rankValues)
+            {
+                foreach (Suit suit in suitValues)
+                {
+                    _cards.Add(new Card(rank, suit));
+                }
+            }
         }
+    }
+
+    class Card
+    {
+        public Card(Rank rank, Suit suit)
+        {
+            Rank = rank;
+            Suit = suit;
+        }
+
+        public Rank Rank { get; private set; }
+        public Suit Suit { get; private set; }
     }
 }
