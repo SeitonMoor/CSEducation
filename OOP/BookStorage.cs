@@ -8,38 +8,73 @@ namespace OOP
         static void Main(string[] args)
         {
             Storage storage = new Storage();
+
+            storage.Work();
+        }
+    }
+
+    class Book
+    {
+        public Book(string name, string author, int releaseYear)
+        {
+            Name = name;
+            Author = author;
+            ReleaseYear = releaseYear;
+        }
+
+        public string Name { get; private set; }
+        public string Author { get; private set; }
+        public int ReleaseYear { get; private set; }
+    }
+
+    class Storage
+    {
+        private const string AddCommand = "add";
+        private const string DeleteCommand = "delete";
+        private const string ViewAllCommand = "viewAll";
+        private const string ViewCommand = "view";
+        private const string ExitCommand = "exit";
+
+        private const string SearchByName= "name";
+        private const string SearchByAuthor = "author";
+        private const string SearchByReleaseYear = "releaseYear";
+
+        private List<Book> _books = new List<Book>();
+
+        public void Work()
+        {
             bool isWorking = true;
 
             while (isWorking)
             {
                 Console.WriteLine("Хранилище книг");
                 Console.Write("\nВы можете:" +
-                    "\n\nadd - добавить книгу." +
-                    "\ndelete - удалить книгу." +
-                    "\nviewAll - просмотреть все книги в хранилище." +
-                    "\nview - просмотреть книги по указанному параметру." +
-                    "\nexit - закончить работу с хранилищем." +
+                    $"\n\n{AddCommand} - добавить книгу." +
+                    $"\n{DeleteCommand} - удалить книгу." +
+                    $"\n{ViewAllCommand} - просмотреть все книги в хранилище." +
+                    $"\n{ViewCommand} - просмотреть книги по указанному параметру." +
+                    $"\n{ExitCommand} - закончить работу с хранилищем." +
                     "\n\nВаш выбор: ");
 
                 switch (Console.ReadLine())
                 {
-                    case "add":
-                        storage.Add();
+                    case AddCommand:
+                        AddBook();
                         break;
 
-                    case "delete":
-                        storage.Delete();
+                    case DeleteCommand:
+                        DeleteBook();
                         break;
 
-                    case "viewAll":
-                        storage.Print();
+                    case ViewAllCommand:
+                        PrintAllBooks();
                         break;
 
-                    case "view":
-                        storage.Find();
+                    case ViewCommand:
+                        FindBook();
                         break;
 
-                    case "exit":
+                    case ExitCommand:
                         isWorking = false;
                         break;
 
@@ -53,202 +88,196 @@ namespace OOP
             }
         }
 
-        class Book
+        public void AddBook()
         {
-            private string _name;
-            private string _author;
-            private int _releaseYear;
+            Book book = CreateBook();
 
-            public Book(string name, string author, int releaseYear)
+            Console.WriteLine($"\nКнига {book.Name} добавлена.");
+
+            _books.Add(book);
+        }
+
+        public void DeleteBook()
+        {
+            if (_books.Count == 0)
             {
-                this._name = name;
-                this._author = author;
-                this._releaseYear = releaseYear;
+                Console.WriteLine("Хранилище книг пусто.");
             }
-
-            public string GetName()
+            else
             {
-                return _name;
-            }
+                List<Book> books = GetBooksByName();
 
-            public string GetAuthor()
-            {
-                return _author;
-            }
-
-            public int GetReleaseYear()
-            {
-                return _releaseYear;
+                foreach (Book book in books)
+                {
+                    Console.WriteLine($"\nКнига {book.Name} удалена.");
+                    _books.Remove(book);
+                }
             }
         }
 
-        class Storage
+        public void PrintAllBooks()
         {
-            private List<Book> _books = new List<Book>();
-
-            public void Add()
+            if (_books.Count == 0)
             {
-                Book book = CreateBook();
-
-                Console.WriteLine($"\nКнига {book.GetName()} добавлена.");
-
-                _books.Add(book);
+                Console.WriteLine("Хранилище книг пусто.");
             }
-
-            public void Delete()
+            else
             {
-                Book book = GetBookByName();
-
-                Console.WriteLine($"\nКнига {book.GetName()} удалена.");
-
-                _books.Remove(book);
+                PrintBooks(_books);
             }
+        }
 
-            public void Print(Book book)
+        public void FindBook()
+        {
+            if (_books.Count == 0)
             {
-                Console.WriteLine($"Книга - {book.GetName()} от автора {book.GetAuthor()}. Год выпуска: {book.GetReleaseYear()}.");
-
-                Console.ReadKey();
+                Console.WriteLine("Хранилище книг пусто.");
             }
-
-            public void Print()
+            else
             {
-                foreach (Book book in _books)
-                {
-                    Console.WriteLine($"Книга - {book.GetName()} от автора {book.GetAuthor()}. Год выпуска: {book.GetReleaseYear()}.");
-                }
-            }
+                List<Book> foundBooks = new List<Book>();
+                bool isFound = false;
 
-            public void Find()
-            {
                 Console.Write("\nВы можете совершить поиск:" +
-                    "\n\nname - по названию." +
-                    "\nauthor - по автору." +
-                    "\nreleaseYear - по году выпуска." +
+                    $"\n\n{SearchByName} - по названию." +
+                    $"\n{SearchByAuthor} - по автору." +
+                    $"\n{SearchByReleaseYear} - по году выпуска." +
                     "\n\nВаш выбор: ");
 
-                switch (Console.ReadLine())
+                string searchParametr = Console.ReadLine();
+
+                while (isFound == false)
                 {
-                    case "name":
-                        Print(GetBookByName());
-                        break;
+                    string name = "";
+                    string author = "";
+                    int releaseYear = 0;
 
-                    case "author":
-                        Print(GetBookByAuthor());
-                        break;
-
-                    case "releaseYear":
-                        Print(GetBookByReleaseYear());
-                        break;
-
-                    default:
-                        Console.WriteLine("Данная команда неизвестна");
-                        break;
-                }
-            }
-
-            private Book CreateBook()
-            {
-                Console.Write("Напишите название книги: ");
-                string name = Console.ReadLine();
-
-                Console.Write("Укажите автора, написавшего книгу: ");
-                string author = Console.ReadLine();
-
-                bool isReceived = false;
-                int releaseYear;
-
-                do
-                {
-                    Console.Write("Напишите год выпуска книги: ");
-
-                    if (Int32.TryParse(Console.ReadLine(), out releaseYear))
+                    switch (searchParametr)
                     {
-                        isReceived = true;
+                        case SearchByName:
+                            name = GetName();
+                            break;
+
+                        case SearchByAuthor:
+                            author = GetAuthor();
+                            break;
+
+                        case SearchByReleaseYear:
+                            releaseYear = GetReleaseYear();
+                            break;
+
+                        default:
+                            Console.WriteLine("Данная команда неизвестна");
+                            isFound = true;
+                            break;
                     }
-                    else
-                    {
-                        Console.WriteLine("Год выпуска книги введен не верно.\n");
-                    }
-                }
-                while (isReceived == false);
-
-                Book book = new Book(name, author, releaseYear);
-
-                return book;
-            }
-
-            private Book GetBookByName()
-            {
-                Book foundBook = null;
-                bool isFound = false;
-
-                do
-                {
-                    Console.Write("Напишите название книги: ");
-                    string name = Console.ReadLine();
 
                     foreach (Book book in _books)
                     {
-                        if (book.GetName() == name)
+                        if (book.Name == name || book.Author == author || book.ReleaseYear == releaseYear)
                         {
-                            foundBook = book;
+                            foundBooks.Add(book);
                             isFound = true;
                         }
                     }
-                }
-                while (isFound == false);
 
-                return foundBook;
-            }
-
-            private Book GetBookByAuthor()
-            {
-                Book foundBook = null;
-                bool isFound = false;
-
-                do
-                {
-                    Console.Write("Напишите автора книги: ");
-                    string author = Console.ReadLine();
-
-                    foreach (Book book in _books)
+                    if (isFound == false)
                     {
-                        if (book.GetAuthor() == author)
-                        {
-                            foundBook = book;
-                            isFound = true;
-                        }
+                        Console.WriteLine("Такой книги нет в хранилище, попробуйте еще раз.");
                     }
                 }
-                while (isFound == false);
 
-                return foundBook;
+                PrintBooks(foundBooks);
             }
+        }
 
-            private Book GetBookByReleaseYear()
+        private void PrintBooks(List<Book> books)
+        {
+            foreach (Book book in books)
             {
-                Book foundBook = null;
-                bool isFound = false;
+                Console.WriteLine($"Книга - {book.Name} от автора {book.Author}. Год выпуска: {book.ReleaseYear}.");
+            }
+        }
 
-                do
+        private Book CreateBook()
+        {
+            Console.Write("Напишите название книги: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Укажите автора, написавшего книгу: ");
+            string author = Console.ReadLine();
+
+            bool isReceived = false;
+            int releaseYear;
+
+            do
+            {
+                Console.Write("Напишите год выпуска книги: ");
+
+                if (Int32.TryParse(Console.ReadLine(), out releaseYear))
                 {
-                    Console.Write("Напишите год выпуска книги: ");
-                    Int32.TryParse(Console.ReadLine(), out int releaseYear);
+                    isReceived = true;
+                }
+                else
+                {
+                    Console.WriteLine("Год выпуска книги введен не верно.\n");
+                }
+            }
+            while (isReceived == false);
 
-                    foreach (Book book in _books)
+            Book book = new Book(name, author, releaseYear);
+
+            return book;
+        }
+
+        private List<Book> GetBooksByName()
+        {
+            List<Book> foundBooks = new List<Book>();
+            bool isFound = false;
+
+            while (isFound == false)
+            {
+                string name = GetName();
+                foreach (Book book in _books)
+                {
+                    if (book.Name == name)
                     {
-                        if (book.GetReleaseYear() == releaseYear)
-                        {
-                            foundBook = book;
-                            isFound = true;
-                        }
+                        foundBooks.Add(book);
+                        isFound = true;
                     }
                 }
-                while (isFound == false);
 
-                return foundBook;
+                if (isFound == false)
+                {
+                    Console.WriteLine("Такой книги нет в хранилище, попробуйте еще раз.");
+                }
             }
+
+            return foundBooks;
+        }
+
+        private string GetName()
+        {
+            Console.Write("Напишите название книги: ");
+            string name = Console.ReadLine();
+
+            return name;
+        }
+
+        private string GetAuthor()
+        {
+            Console.Write("Напишите автора книги: ");
+            string author = Console.ReadLine();
+
+            return author;
+        }
+
+        private int GetReleaseYear()
+        {
+            Console.Write("Напишите год выпуска книги: ");
+            Int32.TryParse(Console.ReadLine(), out int releaseYear);
+
+            return releaseYear;
         }
     }
 }
