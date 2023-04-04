@@ -10,220 +10,218 @@ namespace OOP
             Database database = new Database();
             database.Work();
         }
+    }
 
-        class Database
+    class Database
+    {
+        private Dictionary<int, Player> _players = new Dictionary<int, Player>();
+
+        public void Work()
         {
-            private Dictionary<int, Player> _playerDb = new Dictionary<int, Player>();
-
-            public void Work()
+            bool isWorking = true;
+            while (isWorking)
             {
-                bool isWorking = true;
-                while (isWorking)
+                Console.WriteLine("База данных игроков");
+                Console.Write("\nМеню команд:" +
+                    "\n\nadd - добавить игрока." +
+                    "\nban - забанить игрока." +
+                    "\nunban - разбанить игрока." +
+                    "\ndelete - удалить игрока." +
+                    "\nexit - выйти из программы." +
+                    "\n\nВведите команду: ");
+
+                switch (Console.ReadLine())
                 {
-                    Console.WriteLine("База данных игроков");
-                    Console.Write("\nМеню команд:" +
-                        "\n\nadd - добавить игрока." +
-                        "\nban - забанить игрока." +
-                        "\nunban - разбанить игрока." +
-                        "\ndelete - удалить игрока." +
-                        "\nexit - выйти из программы." +
-                        "\n\nВведите команду: ");
+                    case "add":
+                        AddPlayer();
+                        break;
 
-                    switch (Console.ReadLine())
-                    {
-                        case "add":
-                            AddPlayer();
-                            break;
+                    case "ban":
+                        BanPlayer();
+                        break;
 
-                        case "ban":
-                            BanPlayer();
-                            break;
+                    case "unban":
+                        UnbanPlayer();
+                        break;
 
-                        case "unban":
-                            UnbanPlayer();
-                            break;
+                    case "delete":
+                        DeletePlayer();
+                        break;
 
-                        case "delete":
-                            DeletePlayer();
-                            break;
+                    case "exit":
+                        isWorking = false;
+                        break;
 
-                        case "exit":
-                            isWorking = false;
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    Console.ReadKey();
-                    Console.Clear();
+                    default:
+                        break;
                 }
-            }
 
-            private void AddPlayer()
-            {
-                int id = _playerDb.Count;
-                Player player = CreatePlayer(id);
-
-                _playerDb.Add(id, player);
-            }
-
-            private void BanPlayer()
-            {
-                bool isBanned;
-
-                do
-                {
-                    int id = GetPlayerId();
-                    Player player = GetPlayer(id);
-
-                    isBanned = player.CheckIdRequest(id, true);
-
-                    if (isBanned == false)
-                    {
-                        Console.WriteLine("Ид введен не верно.\n");
-                    }
-                }
-                while (isBanned);
-            }
-
-            private void UnbanPlayer()
-            {
-                bool isUnbanned;
-
-                do
-                {
-                    int id = GetPlayerId();
-                    Player player = GetPlayer(id);
-
-                    isUnbanned = player.CheckIdRequest(id, false);
-
-                    if (isUnbanned == false)
-                    {
-                        Console.WriteLine("Ид введен не верно.\n");
-                    }
-                }
-                while (isUnbanned);
-            }
-
-            private void DeletePlayer()
-            {
-                int id;
-
-                do
-                {
-                    id = GetPlayerId();
-                }
-                while (_playerDb.ContainsKey(id) == false);
-
-                _playerDb.Remove(id);
-            }
-
-            private Player GetPlayer(int id)
-            {
-                bool isReceived = false;
-                Player player;
-
-                do
-                {
-                    if (_playerDb.TryGetValue(id, out player))
-                    {
-                        isReceived = true;
-                    }
-                    else
-                    {
-                        id = GetPlayerId();
-                    }
-                }
-                while (isReceived);
-
-                return player;
-            }
-
-            private int GetPlayerId()
-            {
-                bool isReceived = false;
-                int id;
-
-                do
-                {
-                    Console.Write("Напишите ид игрока: ");
-
-                    if (Int32.TryParse(Console.ReadLine(), out id))
-                    {
-                        isReceived = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ид введен не верно.\n");
-                    }
-                }
-                while (isReceived);
-
-                return id;
-            }
-
-            private Player CreatePlayer(int id)
-            {
-                bool isReceived = false;
-                int level;
-
-                do
-                {
-                    Console.Write("Напишите уровень игрока: ");
-
-                    if (Int32.TryParse(Console.ReadLine(), out level))
-                    {
-                        isReceived = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Уровень введен не верно.\n");
-                    }
-                }
-                while (isReceived);
-
-                Console.Write("Напишите имя игрока: ");
-                string name = Console.ReadLine();
-
-                Player player = new Player(id, level, name);
-
-                return player;
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
-        class Player
+        private void AddPlayer()
         {
-            private int _id;
-            private int _level;
-            private string _nickname;
-            private bool _isBanned;
+            Player player = CreatePlayer();
 
-            public Player(int id, int level, string nickname, bool isBanned = false)
-            {
-                _id = id;
-                _level = level;
-                _nickname = nickname;
-                _isBanned = isBanned;
-            }
+            _players.Add(player.Id, player);
+        }
 
-            public bool CheckIdRequest(int id, bool isBanned)
+        private void BanPlayer()
+        {
+            bool isBanned = true;
+
+            ChangePlayerStatus(isBanned);
+        }
+
+        private void UnbanPlayer()
+        {
+            bool isBanned = false;
+
+            ChangePlayerStatus(isBanned);
+        }
+
+        private void ChangePlayerStatus(bool isBanned)
+        {
+            bool isChanged = false;
+
+            while (isChanged == false)
             {
-                if (_id == id)
+                int id = GetPlayerId();
+                Player player = GetPlayer(id);
+
+                isChanged = player.CheckIdRequest(id, isBanned);
+
+                if (isChanged == false)
                 {
-                    SetBannedStatus(isBanned);
-                    return true;
+                    Console.WriteLine("Ид введен не верно.\n");
+                }
+            }
+        }
+
+        private void DeletePlayer()
+        {
+            int id;
+
+            do
+            {
+                id = GetPlayerId();
+            }
+            while (_players.ContainsKey(id) == false);
+
+            _players.Remove(id);
+        }
+
+        private Player GetPlayer(int id)
+        {
+            bool isReceived = false;
+            Player player = null;
+
+            while (isReceived == false)
+            {
+                if (_players.TryGetValue(id, out player))
+                {
+                    isReceived = true;
                 }
                 else
                 {
-                    return false;
+                    Console.WriteLine("Пользователя с таким ид не существует.\n");
+                    id = GetPlayerId();
                 }
             }
 
-            private void SetBannedStatus(bool isBanned)
+            return player;
+        }
+
+        private int GetPlayerId()
+        {
+            int id = GetNumber("Напишите ид игрока: ");
+
+            return id;
+        }
+
+        private Player CreatePlayer()
+        {
+            int level = GetNumber("Напишите уровень игрока: ");
+
+            Console.Write("Напишите имя игрока: ");
+            string name = Console.ReadLine();
+
+            Player player = new Player(level, name);
+
+            return player;
+        }
+
+        private int GetNumber(string request)
+        {
+            int number = 0;
+            bool isReceived = false;
+
+            while (isReceived == false)
             {
-                _isBanned = isBanned;
+                Console.Write(request);
+
+                if (Int32.TryParse(Console.ReadLine(), out number))
+                {
+                    isReceived = true;
+                }
+                else
+                {
+                    Console.WriteLine("Число введено не верно.\n");
+                }
             }
+
+            return number;
+        }
+    }
+
+    class Player
+    {
+        private static int _ids;
+        private int _level;
+        private string _nickname;
+        private bool _isBanned;
+
+        public Player(int level, string nickname, bool isBanned = false)
+        {
+            Id = ++_ids;
+            _level = level;
+            _nickname = nickname;
+            _isBanned = isBanned;
+        }
+
+        public int Id { get; private set; }
+
+        public bool CheckIdRequest(int id, bool isBanned)
+        {
+            if (Id == id)
+            {
+                if (isBanned)
+                {
+                    SetBan();
+                }
+                else
+                {
+                    SetUnban();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void SetBan()
+        {
+            _isBanned = true;
+        }
+
+        private void SetUnban()
+        {
+            _isBanned = false;
         }
     }
 }
