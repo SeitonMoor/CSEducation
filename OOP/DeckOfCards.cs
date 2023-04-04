@@ -67,10 +67,6 @@ namespace OOP
 
         private List<Card> _cards = new List<Card>();
 
-        public Deck()
-        {
-        }
-
         public void StartGame(CardPlayer player)
         {
             bool isNeededCard = true;
