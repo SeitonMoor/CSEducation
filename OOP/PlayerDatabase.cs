@@ -142,9 +142,16 @@ namespace OOP
 
         private void PrintAllPlayers()
         {
-            foreach (Player player in _players.Values)
+            if (_players.Count == 0)
             {
-                Console.WriteLine($"{player.Nickname} - Уровень: {player.Level} | Статус бана: {player.IsBanned}");
+                Console.WriteLine("База игроков пуста.");
+            }
+            else
+            {
+                foreach (Player player in _players.Values)
+                {
+                    Console.WriteLine($"{player.Nickname} - Уровень: {player.Level} | Статус бана: {player.IsBanned}");
+                }
             }
         }
 
