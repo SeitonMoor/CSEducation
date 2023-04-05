@@ -14,16 +14,17 @@ namespace OOP
 
     class Database
     {
-        private const string AddCommand = "add";
-        private const string BanCommand = "ban";
-        private const string UnbanCommand = "unban";
-        private const string DeleteCommand = "delete";
-        private const string ExitCommand = "exit";
-
         private Dictionary<int, Player> _players = new Dictionary<int, Player>();
 
         public void Work()
         {
+            const string AddCommand = "add";
+            const string BanCommand = "ban";
+            const string UnbanCommand = "unban";
+            const string DeleteCommand = "delete";
+            const string ViewAllCommand = "viewAll";
+            const string ExitCommand = "exit";
+
             bool isWorking = true;
             while (isWorking)
             {
@@ -33,6 +34,7 @@ namespace OOP
                     $"\n{BanCommand} - забанить игрока." +
                     $"\n{UnbanCommand} - разбанить игрока." +
                     $"\n{DeleteCommand} - удалить игрока." +
+                    $"\n{ViewAllCommand} - посмотреть список игроков." +
                     $"\n{ExitCommand} - выйти из программы." +
                     "\n\nВведите команду: ");
 
@@ -43,15 +45,19 @@ namespace OOP
                         break;
 
                     case BanCommand:
-                        PrepareBanUnban(BanCommand);
+                        BanPlayer();
                         break;
 
                     case UnbanCommand:
-                        PrepareBanUnban(UnbanCommand);
+                        UnbanPlayer();
                         break;
 
                     case DeleteCommand:
                         DeletePlayer();
+                        break;
+
+                    case ViewAllCommand:
+                        PrintAllPlayers();
                         break;
 
                     case ExitCommand:
@@ -70,13 +76,13 @@ namespace OOP
 
         private void AddPlayer()
         {
-            Player player = CreatePlayer();
+            Player player = FillPlayerInformation();
 
             _players.Add(player.Id, player);
             Console.WriteLine("Игрок добавлен в базу данных");
         }
 
-        private void PrepareBanUnban(string command)
+        private void BanPlayer()
         {
             if (_players.Count == 0)
             {
@@ -84,30 +90,28 @@ namespace OOP
             }
             else
             {
-                int id = GetPlayerId();
+                int id = GetNumber("Напишите ид игрока: ");
                 Player player = GetPlayer(id);
 
-                if (command == BanCommand)
-                {
-                    BanPlayer(player);
-                }
-                else if (command == UnbanCommand)
-                {
-                    UnbanPlayer(player);
-                }
+                player.Ban();
+                Console.WriteLine("Игрок забанен");
             }
         }
 
-        private void BanPlayer(Player player)
+        private void UnbanPlayer()
         {
-            player.GetBan();
-            Console.WriteLine("Игрок забанен");
-        }
+            if (_players.Count == 0)
+            {
+                Console.WriteLine("База игроков пуста.");
+            }
+            else
+            {
+                int id = GetNumber("Напишите ид игрока: ");
+                Player player = GetPlayer(id);
 
-        private void UnbanPlayer(Player player)
-        {
-            player.GetUnban();
-            Console.WriteLine("Игрок разбанен");
+                player.Unban();
+                Console.WriteLine("Игрок разбанен");
+            }
         }
 
         private void DeletePlayer()
@@ -122,7 +126,7 @@ namespace OOP
 
                 do
                 {
-                    id = GetPlayerId();
+                    id = GetNumber("Напишите ид игрока: ");
 
                     if (_players.ContainsKey(id) == false)
                     {
@@ -136,7 +140,15 @@ namespace OOP
             }
         }
 
-        private Player GetPlayer(int id)
+        private void PrintAllPlayers()
+        {
+            foreach (Player player in _players.Values)
+            {
+                Console.WriteLine($"{player.Nickname} - Уровень: {player.Level} | Статус бана: {player.IsBanned}");
+            }
+        }
+
+            private Player GetPlayer(int id)
         {
             bool isReceived = false;
             Player player = null;
@@ -150,21 +162,14 @@ namespace OOP
                 else
                 {
                     Console.WriteLine("Игрок с таким ид не существует.\n");
-                    id = GetPlayerId();
+                    id = GetNumber("Напишите ид игрока: ");
                 }
             }
 
             return player;
         }
 
-        private int GetPlayerId()
-        {
-            int id = GetNumber("Напишите ид игрока: ");
-
-            return id;
-        }
-
-        private Player CreatePlayer()
+        private Player FillPlayerInformation()
         {
             int level = GetNumber("Напишите уровень игрока: ");
 
@@ -202,28 +207,29 @@ namespace OOP
     class Player
     {
         private static int _ids;
-        private int _level;
-        private string _nickname;
-        private bool _isBanned;
 
         public Player(int level, string nickname, bool isBanned = false)
         {
             Id = ++_ids;
-            _level = level;
-            _nickname = nickname;
-            _isBanned = isBanned;
+            Level = level;
+            Nickname = nickname;
+            IsBanned = isBanned;
         }
+
+        public int Level { get; private set; }
+        public string Nickname { get; private set; }
+        public bool IsBanned { get; private set; }
 
         public int Id { get; private set; }
 
-        public void GetBan()
+        public void Ban()
         {
-            _isBanned = true;
+            IsBanned = true;
         }
 
-        public void GetUnban()
+        public void Unban()
         {
-            _isBanned = false;
+            IsBanned = false;
         }
     }
 }
