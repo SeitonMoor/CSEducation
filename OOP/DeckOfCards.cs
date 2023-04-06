@@ -7,10 +7,11 @@ namespace OOP
     {
         static void Main(string[] args)
         {   
-            CardPlayer player = new CardPlayer();
+            Croupier croupier = new Croupier();
+            Gambler player = new Gambler();
             Deck deck = new Deck();
 
-            deck.StartGame(player);
+            croupier.StartGame(player, deck);
 
             player.ShowTakenCards();
         }
@@ -41,7 +42,7 @@ namespace OOP
         Spades,
     }
 
-    class CardPlayer
+    class Gambler
     {
         private List<Card> _cards = new List<Card>();
 
@@ -60,17 +61,15 @@ namespace OOP
         }
     }
 
-    class Deck
+    class Croupier
     {
-        private const string TakeCommand = "take";
-        private const string ExitCommand = "exit";
-
-        private List<Card> _cards = new List<Card>();
-
-        public void StartGame(CardPlayer player)
+        public void StartGame(Gambler player, Deck deck)
         {
+            const string TakeCommand = "take";
+            const string ExitCommand = "exit";
+
             bool isNeededCard = true;
-            CreateNewDeck();
+            deck.CreateNewDeck();
 
             while (isNeededCard)
             {
@@ -83,7 +82,7 @@ namespace OOP
                 switch (Console.ReadLine())
                 {
                     case TakeCommand:
-                        GiveCard(player);
+                        PullOutCard(player, deck);
                         break;
 
                     case ExitCommand:
@@ -101,7 +100,22 @@ namespace OOP
             }
         }
 
-        public void GiveCard(CardPlayer player)
+        private void PullOutCard(Gambler player, Deck deck)
+        {
+            Card givenCard = deck.GiveCard();
+
+            if (givenCard is null == false)
+            {
+                player.TakeCard(givenCard);
+            }
+        }
+    }
+
+    class Deck
+    {
+        private List<Card> _cards = new List<Card>();
+
+        public Card GiveCard()
         {
             if (_cards.Count == 0)
             {
@@ -120,14 +134,16 @@ namespace OOP
                     if (_cards[cardIndex] is Card givenCard)
                     {
                         _cards.Remove(_cards[cardIndex]);
-                        player.TakeCard(givenCard);
-                        isNotTookCard = false;
+
+                        return givenCard;
                     }
                 }
             }
+
+            return null;
         }
 
-        private void CreateNewDeck()
+        public void CreateNewDeck()
         {
             Array rankValues = Enum.GetValues(typeof(Rank));
             Array suitValues = Enum.GetValues(typeof(Suit));
