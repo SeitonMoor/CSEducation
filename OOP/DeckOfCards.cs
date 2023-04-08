@@ -11,7 +11,7 @@ namespace OOP
             Gambler player = new Gambler();
             Deck deck = new Deck();
 
-            croupier.StartGame(player, deck);
+            croupier.Play(player, deck);
 
             player.ShowTakenCards();
         }
@@ -63,13 +63,13 @@ namespace OOP
 
     class Croupier
     {
-        public void StartGame(Gambler player, Deck deck)
+        public void Play(Gambler player, Deck deck)
         {
             const string TakeCommand = "take";
             const string ExitCommand = "exit";
 
             bool isNeededCard = true;
-            deck.CreateNewDeck();
+            deck.CreateNew();
 
             while (isNeededCard)
             {
@@ -104,7 +104,7 @@ namespace OOP
         {
             Card givenCard = deck.GiveCard();
 
-            if (givenCard is null == false)
+            if (givenCard != null)
             {
                 player.TakeCard(givenCard);
             }
@@ -127,8 +127,7 @@ namespace OOP
                 int minCardIndex = 0;
                 int maxCardIndex = _cards.Count;
 
-                bool isNotTookCard = true;
-                while (isNotTookCard)
+                while (true)
                 {
                     int cardIndex = random.Next(minCardIndex, maxCardIndex);
                     if (_cards[cardIndex] is Card givenCard)
@@ -143,7 +142,7 @@ namespace OOP
             return null;
         }
 
-        public void CreateNewDeck()
+        public void CreateNew()
         {
             Array rankValues = Enum.GetValues(typeof(Rank));
             Array suitValues = Enum.GetValues(typeof(Suit));
