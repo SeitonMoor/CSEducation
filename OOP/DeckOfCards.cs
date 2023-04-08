@@ -67,9 +67,9 @@ namespace OOP
         {
             const string TakeCommand = "take";
             const string ExitCommand = "exit";
-
             bool isNeededCard = true;
-            deck.CreateNew();
+            deck.Create();
+            deck.Shuffle();
 
             while (isNeededCard)
             {
@@ -123,26 +123,20 @@ namespace OOP
             }
             else
             {
-                Random random = new Random();
-                int minCardIndex = 0;
-                int maxCardIndex = _cards.Count;
+                int topCardIndex = 0;
 
-                while (true)
+                if (_cards[topCardIndex] is Card givenCard)
                 {
-                    int cardIndex = random.Next(minCardIndex, maxCardIndex);
-                    if (_cards[cardIndex] is Card givenCard)
-                    {
-                        _cards.Remove(_cards[cardIndex]);
+                    _cards.Remove(_cards[topCardIndex]);
 
-                        return givenCard;
-                    }
+                    return givenCard;
                 }
             }
 
             return null;
         }
 
-        public void CreateNew()
+        public void Create()
         {
             Array rankValues = Enum.GetValues(typeof(Rank));
             Array suitValues = Enum.GetValues(typeof(Suit));
@@ -153,6 +147,20 @@ namespace OOP
                 {
                     _cards.Add(new Card(rank, suit));
                 }
+            }
+        }
+
+        public void Shuffle()
+        {
+            Random random = new Random();
+            int lastIndex = _cards.Count - 1;
+
+            for (int i = lastIndex; i > 0; i--)
+            {
+                int newIndex = random.Next(i + 1);
+                Card temp = _cards[newIndex];
+                _cards[newIndex] = _cards[i];
+                _cards[i] = temp;
             }
         }
     }
