@@ -67,7 +67,9 @@ namespace OOP
         {
             const string TakeCommand = "take";
             const string ExitCommand = "exit";
+
             bool isNeededCard = true;
+
             deck.Create();
             deck.Shuffle();
 
@@ -155,12 +157,11 @@ namespace OOP
             Random random = new Random();
             int lastIndex = _cards.Count - 1;
 
-            for (int i = lastIndex; i > 0; i--)
+            for (int i = 0; i < lastIndex; i++)
             {
-                int newIndex = random.Next(i + 1);
-                Card temp = _cards[newIndex];
-                _cards[newIndex] = _cards[i];
-                _cards[i] = temp;
+                int newIndex = random.Next(lastIndex);
+
+                (_cards[i], _cards[newIndex]) = (_cards[newIndex], _cards[i]);
             }
         }
     }
