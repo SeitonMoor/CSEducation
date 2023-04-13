@@ -5,74 +5,137 @@ namespace OOP
 {
     internal class Store
     {
-        private const string SeeCommand = "see";
-        private const string BuyCommand = "buy";
-        private const string ViewCommand = "view";
-        private const string ExitCommand = "exit";
-
         static void Main(string[] args)
         {
+            Market market = new Market();
             Buyer buyer = new Buyer();
             Seller seller = new Seller();
-            bool isWorking = true;
 
-            while (isWorking)
+            market.Work(seller, buyer);
+        }
+
+        class Market
+        {
+            public void Work(Seller seller, Buyer buyer)
             {
-                Console.WriteLine("Магазин");
-                Console.Write("\nВы можете:" +
-                    $"\n\n{SeeCommand} - посмотреть список товаров." +
-                    $"\n{BuyCommand} - купить товар." +
-                    $"\n{ViewCommand} - посмотреть купленные товары." +
-                    $"\n{ExitCommand}- закончить покупку." +
-                    "\n\nВаш выбор: ");
+                const string SeeCommand = "see";
+                const string BuyCommand = "buy";
+                const string ViewCommand = "view";
+                const string ExitCommand = "exit";
 
-                switch (Console.ReadLine())
+                bool isWorking = true;
+
+                while (isWorking)
                 {
-                    case SeeCommand:
-                        seller.ShowProducts();
-                        break;
+                    Console.WriteLine("Магазин");
+                    Console.Write("\nВы можете:" +
+                        $"\n\n{SeeCommand} - посмотреть список товаров." +
+                        $"\n{BuyCommand} - купить товар." +
+                        $"\n{ViewCommand} - посмотреть купленные товары." +
+                        $"\n{ExitCommand}- закончить покупку." +
+                        "\n\nВаш выбор: ");
 
-                    case BuyCommand:
-                        seller.SellProduct(buyer);
-                        break;
+                    switch (Console.ReadLine())
+                    {
+                        case SeeCommand:
+                            seller.ViewInventory();
+                            break;
 
-                    case ViewCommand:
-                        buyer.ViewInventory();
-                        break;
+                        case BuyCommand:
+                            Trade(seller, buyer);
+                            break;
 
-                    case ExitCommand:
-                        isWorking = false;
-                        break;
+                        case ViewCommand:
+                            buyer.ViewInventory();
+                            break;
 
-                    default:
-                        Console.WriteLine("Данная команда неизвестна");
-                        break;
+                        case ExitCommand:
+                            isWorking = false;
+                            break;
+
+                        default:
+                            Console.WriteLine("Данная команда неизвестна");
+                            break;
+                    }
+
+                    Console.ReadKey();
+                    Console.Clear();
                 }
+            }
 
-                Console.ReadKey();
-                Console.Clear();
+            public void Trade(Seller seller, Buyer buyer)
+            {
+                Product product = seller.FindProduct();
+
+                if (product != null)
+                {
+                    bool isSold = false;
+
+                    while (isSold == false)
+                    {
+                        Console.Write($"Напишите количество {product.Name} для покупки: ");
+
+                        if (Int32.TryParse(Console.ReadLine(), out int count))
+                        {
+                            if(product.CheckAvailability(count))
+                            {
+                                if (product.Count < count)
+                                {
+                                    Console.WriteLine($"Данного количества товара нет в наличии, максимально возможное - {product.Count}.\n");
+                                }
+                                else if (product.Count == count)
+                                {
+                                    buyer.TakeItem(product, count);
+
+                                    seller.SellAllCount(product);
+
+                                    Console.WriteLine($"\nВы совершили покупку {product.Name} в количестве {count}");
+                                    isSold = true;
+                                }
+                                else
+                                {
+                                    product.ReduceCount();
+
+                                    Product buyerProduct = new Product(product.Name, product.Price, count);
+
+                                    buyer.TakeItem(buyerProduct, count);
+
+                                    Console.WriteLine($"\nВы совершили покупку {product.Name} в количестве {count}");
+                                    isSold = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Количество указано не верно.\n");
+                        }
+                    }
+                }
             }
         }
 
-        class Buyer
+        class Person
         {
-            private List<Product> _items = new List<Product>();
+            protected List<Product> _items = new List<Product>();
 
             public void ViewInventory()
             {
                 if (_items.Count == 0)
                 {
-                    Console.WriteLine("Ваш инвентарь пуст.");
+                    Console.WriteLine("Инвентарь пуст.");
                 }
                 else
                 {
                     foreach (Product item in _items)
                     {
-                        Console.WriteLine($"{item.Name} по цене {item.Price}, в наличии: {item.Count}");
+                        item.PrintInfo();
                     }
                 }
             }
+        }
 
+        class Buyer : Person
+        {
             public void TakeItem(Product product, int count)
             {
                 bool isFound = false;
@@ -81,7 +144,8 @@ namespace OOP
                 {
                     if (product.Name == item.Name)
                     {
-                        item.AddCount(count);
+                        item.CheckAvailability(count);
+                        item.AddCount();
 
                         isFound = true;
                     }
@@ -94,80 +158,57 @@ namespace OOP
             }
         }
 
-        class Seller
+        class Seller : Person
         {
-            private List<Product> _products = new List<Product>();
-
             public Seller()
             {
                 FillProducts();
             }
 
-            public void ShowProducts()
+            public void SellAllCount(Product product)
             {
-                foreach (Product product in _products)
-                {
-                    Console.WriteLine($"{product.Name} по цене {product.Price}, в наличии: {product.Count}");
-                }
+                _items.Remove(product);
             }
 
-            public void SellProduct(Buyer player)
+            public Product FindProduct()
             {
-                Product product = GetProduct();
-                bool isSold = false;
+                const string EndFind = "end";
 
-                while (isSold == false)
-                {
-                    Console.Write($"Напишите количество {product.Name} для покупки: ");
-
-                    if (Int32.TryParse(Console.ReadLine(), out int count))
-                    {
-                        if (product.Count < count)
-                        {
-                            Console.WriteLine($"Данного количества товара нет в наличии, максимально возможное - {product.Count}.\n");
-                        }
-                        else if (product.Count == count)
-                        {
-                            player.TakeItem(product, count);
-
-                            _products.Remove(product);
-
-                            isSold = true;
-                        }
-                        else
-                        {
-                            product.ReduceCount(count);
-
-                            Product playerProduct = new Product(product.Name, product.Price, count);
-
-                            player.TakeItem(playerProduct, count);
-
-                            isSold = true;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Количество указано не верно.\n");
-                    }
-                }
-            }
-
-            private Product GetProduct()
-            {
                 Product foundProduct = null;
+
+                if (_items.Count == 0)
+                {
+                    Console.WriteLine("Инвентарь торговца пуст.");
+                    return foundProduct;
+                }
+
                 bool isFound = false;
 
                 while (isFound == false)
                 {
-                    Console.Write("Выберите продукт для покупки: ");
+                    Console.Write($"\nУкажите желаемы продукт для покупки или {EndFind} - для отмены выбора товара: ");
                     string name = Console.ReadLine();
 
-                    foreach (Product product in _products)
+                    if (name == EndFind)
                     {
-                        if (product.Name == name)
+                        Console.WriteLine("Выбор товара отменен.");
+                        return foundProduct;
+                    }
+                    else
+                    {
+                        foreach (Product product in _items)
                         {
-                            foundProduct = product;
-                            isFound = true;
+                            if (product.Name == name)
+                            {
+                                foundProduct = product;
+                                isFound = true;
+                            }
+                        }
+
+                        if (isFound == false)
+                        {
+                            Console.WriteLine("\nДанный товар отсутствует, посмотрите что имеется в наличии:");
+                            ViewInventory();
                         }
                     }
                 }
@@ -177,17 +218,19 @@ namespace OOP
 
             private void FillProducts()
             {
-                _products.Add(new Product("Арбуз", 120, 11));
-                _products.Add(new Product("Апельсин", 60, 99));
-                _products.Add(new Product("Яблоко", 150, 210));
-                _products.Add(new Product("Виноград", 50, 45));
-                _products.Add(new Product("Кофе", 340, 6));
-                _products.Add(new Product("Миндаль", 330, 12));
+                _items.Add(new Product("Арбуз", 120, 11));
+                _items.Add(new Product("Апельсин", 60, 99));
+                _items.Add(new Product("Яблоко", 150, 210));
+                _items.Add(new Product("Виноград", 50, 45));
+                _items.Add(new Product("Кофе", 340, 6));
+                _items.Add(new Product("Миндаль", 330, 12));
             }
         }
 
         class Product
         {
+            private int _countToChange;
+
             public Product(string name, int price, int count)
             {
                 Name = name;
@@ -199,14 +242,35 @@ namespace OOP
             public int Price { get; private set; }
             public int Count { get; private set; }
 
-            public void AddCount(int count)
+            public bool CheckAvailability(int count)
             {
-                Count += count;
+                _countToChange = 0;
+
+                if (count <= 0)
+                {
+                    Console.WriteLine("Отрицательное количество, минимально возможное - 1.\n");
+                    return false;
+                }
+                else
+                {
+                    _countToChange = count;
+                    return true;
+                }
             }
 
-            public void ReduceCount(int count)
+            public void AddCount()
             {
-                Count -= count;
+                Count += _countToChange;
+            }
+
+            public void ReduceCount()
+            {
+                Count -= _countToChange;
+            }
+
+            public void PrintInfo()
+            {
+                Console.WriteLine($"{Name} по цене {Price}, в наличии: {Count}");
             }
         }
     }
