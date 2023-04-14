@@ -7,60 +7,71 @@ namespace OOP
     {
         static void Main(string[] args)
         {
-            Station station = new Station();
-            bool isWorking = true;
+            RailwaySystem system = new RailwaySystem();
 
-            while (isWorking)
-            {
-                Console.WriteLine("Конфигуратор пассажирских поездов");
-
-                station.ShowDirectionInfo();
-
-                Console.Write("\nВы можете:" +
-                    "\n\ncreate - создать направление." +
-                    "\nsell - продать билеты." +
-                    "\nform - сформировать поезд." +
-                    "\nsend- отправить поезд." +
-                    "\nexit - закончить работу." +
-                    "\n\nВаш выбор: ");
-
-                switch (Console.ReadLine())
-                {
-                    case "create":
-                        station.CreateDirection();
-                        break;
-
-                    case "sell":
-                        station.SellTickets();
-                        break;
-
-                    case "form":
-                        station.FormTrain();
-                        break;
-
-                    case "send":
-                        station.SendTrain();
-                        break;
-
-                    case "exit":
-                        isWorking = false;
-                        Console.WriteLine("\nЗавершение программы!");
-                        break;
-
-                    default:
-                        Console.WriteLine("\nДанная команда неизвестна");
-                        break;
-                }
-
-                Console.ReadKey();
-                Console.Clear();
-            }
+            system.Work();
         }
 
-        class Station
+        class RailwaySystem
         {
             private List<Direction> _directions = new List<Direction>(1);
-            Random random = new Random();
+
+            public void Work()
+            {
+                const string CreateCommand = "create";
+                const string SellCommand = "sell";
+                const string FormCommand = "form";
+                const string SendCommand = "send";
+                const string ExitCommand = "exit";
+
+                bool isWorking = true;
+
+                while (isWorking)
+                {
+                    Console.WriteLine("Конфигуратор пассажирских поездов");
+
+                    ShowDirectionInfo();
+
+                    Console.Write("\nВы можете:" +
+                        $"\n\n{CreateCommand} - создать направление." +
+                        $"\n{SellCommand} - продать билеты." +
+                        $"\n{FormCommand} - сформировать поезд." +
+                        $"\n{SendCommand} - отправить поезд." +
+                        $"\n{ExitCommand} - закончить работу." +
+                        "\n\nВаш выбор: ");
+
+                    switch (Console.ReadLine())
+                    {
+                        case CreateCommand:
+                            CreateDirection();
+                            break;
+
+                        case SellCommand:
+                            SellTickets();
+                            break;
+
+                        case FormCommand:
+                            FormTrain();
+                            break;
+
+                        case SendCommand:
+                            SendTrain();
+                            break;
+
+                        case ExitCommand:
+                            isWorking = false;
+                            Console.WriteLine("\nЗавершение программы!");
+                            break;
+
+                        default:
+                            Console.WriteLine("\nДанная команда неизвестна");
+                            break;
+                    }
+
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            }
 
             public void CreateDirection()
             {
@@ -90,15 +101,17 @@ namespace OOP
                 {
                     Console.WriteLine("\nНаправление еще не было создано.");
                 }
+                else if (GetDirection().PurchasedTickets > 0)
+                {
+                    Console.WriteLine("\nБилеты по данному направлению уже были проданы.");
+                }
                 else
                 {
-                    int purchasedTickets = random.Next(1, 836);
-
                     Direction direction = GetDirection();
 
-                    direction.SetTicketsCount(purchasedTickets);
+                    direction.SellTickets();
 
-                    Console.WriteLine($"\nНа текущий рейс продано - {purchasedTickets} билетов");
+                    Console.WriteLine($"\nНа текущий рейс продано - {direction.PurchasedTickets} билетов");
                 }
             }
 
@@ -108,18 +121,21 @@ namespace OOP
                 {
                     Console.WriteLine("\nНаправление еще не было создано.");
                 }
+                else if (GetDirection().GetCarriagesCount() > 0)
+                {
+                    Console.WriteLine("\nПоезд по данному направлению уже сформирован и готов к отправке.");
+                }
                 else
                 {
                     Direction direction = GetDirection();
 
-                    if (direction.GetTicketsCount() <= 0)
+                    if (direction.PurchasedTickets <= 0)
                     {
                         Console.WriteLine("\nБилеты на рейс еще не проданы.");
                     }
                     else
                     {
-                        Train train = new Train();
-                        int passengers = direction.GetTicketsCount();
+                        int passengers = direction.PurchasedTickets;
                         int carriageCount = 1;
 
                         while (passengers > 0)
@@ -131,7 +147,9 @@ namespace OOP
                             {
                                 Console.Write($"\nУкажите максимальное количество посадочных мест в вагоне №{carriageCount}: ");
 
-                                if (Int32.TryParse(Console.ReadLine(), out maxPassengers))
+                                Int32.TryParse(Console.ReadLine(), out maxPassengers);
+
+                                if (maxPassengers > 0)
                                 {
                                     isReceived = true;
                                 }
@@ -153,14 +171,12 @@ namespace OOP
                                 passengers -= maxPassengers;
                             }
 
-                            train.AddCarriage(carriage);
+                            direction.AddCarriage(carriage);
                             Console.WriteLine($"\nВагон №{carriageCount} добавлен к поезду. Пассажиров осталось к размещению: {passengers}");
                             carriageCount++;
                         }
 
-                        direction.SetTrain(train);
-
-                        Console.WriteLine($"\nПоезд сформирован и готов к отправке, количество вагонов - {train.GetCarriages().Count}");
+                        Console.WriteLine($"\nПоезд сформирован и готов к отправке, количество вагонов - {direction.GetCarriagesCount()}");
                     }
                 }
             }
@@ -175,7 +191,7 @@ namespace OOP
                 {
                     Direction direction = GetDirection();
 
-                    if (direction.GetTicketsCount() <= 0)
+                    if (direction.PurchasedTickets <= 0)
                     {
                         Console.WriteLine("\nБилеты на рейс еще не проданы.");
                     }
@@ -185,8 +201,7 @@ namespace OOP
                     }
                     else
                     {
-                        Console.WriteLine($"\nРейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
-                        $" с количеством пассажиров: {direction.GetTicketsCount()} - отправлен.");
+                        direction.PrintDepartInfo();
 
                         _directions.Clear();
                     }
@@ -199,9 +214,7 @@ namespace OOP
 
                 if (direction != null)
                 {
-                    Console.WriteLine($"\nТекущий рейс: из {direction.GetStartStation()} до {direction.GetEndStation()}" +
-                    $"\nКоличество пассажиров: {direction.GetTicketsCount()}" +
-                    $"\nКоличество вагонов: {direction.GetCarriagesCount()}");
+                    direction.PrintMainInfo();
                 }
                 else
                 {
@@ -231,9 +244,9 @@ namespace OOP
                 _carriages.Add(carriage);
             }
 
-            public List<Carriage> GetCarriages()
+            public int GetCarriagesCount()
             {
-                return _carriages;
+                return _carriages.Count;
             }
         }
         
@@ -249,40 +262,30 @@ namespace OOP
 
         class Direction
         {
-            private string _startStation;
-            private string _endStation;
-            private int _purchasedTickets;
-            private Train _train;
+            private Train _train = new Train();
 
             public Direction(string startStation, string endStation)
             {
-                _startStation = startStation;
-                _endStation = endStation;
+                StartStation = startStation;
+                EndStation = endStation;
             }
 
-            public string GetStartStation()
+            public string StartStation { get; private set; }
+            public string EndStation { get; private set; }
+            public int PurchasedTickets { get; private set; }
+
+            public void SellTickets()
             {
-                return _startStation;
+                Random random = new Random();
+
+                int purchasedTickets = random.Next(1, 836);
+
+                PurchasedTickets = purchasedTickets;
             }
 
-            public string GetEndStation()
+            public void AddCarriage(Carriage carriage)
             {
-                return _endStation;
-            }
-
-            public void SetTicketsCount(int purchasedTickets)
-            {
-                _purchasedTickets = purchasedTickets;
-            }
-
-            public int GetTicketsCount()
-            {
-                return _purchasedTickets;
-            }
-
-            public void SetTrain(Train train)
-            {
-                _train = train;
+                _train.AddCarriage(carriage);
             }
 
             public int GetCarriagesCount()
@@ -293,10 +296,21 @@ namespace OOP
                 }
                 else
                 {
-                    List<Carriage> carriages = _train.GetCarriages();
-
-                    return carriages.Count;
+                    return _train.GetCarriagesCount();
                 }
+            }
+
+            public void PrintMainInfo()
+            {
+                Console.WriteLine($"\nТекущий рейс: из {StartStation} до {EndStation}" +
+                    $"\nКоличество пассажиров: {PurchasedTickets}" +
+                    $"\nКоличество вагонов: {GetCarriagesCount()}");
+            }
+
+            public void PrintDepartInfo()
+            {
+                Console.WriteLine($"\nРейс: из {StartStation} до {EndStation}" +
+                        $" с количеством пассажиров: {PurchasedTickets} - отправлен.");
             }
         }
     }
