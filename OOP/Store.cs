@@ -258,19 +258,17 @@ namespace OOP
                     Console.WriteLine("Выбор товара отменен.");
                     return foundProduct;
                 }
-                else
-                {
-                    foundProduct = Inventory.TryGetProduct(name);
-                    if (foundProduct != null)
-                    {
-                        isFound = true;
-                    }
 
-                    if (isFound == false)
-                    {
-                        Console.WriteLine("\nДанный товар отсутствует, посмотрите что имеется в наличии:");
-                        ViewInventory();
-                    }
+                foundProduct = Inventory.TryGetProduct(name);
+                if (foundProduct != null)
+                {
+                    isFound = true;
+                }
+
+                if (isFound == false)
+                {
+                    Console.WriteLine("\nДанный товар отсутствует, посмотрите что имеется в наличии:");
+                    ViewInventory();
                 }
             }
 
