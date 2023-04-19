@@ -68,104 +68,88 @@ namespace OOP
         {
             Product product = seller.TryGetProduct();
 
-            if (product != null)
+            if (product == null)
             {
-                bool isSold = false;
-
-                while (isSold == false)
-                {
-                    Console.Write($"Напишите количество {product.Name} для покупки: ");
-
-                    if (Int32.TryParse(Console.ReadLine(), out int count))
-                    {
-                        if (seller.HaveAvailability(count))
-                        {
-                            int productCount = seller.GetProductCount(product.Name);
-
-                            if (productCount < count)
-                            {
-                                Console.WriteLine($"Данного количества товара нет в наличии, максимально возможное - {productCount}.\n");
-                            }
-                            else if (productCount == count)
-                            {
-                                if (buyer.CheckSolvency(product.Price))
-                                {
-                                    buyer.TakeItem(product, count);
-
-                                    seller.SellAllPieces(product);
-
-                                    seller.TakeMoney(buyer.ToPay());
-
-                                    Console.WriteLine($"\nВы совершили покупку {product.Name} в количестве {count}");
-                                    isSold = true;
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                if (buyer.CheckSolvency(product.Price))
-                                {
-                                    seller.SellPieces(product);
-
-                                    Product buyerProduct = new Product(product.Name, product.Price);
-
-                                    buyer.TakeItem(buyerProduct, count);
-                                    
-                                    seller.TakeMoney(buyer.ToPay());
-
-                                    Console.WriteLine($"\nВы совершили покупку {product.Name} в количестве {count}");
-                                    isSold = true;
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Количество указано не верно.\n");
-                    }
-                }
+                return;
             }
+
+            bool isSold = false;
+
+            while (isSold == false)
+            {
+                Console.Write($"Напишите количество {product.Name} для покупки: ");
+
+                if (Int32.TryParse(Console.ReadLine(), out int desiredCount) == false)
+                {
+                    Console.WriteLine("Количество указано не верно.\n");
+                    continue;
+                }
+                
+                if (seller.HaveAvailability(desiredCount) == false)
+                {
+                    continue;
+                }
+
+                int productCount = seller.GetProductCount(product.Name);
+
+                if (productCount < desiredCount)
+                {
+                    Console.WriteLine($"Данного количества товара нет в наличии, максимально возможное - {productCount}.\n");
+                    continue;
+                }
+
+                if (buyer.CheckSolvency(product.Price * desiredCount) == false)
+                {
+                    return;
+                }
+
+                MakeDeal(seller, buyer, product, productCount, desiredCount);
+                isSold = true;
+            }
+        }
+
+        private void MakeDeal(Seller seller, Buyer buyer, Product product, int productCount, int desiredCount)
+        {
+            seller.Sell(product, productCount, desiredCount);
+            seller.TakeMoney(buyer.ToPay());
+
+            buyer.TakeItem(product, desiredCount);
+
+            Console.WriteLine($"\nВы совершили покупку {product.Name} в количестве {desiredCount}");
         }
     }
 
     class Person
     {
-        protected Inventory _inventory = new Inventory();
+        protected Inventory Inventory = new Inventory();
 
-        protected int _moneyToPay;
+        protected int MoneyToPay;
 
         public int Money { get; protected set; }
 
         public void ViewInventory()
         {
-            if (_inventory.GetItemsCount() == 0)
+            if (Inventory.GetItemsCount() == 0)
             {
                 Console.WriteLine("Инвентарь пуст.");
             }
             else
             {
-                _inventory.PrintItemsInfo();
+                Inventory.PrintItemsInfo();
             }
         }
 
         public bool CheckSolvency(int money)
         {
-            _moneyToPay = money;
+            MoneyToPay = money;
 
-            if (Money >= _moneyToPay)
+            if (Money >= MoneyToPay)
             {
                 return true;
             }
             else
             {
-                _moneyToPay = 0;
+                MoneyToPay = 0;
                 Console.WriteLine("У вас недостаточно средств.");
 
                 return false;
@@ -182,9 +166,9 @@ namespace OOP
 
         public int ToPay()
         {
-            Money -= _moneyToPay;
+            Money -= MoneyToPay;
 
-            return _moneyToPay;
+            return MoneyToPay;
         }
     }
 
@@ -204,17 +188,17 @@ namespace OOP
         {
             bool isFound = false;
 
-            if (_inventory.TryGetProduct(product.Name) != null)
+            if (Inventory.TryGetProduct(product.Name) != null)
             {
-                _inventory.HaveAvailability(count);
-                _inventory.AddCount(product.Name);
+                Inventory.HaveAvailability(count);
+                Inventory.AddCount(product.Name);
 
                 isFound = true;
             }
 
             if (isFound == false)
             {
-                _inventory.Add(product, count);
+                Inventory.Add(product, count);
             }
         }
     }
@@ -230,22 +214,24 @@ namespace OOP
 
         public bool HaveAvailability(int count)
         {
-            return _inventory.HaveAvailability(count);
+            return Inventory.HaveAvailability(count);
         }
 
         public int GetProductCount(string name)
         {
-            return _inventory.TryGetCount(name);
+            return Inventory.TryGetCount(name);
         }
 
-        public void SellPieces(Product product)
+        public void Sell(Product product, int productCount, int desiredCount)
         {
-            _inventory.ReduceCount(product.Name);
-        }
-
-        public void SellAllPieces(Product product)
-        {
-            _inventory.Remove(product);
+            if (productCount == desiredCount)
+            {
+                Inventory.Remove(product);
+            }
+            else
+            {
+                Inventory.ReduceCount(product.Name);
+            }
         }
 
         public Product TryGetProduct()
@@ -254,7 +240,7 @@ namespace OOP
 
             Product foundProduct = null;
 
-            if (_inventory.GetItemsCount() == 0)
+            if (Inventory.GetItemsCount() == 0)
             {
                 Console.WriteLine("Инвентарь торговца пуст.");
                 return foundProduct;
@@ -274,7 +260,7 @@ namespace OOP
                 }
                 else
                 {
-                    foundProduct = _inventory.TryGetProduct(name);
+                    foundProduct = Inventory.TryGetProduct(name);
                     if (foundProduct != null)
                     {
                         isFound = true;
@@ -293,12 +279,12 @@ namespace OOP
 
         private void FillProducts()
         {
-            _inventory.Add(new Product("Арбуз", 120), 11);
-            _inventory.Add(new Product("Апельсин", 60), 99);
-            _inventory.Add(new Product("Яблоко", 150), 210);
-            _inventory.Add(new Product("Виноград", 50), 45);
-            _inventory.Add(new Product("Кофе", 340), 6);
-            _inventory.Add(new Product("Миндаль", 330), 12);
+            Inventory.Add(new Product("Арбуз", 120), 11);
+            Inventory.Add(new Product("Апельсин", 60), 99);
+            Inventory.Add(new Product("Яблоко", 150), 210);
+            Inventory.Add(new Product("Виноград", 50), 45);
+            Inventory.Add(new Product("Кофе", 340), 6);
+            Inventory.Add(new Product("Миндаль", 330), 12);
         }
     }
 
