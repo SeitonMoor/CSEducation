@@ -63,7 +63,7 @@ namespace OOP
 
             while (isChosen == false)
             {
-                chosenFighter = CreateFighter();
+                chosenFighter = TryGetFighter();
 
                 if (chosenFighter != null)
                 {
@@ -75,48 +75,52 @@ namespace OOP
             return chosenFighter;
         }
 
-        private Fighter CreateFighter()
+        private Fighter TryGetFighter()
         {
-            const string Warrior = "1";
-            const string WarriorName = "Воин";
-            const string Wizard = "2";
-            const string WizardName = "Маг";
-            const string Shooter = "3";
-            const string ShooterName = "Стрелок";
-            const string Paladin = "4";
-            const string PaladinName = "Паладин";
-            const string Druid = "5";
-            const string DruidName = "Друид";
+            List<Fighter> fighters = InitializeFighters();
 
-            Console.Write($"\nВыберите бойца:" +
-                        $"\n\n{Warrior} - выбрать бойца - {WarriorName}." +
-                        $"\n{Wizard} - выбрать бойца - {WizardName}." +
-                        $"\n{Shooter} - выбрать бойца - {ShooterName}." +
-                        $"\n{Paladin} - выбрать бойца - {PaladinName}." +
-                        $"\n{Druid} - выбрать бойца - {DruidName}." +
-                        $"\n\nВаш выбор: ");
+            int count = 1;
+            Console.WriteLine("\nВыберите бойца:");
 
-            switch (Console.ReadLine())
+            foreach (Fighter fighter in fighters)
             {
-                case Warrior:
-                    return new Warrior(WarriorName);
-
-                case Wizard:
-                    return new Wizard(WizardName);
-
-                case Shooter:
-                    return new Shooter(ShooterName);
-
-                case Paladin:
-                    return new Paladin(PaladinName);
-
-                case Druid:
-                    return new Druid(DruidName);
-
-                default:
-                    Console.WriteLine("\nДанная команда неизвестна");
-                    return null;
+                Console.WriteLine($"{count++} - выбрать бойца - {fighter.Name}");
             }
+
+            Console.Write("\nВаш выбор: ");
+            if(Int32.TryParse(Console.ReadLine(), out int fighterNumber) == false || IsValidNumber(fighters, fighterNumber) == false)
+            {
+                Console.WriteLine("\nДанная команда неизвестна");
+                return null;
+            }
+
+            int fighterId = fighterNumber - 1;
+
+            return fighters[fighterId];
+        }
+
+        private bool IsValidNumber(List<Fighter> fighters, int fighterNumber)
+        {
+            if (fighterNumber > 0 && fighterNumber <= fighters.Count)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private List<Fighter> InitializeFighters()
+        {
+            List<Fighter> fighters = new List<Fighter>
+            {
+                new Warrior(),
+                new Wizard(),
+                new Hunter(),
+                new Paladin(),
+                new Druid()
+            };
+
+            return fighters;
         }
 
         private void Battle(Fighter fighter1, Fighter fighter2)
@@ -137,7 +141,7 @@ namespace OOP
 
         private void Fight(Fighter fighter1, Fighter fighter2)
         {
-            fighter1.TakeDamage(fighter2.DealDamage());
+            fighter1.Attack(fighter2);
         }
 
         private void ShowWinner(Fighter fighter1, Fighter fighter2)
@@ -165,12 +169,19 @@ namespace OOP
         public string Name { get; protected set; }
         public int Health { get; protected set; }
 
-        public virtual int DealDamage()
+        public void Attack(Fighter fighter)
+        {
+            int damage = DealDamage();
+
+            fighter.TakeDamage(damage);
+        }
+
+        protected virtual int DealDamage()
         {
             return Damage;
         }
 
-        public virtual void TakeDamage(int damage)
+        protected virtual void TakeDamage(int damage)
         {
             damage -= Armour;
             if (damage < 0)
@@ -191,19 +202,19 @@ namespace OOP
 
     class Warrior : Fighter
     {
-        private const int MeleeDamage = 9;
-        private const int ArmourLevel = 7;
-        private const int MaxHealth = 150;
+        private readonly int _meleeDamage = 9;
+        private readonly int _armourLevel = 7;
+        private readonly int _maxHealth = 150;
 
-        public Warrior(string name)
+        public Warrior()
         {
-            Name = name;
-            Damage = MeleeDamage;
-            Armour = ArmourLevel;
-            Health = MaxHealth;
+            Name = nameof(Warrior);
+            Damage = _meleeDamage;
+            Armour = _armourLevel;
+            Health = _maxHealth;
         }
 
-        public override void TakeDamage(int damage)
+        protected override void TakeDamage(int damage)
         {
             Random random = new Random();
 
@@ -215,23 +226,23 @@ namespace OOP
 
     class Wizard : Fighter
     {
-        private const int MeleeDamage = 3;
-        private const int ArmourLevel = 2;
-        private const int MaxHealth = 80;
-        private const int MaxMana = 100;
+        private readonly int _meleeDamage = 3;
+        private readonly int _armourLevel = 2;
+        private readonly int _maxHealth = 80;
+        private readonly int _maxMana = 100;
 
         private int _mana;
 
-        public Wizard(string name)
+        public Wizard()
         {
-            Name = name;
-            Damage = MeleeDamage;
-            Armour = ArmourLevel;
-            Health = MaxHealth;
-            _mana = MaxMana;
+            Name = nameof(Wizard);
+            Damage = _meleeDamage;
+            Armour = _armourLevel;
+            Health = _maxHealth;
+            _mana = _maxMana;
         }
 
-        public override int DealDamage()
+        protected override int DealDamage()
         {
             if (_mana > 0)
             {
@@ -279,25 +290,25 @@ namespace OOP
         }
     }
 
-    class Shooter : Fighter
+    class Hunter : Fighter
     {
-        private const int MeleeDamage = 7;
-        private const int ArmourLevel = 3;
-        private const int MaxHealth = 100;
-        private const int MaxAmmo = 20;
+        private readonly int _meleeDamage = 7;
+        private readonly int _armourLevel = 3;
+        private readonly int _maxHealth = 100;
+        private readonly int _maxAmmo = 20;
 
         private int _ammunition;
 
-        public Shooter(string name)
+        public Hunter()
         {
-            Name = name;
-            Damage = MeleeDamage + MeleeDamage;
-            Armour = ArmourLevel;
-            Health = MaxHealth;
-            _ammunition = MaxAmmo;
+            Name = nameof(Hunter);
+            Damage = _meleeDamage + _meleeDamage;
+            Armour = _armourLevel;
+            Health = _maxHealth;
+            _ammunition = _maxAmmo;
         }
 
-        public override int DealDamage()
+        protected override int DealDamage()
         {
             if (_ammunition > 0)
             {
@@ -306,32 +317,32 @@ namespace OOP
             }
             else
             {
-                return MeleeDamage;
+                return _meleeDamage;
             }
         }
     }
 
     class Paladin : Fighter
     {
-        private const int MeleeDamage = 12;
-        private const int ArmourLevel = 4;
-        private const int MaxHealth = 120;
-        private const int MaxMana = 60;
+        private readonly int _meleeDamage = 12;
+        private readonly int _armourLevel = 4;
+        private readonly int _maxHealth = 120;
+        private readonly int _maxMana = 60;
 
         private int _mana;
 
-        public Paladin(string name)
+        public Paladin()
         {
-            Name = name;
-            Damage = MeleeDamage;
-            Armour = ArmourLevel;
-            Health = MaxHealth;
-            _mana = MaxMana;
+            Name = nameof(Paladin);
+            Damage = _meleeDamage;
+            Armour = _armourLevel;
+            Health = _maxHealth;
+            _mana = _maxMana;
         }
 
-        public override void TakeDamage(int damage)
+        protected override void TakeDamage(int damage)
         {
-            int halfHealth = MaxHealth / 2;
+            int halfHealth = _maxHealth / 2;
 
             base.TakeDamage(damage);
 
@@ -360,24 +371,22 @@ namespace OOP
 
     class Druid : Fighter
     {
-        private const int MeleeDamage = 5;
-        private const int ArmourLevel = 8;
-        private const int MaxHealth = 200;
-        private const int NaturalPower = 0;
+        private readonly int _meleeDamage = 5;
+        private readonly int _armourLevel = 8;
+        private readonly int _maxHealth = 200;
+        private readonly int _powerForSummon = 80;
 
-        private int _powerForSummon = 80;
-        private int _naturalPower;
+        private int _naturalPower = 0;
 
-        public Druid(string name)
+        public Druid()
         {
-            Name = name;
-            Damage = MeleeDamage;
-            Armour = ArmourLevel;
-            Health = MaxHealth;
-            _naturalPower = NaturalPower;
+            Name = nameof(Druid);
+            Damage = _meleeDamage;
+            Armour = _armourLevel;
+            Health = _maxHealth;
         }
 
-        public override int DealDamage()
+        protected override int DealDamage()
         {
             if (_naturalPower >= _powerForSummon)
             {
@@ -393,7 +402,7 @@ namespace OOP
             }
         }
 
-        public override void TakeDamage(int damage)
+        protected override void TakeDamage(int damage)
         {
             base.TakeDamage(damage);
 
@@ -434,7 +443,7 @@ namespace OOP
 
     class Ent
     {
-        private int _damage = 6;
+        private readonly int _damage = 6;
 
         public int DealDamage()
         {
