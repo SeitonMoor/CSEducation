@@ -84,7 +84,8 @@ namespace OOP
 
             foreach (Fighter fighter in fighters)
             {
-                Console.WriteLine($"{count++} - выбрать бойца - {fighter.Name}");
+                Console.WriteLine($"{count} - выбрать бойца - {fighter.Name}");
+                count++;
             }
 
             Console.Write("\nВаш выбор: ");
@@ -130,7 +131,7 @@ namespace OOP
             while (fighter1.Health > 0 && fighter2.Health > 0)
             {
                 Fight(fighter1, fighter2);
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 Fight(fighter2, fighter1);
 
                 Console.WriteLine($"{fighter1.Name} №1 - {fighter1.Health} хп VS {fighter2.Name} №2 - {fighter2.Health} хп");
