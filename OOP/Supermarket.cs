@@ -1,144 +1,293 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OOP
 {
     internal class Supermarket
     {
-
         static void Main(string[] args)
         {
-            Random random = new Random();
+            Superstore superstore = new Superstore();
 
-            Console.WriteLine("Администрирование супермаркетом");
+            superstore.Work();
+        }
+    }
 
-            Queue<Client> clientsQueue = new Queue<Client>();
-            int clientNumbers = 5;
+    class Superstore
+    {
+        private readonly Warehouse _warehouse = new Warehouse();
+        private int _money = 0;
 
-            for (int i = 0; i < clientNumbers; i++)
-            {
-                Client client = new Client(random.Next(100,10000));
+        public Superstore()
+        {
+            FillItems();
+        }
 
-                client.TakeItem(new Product("Кофе", 620));
-                client.TakeItem(new Product("Яблоко", 140));
-                client.TakeItem(new Product("Конфеты", 370));
-                client.TakeItem(new Product("Мясо", 1700));
+        public void Work()
+        {
+            Console.WriteLine("Администрирование супермаркетом" +
+                "\nОжидаем, когда клиенты наберут продуктов...\n");
 
-                clientsQueue.Enqueue(client);
-            }
+            _warehouse.ShowItems();
+
+            Queue<Client> clientsQueue = GetClients();
 
             int count = 1;
             while (clientsQueue.Count != 0)
             {
-                Client client = clientsQueue.Dequeue();
-
-                Console.Write($"Клиент №{count} ");
-                client.BuyProducts();
+                Console.WriteLine($"\nДенег в кассе магазина: {_money}");
+                
+                Serve(clientsQueue.Dequeue(), count);
 
                 count++;
+
+                Console.WriteLine("\nНажмите любую клавишу, чтобы пригласить следующего клиента...");
+                Console.ReadKey();
             }
         }
 
-        class Client
+        private Queue<Client> GetClients()
+        {
+            Queue<Client> clientsQueue = new Queue<Client>();
+
+            int clientNumbers = 5;
+
+            for (int i = 0; i < clientNumbers; i++)
+            {
+                Client client = new Client();
+
+                client.FillBasket(_warehouse);
+
+                clientsQueue.Enqueue(client);
+                Thread.Sleep(50);
+            }
+
+            return clientsQueue;
+        }
+
+        private void Serve(Client client, int count)
+        {
+            Console.WriteLine($"\nОбслуживание клиента №{count}:");
+
+            bool isServed = false;
+
+            while (isServed == false)
+            {
+                Basket clientBasket = client.GetBasket();
+
+                if (clientBasket.GetItemsCount() == 0)
+                {
+                    Console.WriteLine($"Клиент выложил все имеющиеся в корзине продукты и решил вернуться к покупкам позже.");
+                    isServed = true;
+
+                    continue;
+                }
+
+                int bill = FormBill(clientBasket);
+
+                if(client.CheckSolvency(bill) == false)
+                {
+                    client.RemoveItem();
+
+                    continue;
+                }
+
+                TakeMoney(client.ToPay());
+                Console.WriteLine($"Клиент совершил покупку {clientBasket.GetItemsCount()} продуктов на сумму {bill}.");
+
+                isServed = true;
+            }
+        }
+
+        private int FormBill(Basket basket)
+        {
+            return basket.GetPricesAmount();
+        }
+
+        private void TakeMoney(int money)
+        {
+            if (_money >= 0)
+            {
+                _money += money;
+            }
+        }
+
+        private void FillItems()
+        {
+            List<Item> items = InitializeItems();
+
+            foreach (Item item in items)
+            {
+                _warehouse.Add(item);
+            }
+        }
+
+        private List<Item> InitializeItems()
+        {
+            List<Item> items = new List<Item>()
+            {
+                new Item("Кофе", 420),
+                new Item("Яблоко", 140),
+                new Item("Конфеты", 370),
+                new Item("Мясо", 1700),
+                new Item("Арбуз", 120),
+                new Item("Апельсин", 60),
+                new Item("Виноград", 50),
+                new Item("Миндаль", 330),
+                new Item("Пекан", 820)
+            };
+
+            return items;
+        }
+    }
+
+    abstract class ItemStorage
+    {
+        protected List<Item> Items = new List<Item>();
+
+        public void Add(Item item)
+        {
+            Items.Add(item);
+        }
+
+        public void Remove(Item item)
+        {
+            Items.Remove(item);
+        }
+
+        public int GetItemsCount()
+        {
+            return Items.Count;
+        }
+
+        public Item SelectRandomItem()
         {
             Random random = new Random();
 
-            private List<Product> _items = new List<Product>();
-            private int _money;
+            int id = random.Next(Items.Count);
 
-            public Client(int money)
-            {
-                _money = money;
-            }
-
-            public void TakeItem(Product product)
-            {
-                _items.Add(product);
-            }
-
-            public int GetMoney()
-            {
-                return _money;
-            }
-
-            public void BuyProducts()
-            {
-                if (_items.Count == 0)
-                {
-                    Console.Write($"выложил все имеющиеся в корзине продукты и решил вернуться к покупкам позже. Его счет: {_money}\n");
-                }
-                else if (CanBuy())
-                {
-                    int bill = GetBill();
-
-                    _money -= bill;
-
-                    Console.Write($"совершил покупку {_items.Count} продуктов на сумму {bill}. Его остаток на счете: {_money}\n");
-
-                    _items.Clear();
-                }
-                else
-                {
-                    RemoveProduct();
-                    BuyProducts();
-                }
-            }
-
-            private bool CanBuy()
-            {
-                int bill = GetBill();
-
-                if (_money - bill < 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-
-            private int GetBill()
-            {
-                int bill = 0;
-
-                foreach (Product product in _items)
-                {
-                    bill += product.GetPrice();
-                }
-
-                return bill;
-            }
-
-            private void RemoveProduct()
-            {
-                int count = _items.Count;
-                int id = random.Next(count);
-
-                _items.RemoveAt(id);
-            }
+            return Items[id];
         }
+    }
 
-        class Product
+    class Warehouse : ItemStorage
+    {
+        public void ShowItems()
         {
-            private string _name;
-            private int _price;
-
-            public Product(string name, int price)
+            foreach (Item item in Items)
             {
-                _name = name;
-                _price = price;
-            }
-
-            public string GetName()
-            {
-                return _name;
-            }
-
-            public int GetPrice()
-            {
-                return _price;
+                Console.WriteLine($"{item.Name} - по цене: {item.Price}");
             }
         }
+    }
+
+    class Basket : ItemStorage
+    {
+        public int GetPricesAmount()
+        {
+            int amount = 0;
+            foreach (Item item in Items)
+            {
+                amount += item.Price;
+            }
+
+            return amount;
+        }
+    }
+
+
+    class Client
+    {
+        private readonly Basket _basket = new Basket();
+        private int _money;
+        private int _moneyToPay;
+
+        public Client()
+        {
+            _money = FillMoney();
+        }
+
+        public void TakeItem(Item item)
+        {
+            _basket.Add(item);
+        }
+
+        public Basket GetBasket()
+        {
+            return _basket;
+        }
+
+        public bool CheckSolvency(int bill)
+        {
+            _moneyToPay = bill;
+
+            if (_money >= _moneyToPay)
+            {
+                return true;
+            }
+            else
+            {
+                _moneyToPay = 0;
+                Console.WriteLine("Недостаточно средств.");
+
+                return false;
+            }
+        }
+
+        public int ToPay()
+        {
+            _money -= _moneyToPay;
+
+            return _moneyToPay;
+        }
+
+        public void RemoveItem()
+        {
+            Item randomItem = _basket.SelectRandomItem();
+
+            _basket.Remove(randomItem);
+
+            Console.WriteLine($"{randomItem.Name} - убран из корзины.");
+        }
+
+        public void FillBasket(Warehouse warehouse)
+        {
+            Random random = new Random();
+
+            int minItems = 2;
+            int maxItems = 20;
+
+            int itemsCount = random.Next(minItems, maxItems);
+            for (int i = 0; i < itemsCount; i++)
+            {
+                TakeItem(warehouse.SelectRandomItem());
+                Thread.Sleep(50);
+            }
+        }
+
+        private int FillMoney()
+        {
+            Random random = new Random();
+
+            int minMoneyValue = 100;
+            int maxMoneyValue = 10000;
+
+            int money = random.Next(minMoneyValue, maxMoneyValue);
+
+            return money;
+        }
+    }
+
+    class Item
+    {
+        public Item(string name, int price)
+        {
+            Name = name;
+            Price = price;
+        }
+
+        public string Name { get; private set; }
+        public int Price { get;  private set; }
     }
 }
