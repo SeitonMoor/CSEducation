@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OOP
 {
@@ -7,158 +8,282 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            Battlefield battlefield = new Battlefield();
+
+            string name1 = "Фракция №1";
+            string name2 = "Фракция №2";
+
+            battlefield.SimulateBattle(name1, name2);
+        }
+    }
+
+    class Battlefield
+    {
+        public void SimulateBattle(string factionName1, string factionName2)
+        {
             Console.WriteLine("Моделирование боя");
 
-            Faction faction1 = new Faction("Фракция №1");
-            Faction faction2 = new Faction("Фракция №2");
+            Faction faction1 = new Faction(factionName1);
+            Faction faction2 = new Faction(factionName2);
 
-            faction1.GetTroop().AddSoldier(new Soldier(100, 19));
-            faction1.GetTroop().AddSoldier(new Soldier(30, 50));
-            faction1.GetTroop().AddSoldier(new Soldier(140, 14));
-            faction1.GetTroop().AddSoldier(new Soldier(190, 5));
-            faction1.GetTroop().AddSoldier(new Soldier(160, 11));
+            Console.WriteLine($"{faction1.Name} vs {faction2.Name}\n");
 
-            faction2.GetTroop().AddSoldier(new Soldier(100, 21));
-            faction2.GetTroop().AddSoldier(new Soldier(200, 3));
-            faction2.GetTroop().AddSoldier(new Soldier(120, 24));
-            faction2.GetTroop().AddSoldier(new Soldier(150, 25));
-            faction2.GetTroop().AddSoldier(new Soldier(50, 32));
-
-            Console.WriteLine($"{faction1.GetName()} vs {faction2.GetName()}\n");
-
-            while (faction1.GetTroop().GetSoldiersCount() > 0 && faction2.GetTroop().GetSoldiersCount() > 0)
+            while (faction1.HaveSoldiers() && faction2.HaveSoldiers())
             {
-                Console.WriteLine($"{faction1.GetName()} количество бойцов: {faction1.GetTroop().GetSoldiersCount()}" +
-                    $"\n{faction2.GetName()} количество бойцов: {faction2.GetTroop().GetSoldiersCount()}\n");
+                faction1.PrintInfo();
+                faction2.PrintInfo();
 
-                faction1.Attack(faction2);
-                faction2.Attack(faction1);
+                Fight(faction1, faction2);
+                Fight(faction2, faction1);
+
+                Console.WriteLine();
             }
 
-            if (faction1.GetTroop().GetSoldiersCount() > 0)
+            if (faction1.HaveSoldiers())
             {
-                PrintWinningFaction(faction1, faction2);
+                PrintWinning(faction1, faction2);
             }
-            else if (faction2.GetTroop().GetSoldiersCount() > 0)
+            else if (faction2.HaveSoldiers())
             {
-                PrintWinningFaction(faction2, faction1);
-            }
-
-            void PrintWinningFaction(Faction winningFaction, Faction losingFaction) => 
-                Console.WriteLine($"{winningFaction.GetName()} одержала полную победу над {losingFaction.GetName()}" +
-                        $"\nКоличество оставшихся бойцов: {winningFaction.GetTroop().GetSoldiersCount()}");
-        }
-
-        class Soldier
-        {
-            private int _health;
-            private int _damage;
-            private int _force;
-
-            public Soldier(int maxHealth, int damage)
-            {
-                _health = maxHealth;
-                _damage = damage;
-            }
-
-            public void TakeDamage(int damage)
-            {
-                _health -= damage;
-            }
-
-            public int GetDamage()
-            {
-                return _damage;
-            }
-
-            public void Attack(Soldier soldier)
-            {
-                soldier.TakeDamage(_damage);
-            }
-
-            public bool IsAlive()
-            {
-                if (_health > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                PrintWinning(faction2, faction1);
             }
         }
 
-        class Troop
+        private void Fight(Faction faction1, Faction faction2)
         {
-            private List<Soldier> _soldiers = new List<Soldier>();
+            faction1.Attack(faction2);
+        }
+
+        private void PrintWinning(Faction winningFaction, Faction losingFaction)
+        {
+            Console.WriteLine($"{winningFaction.Name} одержала полную победу над {losingFaction.Name}" +
+                        $"\nКоличество оставшихся бойцов: {winningFaction.GetSoldiersCount()}");
+        }
+    }
+
+    class Soldier
+    {
+        protected int Health;
+        protected int Damage;
+
+        public Soldier(int maxHealth, int damage)
+        {
+            Health = maxHealth;
+            Damage = damage;
+        }
+
+        public virtual void Attack(Soldier soldier)
+        {
+            soldier.TakeDamage(Damage);
+        }
+
+        public virtual void TakeDamage(int damage)
+        {
+            if (Health - damage < 0)
+            {
+                Health = 0;
+            }
+            else if (damage > 0)
+            {
+                Health -= damage;
+            }
+        }
+
+        public bool IsAlive()
+        {
+            if (Health > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    class MachineGunner : Soldier
+    {
+        private int _shield;
+
+        public MachineGunner(int maxHealth, int damage, int shield) : base(maxHealth, damage)
+        {
+            _shield = shield;
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            if (_shield == 0)
+            {
+                base.TakeDamage(damage);
+                return;
+            }
+
+            ProtectByShield(damage);
+        }
+
+        private void ProtectByShield(int damage)
+        {
+            if (damage < 0)
+            {
+                return;
+            }
+
+            if (_shield - damage > 0)
+            {
+                _shield -= damage;
+                return;
+            }
+
+            damage -= _shield;
+            _shield = 0;
+
+            base.TakeDamage(damage);
+        }
+    }
+
+    class Sniper : Soldier
+    {
+        private readonly int _maxHitValue = 101;
+        private readonly int _accuracy;
+        private readonly int _hitValue;
+
+        public Sniper(int maxHealth, int damage, int accuracy) : base(maxHealth, damage)
+        {
+            _accuracy = accuracy;
+            _hitValue = _maxHitValue - _accuracy;
+        }
+
+        public override void Attack(Soldier soldier)
+        {
+            if (IsShotHit())
+            {
+                base.Attack(soldier);
+            }
+        }
+
+        private bool IsShotHit()
+        {
             Random random = new Random();
 
-            public void AddSoldier(Soldier soldier)
+            int shot = random.Next(_maxHitValue);
+
+            if (shot >= _hitValue)
             {
-                _soldiers.Add(soldier);
+                return true;
             }
 
-            public List<Soldier> GetSoldiers()
-            {
-                return _soldiers;
-            }
+            return false;
+        }
+    }
 
-            public int GetSoldiersCount()
-            {
-                return _soldiers.Count;
-            }
+    class Troop
+    {
+        private List<Soldier> _soldiers = new List<Soldier>();
 
-            public Soldier GetRandomSoldier()
-            {
-                int index = random.Next(_soldiers.Count);
-                Soldier randomSoldier = _soldiers[index];
-                return randomSoldier;
-            }
+        public void AddSoldier(Soldier soldier)
+        {
+            _soldiers.Add(soldier);
+        }
 
-            public void DeleteSoldier(Soldier soldier)
+        public void RemoveSoldier(Soldier soldier)
+        {
+            _soldiers.Remove(soldier);
+        }
+
+        public int GetSoldiersCount()
+        {
+            return _soldiers.Count;
+        }
+
+        public Soldier GetRandomSoldier()
+        {
+            Random random = new Random();
+
+            int index = random.Next(_soldiers.Count);
+
+            return _soldiers[index];
+        }
+
+        public void Attack(Faction faction)
+        {
+            foreach (Soldier soldier in _soldiers)
             {
-                _soldiers.Remove(soldier);
+                if (faction.HaveSoldiers() == false)
+                {
+                    return;
+                }
+
+                Soldier randomSoldier = faction.GetRandomSoldier();
+
+                soldier.Attack(randomSoldier);
+
+                faction.VerifyHealth(randomSoldier);
+                Thread.Sleep(50);
             }
         }
 
-        class Faction
+        public void VerifyHealth(Soldier soldier)
         {
-            private string _name;
-            private Troop _troop = new Troop();
-
-            public Faction (string name)
+            if (soldier.IsAlive() == false)
             {
-                _name = name;
+                RemoveSoldier(soldier);
+            }
+        }
+    }
+
+    class Faction
+    {
+        private Troop _troop = new Troop();
+
+        public Faction(string name)
+        {
+            Name = name;
+            FormTroop();
+        }
+
+        public string Name { get; private set; }
+
+        public void Attack(Faction faction)
+        {
+            _troop.Attack(faction);
+        }
+
+        public bool HaveSoldiers()
+        {
+            if (_troop.GetSoldiersCount() == 0)
+            {
+                return false;
             }
 
-            public string GetName()
-            {
-                return _name;
-            }
+            return true;
+        }
 
-            public Troop GetTroop()
-            {
-                return _troop;
-            }
+        public Soldier GetRandomSoldier()
+        {
+            return _troop.GetRandomSoldier();
+        }
 
-            public void Attack(Faction faction)
-            {
-                foreach (Soldier soldier in _troop.GetSoldiers())
-                {
-                    if (faction.GetTroop().GetSoldiersCount() > 0)
-                    {
-                        Soldier randomSoldier = faction.GetTroop().GetRandomSoldier();
+        public void VerifyHealth(Soldier soldier)
+        {
+            _troop.VerifyHealth(soldier);
+        }
 
-                        soldier.Attack(randomSoldier);
+        public int GetSoldiersCount()
+        {
+            return _troop.GetSoldiersCount();
+        }
 
-                        if (randomSoldier.IsAlive() == false)
-                        {
-                            faction.GetTroop().DeleteSoldier(randomSoldier);
-                        }
-                    }
-                }
-            }
+        public void PrintInfo()
+        {
+            Console.WriteLine($"{Name} - количество бойцов: {_troop.GetSoldiersCount()}");
+        }
+
+        private void FormTroop()
+        {
+            _troop.AddSoldier(new MachineGunner(120, 10, 80));
+            _troop.AddSoldier(new Sniper(30, 50, 15));
+            _troop.AddSoldier(new Soldier(140, 14));
+            _troop.AddSoldier(new Soldier(190, 5));
+            _troop.AddSoldier(new Soldier(160, 11));
         }
     }
 }
