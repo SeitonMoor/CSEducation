@@ -7,71 +7,234 @@ namespace OOP
     {
         static void Main(string[] args)
         {
+            ZooTerritory zoo = new ZooTerritory();
+
+            zoo.Work();
+        }
+    }
+
+    class ZooTerritory
+    {
+        private List<Cage> _cages = new List<Cage>();
+
+        public ZooTerritory()
+        {
+            FillCages();
+        }
+
+        public void Work()
+        {
+            const string EndCommand = "0";
             bool isWorking = true;
 
             while (isWorking)
             {
                 Console.WriteLine("Зоопарк");
-                Console.Write("\nВы можете:" +
-                        "\n\n1 - подойти к вальеру №1." +
-                        "\n2 - подойти к вальеру №2." +
-                        "\n3 - подойти к вальеру №3." +
-                        "\n4- подойти к вальеру №4." +
-                        "\nexit - закончить работу." +
-                        "\n\nВаш выбор: ");
 
-                switch (Console.ReadLine())
+                Cage cage = ChooseCage();
+                cage.PrintInfo();
+
+                Console.WriteLine("\nany key - посмотреть еще волеры." +
+                    $"\n{EndCommand} - закончить прогулку по зоопарку.");
+
+                if (Console.ReadLine() == EndCommand)
                 {
-                    case "1":
-                        break;
-
-                    case "2":
-                        break;
-
-                    case "3":
-                        break;
-
-                    case "4":
-                        break;
-
-                    case "exit":
-                        isWorking = false;
-                        break;
-
-                    default:
-                        break;
+                    isWorking = false;
                 }
 
                 Console.Clear();
             }
+
+            Console.WriteLine($"Всего доброго! Возвращайтесь в наш зоопарк.");
         }
 
-        class Cage
+        private Cage ChooseCage()
         {
-            private string _name;
-            private int _animalCount;
-            private List<Animal> _animals = new List<Animal>();
+            Cage chosenCage = null;
+            bool isChosen = false;
 
-            public Cage(string name, int animalCount, List<Animal> animals)
+            while (isChosen == false)
             {
-                _name = name;
-                _animalCount = animalCount;
-                _animals = animals;
+                chosenCage = TryGetCage();
+
+                if (chosenCage != null)
+                {
+                    isChosen = true;
+                }
+            }
+
+            int cageNumber = _cages.IndexOf(chosenCage) + 1;
+            Console.WriteLine($"\nВы выбрали вольер №{cageNumber}");
+
+            return chosenCage;
+        }
+
+        private Cage TryGetCage()
+        {
+            int count = 1;
+            Console.WriteLine("\nВыберите вольер:");
+
+            foreach (Cage cage in _cages)
+            {
+                Console.WriteLine($"{count} - подойти к вольеру №{count}");
+                count++;
+            }
+
+            Console.Write("\nВаш выбор: ");
+            if (Int32.TryParse(Console.ReadLine(), out int cageNumber) == false || IsValidNumber(cageNumber) == false)
+            {
+                Console.WriteLine("\nДанная команда неизвестна");
+                return null;
+            }
+
+            int cageId = cageNumber - 1;
+
+            return _cages[cageId];
+        }
+
+        private bool IsValidNumber(int cageNumber)
+        {
+            return cageNumber > 0 && cageNumber <= _cages.Count;
+        }
+
+        private void FillCages()
+        {
+            List<Cage> cages = InitializeCages();
+
+            foreach (Cage cage in cages)
+            {
+                _cages.Add(cage);
             }
         }
 
-        class Animal
+        private List<Cage> InitializeCages()
         {
-            private string _name;
-            private string _sound;
-            private string _gender;
-
-            public Animal(string name, string sound, string gender)
+            List<Cage> cages = new List<Cage>()
             {
-                _name = name;
-                _sound = sound;
-                _gender = gender;
+                new Cage(new List<Animal>(){ new Tiger("мужской"), new Tiger("мужской"), new Tiger("мужской")}),
+                new Cage(new List<Animal>(){ new Snake("женский")}),
+                new Cage(new List<Animal>(){ new Owl("женский"), new Owl("мужской"), new Owl("женский"), new Owl("мужской")}),
+                new Cage(new List<Animal>(){ new Goat("мужской"), new Goat("женский") }),
+                new Cage(new List<Animal>(){ new Pig("женский"), new Pig("мужской"), new Pig("мужской")})
+            };
+
+            return cages;
+        }
+    }
+
+    class Cage
+    {
+        private List<Animal> _animals = new List<Animal>();
+
+        public Cage(List<Animal> animals)
+        {
+            _animals = animals;
+        }
+
+        public void PrintInfo()
+        {
+            if (_animals.Count == 0)
+            {
+                Console.WriteLine("\nДанный вольер пуст.");
+                return;
             }
+
+            ShowStatus();
+
+            foreach (Animal animal in _animals)
+            {
+                animal.PrintInfo();
+            }
+        }
+
+        private void ShowStatus()
+        {
+            Animal animal = _animals[0];
+
+            Console.WriteLine($"\nЭто вольер с {animal.Name}. В данном вольере {_animals.Count} животных.");
+        }
+    }
+
+    abstract class Animal
+    {
+        protected string Sound;
+
+        public Animal(string gender)
+        {
+            Gender = gender;
+        }
+
+        public string Name { get; protected set; }
+        public string Gender { get; protected set; }
+
+        public virtual string MakeSound()
+        {
+            return Sound;
+        }
+
+        public void PrintInfo()
+        {
+            Console.WriteLine($"Особь {Name} - пол {Gender}. Издает звук: {MakeSound()}");
+        }
+    }
+
+    class Tiger : Animal
+    {
+        private readonly string _name = nameof(Tiger);
+        private readonly string _sound = "р-р-р-р";
+
+        public Tiger(string gender) : base(gender)
+        {
+            Name = _name;
+            Sound = _sound;
+        }
+    }
+
+    class Snake : Animal
+    {
+        private readonly string _name = nameof(Snake);
+        private readonly string _sound = "ш-ш-ш-ш";
+
+        public Snake(string gender) : base(gender)
+        {
+            Name = _name;
+            Sound = _sound;
+        }
+    }
+
+    class Owl : Animal
+    {
+        private readonly string _name = nameof(Owl);
+        private readonly string _sound = "ух-ух-ух";
+
+        public Owl(string gender) : base(gender)
+        {
+            Name = _name;
+            Sound = _sound;
+        }
+    }
+
+    class Goat : Animal
+    {
+        private readonly string _name = nameof(Goat);
+        private readonly string _sound = "ме-е-е";
+
+        public Goat(string gender) : base(gender)
+        {
+            Name = _name;
+            Sound = _sound;
+        }
+    }
+
+    class Pig : Animal
+    {
+        private readonly string _name = nameof(Pig);
+        private readonly string _sound = "хрю-хрю";
+
+        public Pig(string gender) : base(gender)
+        {
+            Name = _name;
+            Sound = _sound;
         }
     }
 }
