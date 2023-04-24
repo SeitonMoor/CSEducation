@@ -119,10 +119,10 @@ namespace OOP
                 }
             }
 
-            Die(diedFishes);
+            RemoveDieds(diedFishes);
         }
 
-        private void Die(List<Fish> fishes)
+        private void RemoveDieds(List<Fish> fishes)
         {
             foreach (Fish fish in fishes)
             {
@@ -135,11 +135,11 @@ namespace OOP
 
         private Fish CreateFish()
         {
-            bool isReceived = false;
+            bool isCorrectInput = false;
             int fishAge = 0;
             int fishMaxAge = 0;
 
-            while (isReceived == false)
+            while (isCorrectInput == false)
             {
                 Console.Write("Напишите текущий возраст рыбы: ");
                 string inputAge = Console.ReadLine();
@@ -149,7 +149,7 @@ namespace OOP
 
                 if (Int32.TryParse(inputAge, out fishAge) && Int32.TryParse(inputMaxAge, out fishMaxAge) && fishAge < fishMaxAge)
                 {
-                    isReceived = true;
+                    isCorrectInput = true;
                 }
                 else
                 {
@@ -166,16 +166,16 @@ namespace OOP
         {
             ShowFishes();
 
-            bool isReceived = false;
+            bool isCorrectInput = false;
             int fishIndex = 0;
 
-            while (isReceived == false)
+            while (isCorrectInput == false)
             {
                 Console.Write("\nНапишите номер рыбы: ");
 
                 if (Int32.TryParse(Console.ReadLine(), out fishIndex) && 0 < fishIndex && fishIndex <= _fishes.Count)
                 {
-                    isReceived = true;
+                    isCorrectInput = true;
                 }
                 else
                 {
@@ -217,14 +217,11 @@ namespace OOP
             _maxAge = maxAge;
         }
 
+        public bool IsAlive() => _age < _maxAge;
+
         public void MakeOlder()
         {
             _age++;
-        }
-
-        public bool IsAlive()
-        {
-            return _age < _maxAge;
         }
 
         public void PrintInfo(int fishCount)
