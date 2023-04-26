@@ -23,10 +23,10 @@ namespace OOP
         {
             Console.WriteLine("Моделирование боя");
 
-            Faction faction1 = new Faction(factionName1);
-            Faction faction2 = new Faction(factionName2);
+            Troop faction1 = new Troop(factionName1);
+            Troop faction2 = new Troop(factionName2);
 
-            Console.WriteLine($"{faction1.Name} vs {faction2.Name}\n");
+            Console.WriteLine($"{faction1.FractionName} vs {faction2.FractionName}\n");
 
             while (faction1.HaveSoldiers() && faction2.HaveSoldiers())
             {
@@ -49,14 +49,14 @@ namespace OOP
             }
         }
 
-        private void Fight(Faction faction1, Faction faction2)
+        private void Fight(Troop faction1, Troop faction2)
         {
             faction1.Attack(faction2);
         }
 
-        private void PrintWinning(Faction winningFaction, Faction losingFaction)
+        private void PrintWinning(Troop winningFaction, Troop losingFaction)
         {
-            Console.WriteLine($"{winningFaction.Name} одержала полную победу над {losingFaction.Name}" +
+            Console.WriteLine($"{winningFaction.FractionName} одержала полную победу над {losingFaction.FractionName}" +
                         $"\nКоличество оставшихся бойцов: {winningFaction.GetSoldiersCount()}");
         }
     }
@@ -71,6 +71,8 @@ namespace OOP
             Health = maxHealth;
             Damage = damage;
         }
+
+        public bool IsAlive() => Health > 0;
 
         public virtual void Attack(Soldier soldier)
         {
@@ -88,16 +90,6 @@ namespace OOP
                 Health -= damage;
             }
         }
-
-        public bool IsAlive()
-        {
-            if (Health > 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
     }
 
     class MachineGunner : Soldier
@@ -111,19 +103,14 @@ namespace OOP
 
         public override void TakeDamage(int damage)
         {
-            if (_shield == 0)
+            if (damage < 0)
             {
-                base.TakeDamage(damage);
                 return;
             }
 
-            ProtectByShield(damage);
-        }
-
-        private void ProtectByShield(int damage)
-        {
-            if (damage < 0)
+            if (_shield == 0)
             {
+                base.TakeDamage(damage);
                 return;
             }
 
@@ -142,6 +129,7 @@ namespace OOP
 
     class Sniper : Soldier
     {
+        private readonly Random random = new Random();
         private readonly int _maxHitValue = 101;
         private readonly int _accuracy;
         private readonly int _hitValue;
@@ -162,8 +150,6 @@ namespace OOP
 
         private bool IsShotHit()
         {
-            Random random = new Random();
-
             int shot = random.Next(_maxHitValue);
 
             if (shot >= _hitValue)
@@ -177,33 +163,29 @@ namespace OOP
 
     class Troop
     {
+        private readonly Random random = new Random();
         private List<Soldier> _soldiers = new List<Soldier>();
 
-        public void AddSoldier(Soldier soldier)
+        public Troop(string name)
         {
-            _soldiers.Add(soldier);
+            FractionName = name;
+            FormTroop();
         }
 
-        public void RemoveSoldier(Soldier soldier)
-        {
-            _soldiers.Remove(soldier);
-        }
+        public string FractionName { get; private set; }
 
-        public int GetSoldiersCount()
-        {
-            return _soldiers.Count;
-        }
+        public int GetSoldiersCount() => _soldiers.Count;
+
+        public bool HaveSoldiers() => _soldiers.Count > 0;
 
         public Soldier GetRandomSoldier()
         {
-            Random random = new Random();
-
             int index = random.Next(_soldiers.Count);
 
             return _soldiers[index];
         }
 
-        public void Attack(Faction faction)
+        public void Attack(Troop faction)
         {
             foreach (Soldier soldier in _soldiers)
             {
@@ -216,74 +198,31 @@ namespace OOP
 
                 soldier.Attack(randomSoldier);
 
-                faction.VerifyHealth(randomSoldier);
+                faction.RemoveDied(randomSoldier);
                 Thread.Sleep(50);
             }
         }
 
-        public void VerifyHealth(Soldier soldier)
+        public void RemoveDied(Soldier soldier)
         {
             if (soldier.IsAlive() == false)
             {
-                RemoveSoldier(soldier);
+                _soldiers.Remove(soldier);
             }
-        }
-    }
-
-    class Faction
-    {
-        private Troop _troop = new Troop();
-
-        public Faction(string name)
-        {
-            Name = name;
-            FormTroop();
-        }
-
-        public string Name { get; private set; }
-
-        public void Attack(Faction faction)
-        {
-            _troop.Attack(faction);
-        }
-
-        public bool HaveSoldiers()
-        {
-            if (_troop.GetSoldiersCount() == 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public Soldier GetRandomSoldier()
-        {
-            return _troop.GetRandomSoldier();
-        }
-
-        public void VerifyHealth(Soldier soldier)
-        {
-            _troop.VerifyHealth(soldier);
-        }
-
-        public int GetSoldiersCount()
-        {
-            return _troop.GetSoldiersCount();
         }
 
         public void PrintInfo()
         {
-            Console.WriteLine($"{Name} - количество бойцов: {_troop.GetSoldiersCount()}");
+            Console.WriteLine($"{FractionName} - количество бойцов: {_soldiers.Count}");
         }
 
         private void FormTroop()
         {
-            _troop.AddSoldier(new MachineGunner(120, 10, 80));
-            _troop.AddSoldier(new Sniper(30, 50, 15));
-            _troop.AddSoldier(new Soldier(140, 14));
-            _troop.AddSoldier(new Soldier(190, 5));
-            _troop.AddSoldier(new Soldier(160, 11));
+            _soldiers.Add(new MachineGunner(120, 10, 80));
+            _soldiers.Add(new Sniper(30, 50, 15));
+            _soldiers.Add(new Soldier(140, 14));
+            _soldiers.Add(new Soldier(190, 5));
+            _soldiers.Add(new Soldier(160, 11));
         }
     }
 }
