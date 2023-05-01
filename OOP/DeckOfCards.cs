@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class DeckOfCards
     {
-        static void Main(string[] args)
+        void DealCards()
         {   
             Croupier croupier = new Croupier();
             Gambler player = new Gambler();

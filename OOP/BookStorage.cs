@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class BookStorage
     {
-        static void Main(string[] args)
+        void Work()
         {
             Storage storage = new Storage();
 

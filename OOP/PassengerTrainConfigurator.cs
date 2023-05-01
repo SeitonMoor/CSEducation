@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class PassengerTrainConfigurator
     {
-        static void Main(string[] args)
+        void Work()
         {
             RailwaySystem system = new RailwaySystem();
 

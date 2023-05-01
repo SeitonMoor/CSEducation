@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class PlayerDatabase
     {
-        static void Main(string[] args)
+        void Work()
         {
             Database database = new Database();
             database.Work();
@@ -155,7 +155,7 @@ namespace OOP
             }
         }
 
-            private Player GetPlayer(int id)
+        private Player GetPlayer(int id)
         {
             bool isReceived = false;
             Player player = null;

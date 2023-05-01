@@ -6,7 +6,7 @@ namespace OOP
 {
     internal class GladiatorFights
     {
-        static void Main(string[] args)
+        void ManageFights()
         {
             Arena arena = new Arena();
 

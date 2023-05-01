@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class Aquarium
     {
-        static void Main(string[] args)
+        void Simulate()
         {
             int maxFishCount = 22;
 
