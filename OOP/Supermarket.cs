@@ -6,7 +6,7 @@ namespace OOP
 {
     internal class Supermarket
     {
-        static void Main(string[] args)
+        void Work()
         {
             Superstore superstore = new Superstore();
 
@@ -86,7 +86,7 @@ namespace OOP
 
                 int bill = FormBill(clientBasket);
 
-                if(client.CheckSolvency(bill) == false)
+                if(client.CanPay(bill) == false)
                 {
                     client.RemoveItem();
 
@@ -107,7 +107,7 @@ namespace OOP
 
         private void TakeMoney(int money)
         {
-            if (_money >= 0)
+            if (money >= 0)
             {
                 _money += money;
             }
@@ -196,7 +196,6 @@ namespace OOP
         }
     }
 
-
     class Client
     {
         private readonly Basket _basket = new Basket();
@@ -218,7 +217,7 @@ namespace OOP
             return _basket;
         }
 
-        public bool CheckSolvency(int bill)
+        public bool CanPay(int bill)
         {
             _moneyToPay = bill;
 

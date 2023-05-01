@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class Store
     {
-        static void Main(string[] args)
+        void Work()
         {
             Market market = new Market();
             Buyer buyer = new Buyer();
@@ -98,7 +98,7 @@ namespace OOP
                     continue;
                 }
 
-                if (buyer.CheckSolvency(product.Price * desiredCount) == false)
+                if (buyer.CanPay(product.Price * desiredCount) == false)
                 {
                     return;
                 }
@@ -139,7 +139,7 @@ namespace OOP
             }
         }
 
-        public bool CheckSolvency(int money)
+        public bool CanPay(int money)
         {
             MoneyToPay = money;
 
