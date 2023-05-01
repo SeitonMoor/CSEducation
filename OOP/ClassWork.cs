@@ -6,27 +6,27 @@ namespace OOP
     {
         void Work()
         {
-            Player player = new Player(0, 21, "StPe");
-            player.PrintInformation();
+            User user = new User(0, 21, "StPe");
+            user.PrintInformation();
+        }
+    }
+
+    class User
+    {
+        private int _id;
+        private int _level;
+        private string _nickname;
+
+        public User(int id, int level, string nickname)
+        {
+            this._id = id;
+            this._level = level;
+            this._nickname = nickname;
         }
 
-        class Player
+        public void PrintInformation()
         {
-            private int _id;
-            private int _level;
-            private string _nickname;
-
-            public Player(int id, int level, string nickname)
-            {
-                this._id = id;
-                this._level = level;
-                this._nickname = nickname;
-            }
-
-            public void PrintInformation()
-            {
-                Console.WriteLine($"Игрок_{_id} с ником {_nickname} имеет {_level} уровень.");
-            }
+            Console.WriteLine($"Игрок_{_id} с ником {_nickname} имеет {_level} уровень.");
         }
     }
 }
