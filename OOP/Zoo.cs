@@ -5,7 +5,7 @@ namespace OOP
 {
     internal class Zoo
     {
-        static void Main(string[] args)
+        void Work()
         {
             ZooTerritory zoo = new ZooTerritory();
 
@@ -51,16 +51,10 @@ namespace OOP
         private Cage ChooseCage()
         {
             Cage chosenCage = null;
-            bool isChosen = false;
 
-            while (isChosen == false)
+            while (chosenCage == null)
             {
                 chosenCage = TryGetCage();
-
-                if (chosenCage != null)
-                {
-                    isChosen = true;
-                }
             }
 
             int cageNumber = _cages.IndexOf(chosenCage) + 1;
@@ -157,8 +151,6 @@ namespace OOP
 
     abstract class Animal
     {
-        protected string Sound;
-
         public Animal(string gender)
         {
             Gender = gender;
@@ -166,75 +158,56 @@ namespace OOP
 
         public string Name { get; protected set; }
         public string Gender { get; protected set; }
-
-        public virtual string MakeSound()
-        {
-            return Sound;
-        }
+        public string Sound { get; protected set; }
 
         public void PrintInfo()
         {
-            Console.WriteLine($"Особь {Name} - пол {Gender}. Издает звук: {MakeSound()}");
+            Console.WriteLine($"Особь {Name} - пол {Gender}. Издает звук: {Sound}");
         }
     }
 
     class Tiger : Animal
     {
-        private readonly string _name = nameof(Tiger);
-        private readonly string _sound = "р-р-р-р";
-
         public Tiger(string gender) : base(gender)
         {
-            Name = _name;
-            Sound = _sound;
+            Name = nameof(Tiger);
+            Sound = "р-р-р-р";
         }
     }
 
     class Snake : Animal
     {
-        private readonly string _name = nameof(Snake);
-        private readonly string _sound = "ш-ш-ш-ш";
-
         public Snake(string gender) : base(gender)
         {
-            Name = _name;
-            Sound = _sound;
+            Name = nameof(Snake);
+            Sound = "ш-ш-ш-ш";
         }
     }
 
     class Owl : Animal
     {
-        private readonly string _name = nameof(Owl);
-        private readonly string _sound = "ух-ух-ух";
-
         public Owl(string gender) : base(gender)
         {
-            Name = _name;
-            Sound = _sound;
+            Name = nameof(Owl);
+            Sound = "ух-ух-ух";
         }
     }
 
     class Goat : Animal
     {
-        private readonly string _name = nameof(Goat);
-        private readonly string _sound = "ме-е-е";
-
         public Goat(string gender) : base(gender)
         {
-            Name = _name;
-            Sound = _sound;
+            Name = nameof(Goat);
+            Sound = "ме-е-е";
         }
     }
 
     class Pig : Animal
     {
-        private readonly string _name = nameof(Pig);
-        private readonly string _sound = "хрю-хрю";
-
         public Pig(string gender) : base(gender)
         {
-            Name = _name;
-            Sound = _sound;
+            Name = nameof(Pig);
+            Sound = "хрю-хрю";
         }
     }
 }
