@@ -4,33 +4,33 @@ namespace OOP
 {
     internal class PropertiesWork
     {
-        static void Main(string[] args)
+        void Work()
         {
             Renderer renderer = new Renderer();
 
-            Player player = new Player(12, 19);
+            Hero hero = new Hero(12, 19);
             
-            renderer.DrawCharacter(player);
+            renderer.DrawCharacter(hero);
+        }
+    }
+
+    class Hero
+    {
+        public Hero(int positionX, int positionY)
+        {
+            PositionX = positionX;
+            PositionY = positionY;
         }
 
-        class Player
-        {
-            public Player(int positionX, int positionY)
-            {
-                PositionX = positionX;
-                PositionY = positionY;
-            }
+        public int PositionX { get; private set; }
+        public int PositionY { get; private set; }
+    }
 
-            public int PositionX { get; private set; }
-            public int PositionY { get; private set; }
-        }
-
-        class Renderer
+    class Renderer
+    {
+        public void DrawCharacter(Hero hero)
         {
-            public void DrawCharacter(Player player)
-            {
-                Console.WriteLine($"Игрок отрисован по координатам: {player.PositionX}.{player.PositionY}");
-            }
+            Console.WriteLine($"Игрок отрисован по координатам: {hero.PositionX}.{hero.PositionY}");
         }
     }
 }
