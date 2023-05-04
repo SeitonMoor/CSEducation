@@ -40,7 +40,7 @@ namespace OOP
         {
             Queue<Car> carsQueue = GetCars();
 
-            int count = 1;
+            int carNumber = 1;
             while (carsQueue.Count != 0)
             {
                 Console.WriteLine("Автосервис");
@@ -49,9 +49,9 @@ namespace OOP
 
                 Console.WriteLine($"\nДенег на балансе автосервиса: {_balance}");
 
-                DoService(carsQueue.Dequeue(), count);
+                DoService(carsQueue.Dequeue(), carNumber);
 
-                count++;
+                carNumber++;
 
                 Console.WriteLine("\nНажмите любую клавишу, чтобы загнать в автосервис следующую машину...");
                 Console.ReadKey();
@@ -59,12 +59,12 @@ namespace OOP
             }
         }
 
-        private void DoService(Car car, int count)
+        private void DoService(Car car, int carNumber)
         {
             const string RepairCommand = "1";
             const string CancelCommand = "2";
 
-            Console.WriteLine($"\nОбслуживание машины №{count}.");
+            Console.WriteLine($"\nОбслуживание машины №{carNumber}.");
 
             int bill = FormBill(car.Problem);
             bool isServed = false;
@@ -80,7 +80,7 @@ namespace OOP
                 switch (Console.ReadLine())
                 {
                     case RepairCommand:
-                        isServed = CanToRepair(car, bill);
+                        isServed = CanRepair(car, bill);
                         break;
 
                     case CancelCommand:
@@ -101,7 +101,7 @@ namespace OOP
             _balance -= _fineCost;
         }
 
-        private bool CanToRepair(Car car, int bill)
+        private bool CanRepair(Car car, int bill)
         {
             Detail chosenDetail = ChooseDetail();
             Detail detailToRepair = _storageFacility.TryGetDetail(car.Problem.ToString());
@@ -154,16 +154,7 @@ namespace OOP
 
         private Detail TryGetDetail()
         {
-            Array details = Enum.GetValues(typeof(CarDetail));
-
-            int count = 1;
-            Console.WriteLine("\nВыберите деталь:");
-
-            foreach (CarDetail detail in details)
-            {
-                Console.WriteLine($"{count} - выбрать деталь - {detail}");
-                count++;
-            }
+            ShowDetails();
 
             Console.Write("\nВаш выбор: ");
             if (Int32.TryParse(Console.ReadLine(), out int detailNumber) == false || IsValidNumber(detailNumber) == false)
@@ -219,6 +210,20 @@ namespace OOP
             if (money >= 0)
             {
                 _balance += money;
+            }
+        }
+
+        private void ShowDetails()
+        {
+            Array details = Enum.GetValues(typeof(CarDetail));
+
+            int count = 1;
+            Console.WriteLine("\nВыберите деталь:");
+
+            foreach (CarDetail detail in details)
+            {
+                Console.WriteLine($"{count} - выбрать деталь - {detail}");
+                count++;
             }
         }
 
