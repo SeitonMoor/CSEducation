@@ -6,7 +6,7 @@ namespace OOP
 {
     internal class War
     {
-        static void Main(string[] args)
+        void SimulateBattle()
         {
             Battlefield battlefield = new Battlefield();
 
@@ -169,7 +169,7 @@ namespace OOP
         public Troop(string name)
         {
             FractionName = name;
-            FormTroop();
+            AddSoldiers();
         }
 
         public string FractionName { get; private set; }
@@ -216,7 +216,7 @@ namespace OOP
             Console.WriteLine($"{FractionName} - количество бойцов: {_soldiers.Count}");
         }
 
-        private void FormTroop()
+        private void AddSoldiers()
         {
             _soldiers.Add(new MachineGunner(120, 10, 80));
             _soldiers.Add(new Sniper(30, 50, 15));
