@@ -14,7 +14,7 @@ namespace LinqTasks
         }
     }
 
-    enum Surname
+    enum SurnameCriminal
     {
         Smith,
         Brown,
@@ -23,7 +23,7 @@ namespace LinqTasks
         Petrov
     }
 
-    enum Name
+    enum NameCriminal
     {
         William,
         Ivan,
@@ -36,7 +36,7 @@ namespace LinqTasks
         Alex
     }
 
-    enum Patronymic
+    enum PatronymicCriminal
     {
         Adamson,
         Dixon,
@@ -63,8 +63,6 @@ namespace LinqTasks
     {
         private List<Criminal> _criminals = new List<Criminal>();
         private readonly int _databaseSize = 1500;
-        private readonly string _heightMessage = "\nУкажите рост престуника: ";
-        private readonly string _weightMessage = "\nУкажите вес преступника: ";
 
         public Interpol()
         {
@@ -75,6 +73,7 @@ namespace LinqTasks
         public void Work()
         {
             const string ExitCommand = "0";
+
             bool isWorking = true;
 
             while(isWorking)
@@ -100,9 +99,13 @@ namespace LinqTasks
         
         private IEnumerable<Criminal> FindCriminals()
         {
+            string heightMessage = "\nУкажите рост престуника: ";
+            string weightMessage = "\nУкажите вес преступника: ";
+
             Nation nation = GetNation();
-            int height = GetNumber(_heightMessage);
-            int weight = GetNumber(_weightMessage);
+
+            int height = GetPositiveNumber(heightMessage);
+            int weight = GetPositiveNumber(weightMessage);
 
             var foundCriminals = from Criminal criminal in _criminals
                                  where criminal.IsMatched(nation, height, weight)
@@ -122,7 +125,8 @@ namespace LinqTasks
                 ShowNations(nations);
 
                 Console.Write("\nВаш выбор: ");
-                if (Int32.TryParse(Console.ReadLine(), out int nationNumber) == false || IsValidNumber(nations, nationNumber) == false)
+
+                if (Int32.TryParse(Console.ReadLine(), out int nationNumber) == false || IsValidNumber(nations.Length, nationNumber) == false)
                 {
                     Console.WriteLine("\nДанная команда неизвестна");
                     continue;
@@ -137,7 +141,7 @@ namespace LinqTasks
             return nation;
         }
 
-        private int GetNumber(string message)
+        private int GetPositiveNumber(string message)
         {
             int number = 0;
             bool isReceived = false;
@@ -160,9 +164,9 @@ namespace LinqTasks
             return number;
         }
 
-        private bool IsValidNumber(Array array, int number)
+        private bool IsValidNumber(int arrayLength, int number)
         {
-            return number > 0 && number <= array.Length;
+            return number > 0 && number <= arrayLength;
         }
 
         private void ShowCriminals(IEnumerable<Criminal> foundCriminals)
@@ -170,6 +174,7 @@ namespace LinqTasks
             Console.WriteLine($"\nНайдено: {foundCriminals.Count()}");
 
             int count = 0;
+
             foreach (Criminal criminal in foundCriminals)
             {
                 if (criminal.IsPrisoner)
@@ -182,6 +187,7 @@ namespace LinqTasks
             }
 
             int prisonerCriminals = foundCriminals.Count<Criminal>() - count;
+
             if (prisonerCriminals > 0)
             {
                 Console.WriteLine($"Остальные {prisonerCriminals} в заключении");
@@ -205,7 +211,7 @@ namespace LinqTasks
             for (int i = 0; i < criminalsCount; i++)
             {
                 _criminals.Add(new Criminal());
-                Thread.Sleep(5);
+                Thread.Sleep(20);
             }
         }
     }
@@ -252,15 +258,15 @@ namespace LinqTasks
 
         private string GetRandomFullName(int minId)
         {
-            Array surnames = Enum.GetValues(typeof(Surname));
-            Array names = Enum.GetValues(typeof(Name));
-            Array patronymics = Enum.GetValues(typeof(Patronymic));
+            Array surnames = Enum.GetValues(typeof(SurnameCriminal));
+            Array names = Enum.GetValues(typeof(NameCriminal));
+            Array patronymics = Enum.GetValues(typeof(PatronymicCriminal));
 
             int surnameId = GetRandomId(surnames, minId);
             int nameId = GetRandomId(names, minId);
             int patronymicId = GetRandomId(patronymics, minId);
 
-            string fullName = $"{(Surname)surnameId} {(Name)nameId} {(Patronymic)patronymicId}";
+            string fullName = $"{(SurnameCriminal)surnameId} {(NameCriminal)nameId} {(PatronymicCriminal)patronymicId}";
 
             return fullName;
         }
@@ -274,8 +280,13 @@ namespace LinqTasks
             return (Nation)nationId;
         }
 
-        private int GetRandomId(Array array, int minId) => _random.Next(minId, array.Length) - 1;
+        private bool GetRandomBoolean()
+        {
+            int halfMaxValue = Int32.MaxValue / 2;
 
-        private bool GetRandomBoolean() => _random.Next() > (Int32.MaxValue / 2);
+            return _random.Next() > halfMaxValue;
+        }
+
+        private int GetRandomId(Array array, int minId) => _random.Next(minId, array.Length) - 1;
     }
 }
