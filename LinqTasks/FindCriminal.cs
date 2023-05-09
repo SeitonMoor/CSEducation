@@ -173,24 +173,9 @@ namespace LinqTasks
         {
             Console.WriteLine($"\nНайдено: {foundCriminals.Count()}");
 
-            int count = 0;
-
             foreach (Criminal criminal in foundCriminals)
             {
-                if (criminal.IsPrisoner)
-                {
-                    continue;
-                }
-
                 Console.WriteLine(criminal.FullName);
-                count++;
-            }
-
-            int prisonerCriminals = foundCriminals.Count<Criminal>() - count;
-
-            if (prisonerCriminals > 0)
-            {
-                Console.WriteLine($"Остальные {prisonerCriminals} в заключении");
             }
         }
 
@@ -233,7 +218,7 @@ namespace LinqTasks
 
         public bool IsMatched(Nation nation, int height, int weight)
         {
-            if (Nation != nation || Height != height || Weight != weight)
+            if (IsPrisoner || Nation != nation || Height != height || Weight != weight)
             {
                 return false;
             }
