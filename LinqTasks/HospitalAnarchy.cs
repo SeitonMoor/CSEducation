@@ -12,10 +12,10 @@ namespace LinqTasks
             Hospital hospital = new Hospital();
 
             hospital.Work();
-        } 
+        }
     }
 
-    enum SurnamePatient
+    enum PatientSurname
     {
         Smith,
         Brown,
@@ -24,7 +24,7 @@ namespace LinqTasks
         Petrov
     }
 
-    enum NamePatient
+    enum PatientName
     {
         William,
         Ivan,
@@ -37,7 +37,7 @@ namespace LinqTasks
         Alex
     }
 
-    enum PatronymicPatient
+    enum PatientPatronymic
     {
         Adamson,
         Dixon,
@@ -123,6 +123,12 @@ namespace LinqTasks
             }
         }
 
+        private List<Patient> SortPatientsByFullName() => _patients.OrderBy(patient => patient.FullName).ToList();
+
+        private List<Patient> SortPatientsByAge() => _patients.OrderBy(patient => patient.Age).ToList();
+
+        private List<Patient> GetPatientsWithDisease(string disease) => _patients.Where(patient => patient.Disease == disease).ToList();
+
         private string GetDisease()
         {
             Console.Write("\nЧтобы вывести список больных с конкретным заболеванием, укажите заболевание: ");
@@ -130,21 +136,6 @@ namespace LinqTasks
             string disease = Console.ReadLine();
 
             return disease;
-        }
-
-        private List<Patient> SortPatientsByFullName()
-        {
-            return _patients.OrderBy(patient => patient.FullName).ToList();
-        }
-
-        private List<Patient> SortPatientsByAge()
-        {
-            return _patients.OrderBy(patient => patient.Age).ToList();
-        }
-
-        private List<Patient> GetPatientsWithDisease(string disease)
-        {
-            return _patients.Where(patient => patient.Disease == disease).ToList();
         }
 
         private void Print(List<Patient> patients)
@@ -199,15 +190,15 @@ namespace LinqTasks
 
         private string GetRandomFullName(int minId)
         {
-            Array surnames = Enum.GetValues(typeof(SurnamePatient));
-            Array names = Enum.GetValues(typeof(NamePatient));
-            Array patronymics = Enum.GetValues(typeof(PatronymicPatient));
+            Array surnames = Enum.GetValues(typeof(PatientSurname));
+            Array names = Enum.GetValues(typeof(PatientName));
+            Array patronymics = Enum.GetValues(typeof(PatientPatronymic));
 
             int surnameId = GetRandomId(minId, surnames.Length);
             int nameId = GetRandomId(minId, names.Length);
             int patronymicId = GetRandomId(minId, patronymics.Length);
 
-            string fullName = $"{(SurnamePatient)surnameId} {(NamePatient)nameId} {(PatronymicPatient)patronymicId}";
+            string fullName = $"{(PatientSurname)surnameId} {(PatientName)nameId} {(PatientPatronymic)patronymicId}";
 
             return fullName;
         }
