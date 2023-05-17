@@ -55,8 +55,8 @@ namespace LinqTasks
 
             List<Warrior> warriorsToMove = GetWarriorsBySurname(surnameSymbol);
 
-            _squad2.AddRange(warriorsToMove);
-            _squad1.RemoveAll(warrior => warriorsToMove.Contains(warrior));
+            _squad2 = _squad2.Union(warriorsToMove).ToList();
+            _squad1 = _squad1.Where(warrior => warriorsToMove.Contains(warrior) == false).ToList();
 
             Console.WriteLine("\nОтряды после перегруппировки:");
             PrintAllSquads();
