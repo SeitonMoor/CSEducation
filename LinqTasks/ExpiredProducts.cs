@@ -7,7 +7,7 @@ namespace LinqTasks
 {
     internal class ExpiredProducts
     {
-        static void Main(string[] args)
+        void Find()
         {
             Supermarket supermarket = new Supermarket();
 

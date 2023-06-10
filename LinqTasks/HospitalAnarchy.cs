@@ -7,7 +7,7 @@ namespace LinqTasks
 {
     internal class HospitalAnarchy
     {
-        static void Main(string[] args)
+        void Work()
         {
             Hospital hospital = new Hospital();
 

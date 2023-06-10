@@ -7,7 +7,7 @@ namespace LinqTasks
 {
     internal class Amnesty
     {
-        static void Main(string[] args)
+        void Agree()
         {
             Arstotzka arstotzka = new Arstotzka();
 
@@ -15,7 +15,7 @@ namespace LinqTasks
         }
     }
 
-    enum SurnamePrisoner
+    enum PrisonerSurname
     {
         Smith,
         Brown,
@@ -24,7 +24,7 @@ namespace LinqTasks
         Petrov
     }
 
-    enum NamePrisoner
+    enum PrisonerName
     {
         William,
         Ivan,
@@ -37,7 +37,7 @@ namespace LinqTasks
         Alex
     }
 
-    enum PatronymicPrisoner
+    enum PrisonerPatronymic
     {
         Adamson,
         Dixon,
@@ -124,15 +124,15 @@ namespace LinqTasks
 
         private string GetRandomFullName(int minId)
         {
-            Array surnames = Enum.GetValues(typeof(SurnamePrisoner));
-            Array names = Enum.GetValues(typeof(NamePrisoner));
-            Array patronymics = Enum.GetValues(typeof(PatronymicPrisoner));
+            Array surnames = Enum.GetValues(typeof(PrisonerSurname));
+            Array names = Enum.GetValues(typeof(PrisonerName));
+            Array patronymics = Enum.GetValues(typeof(PrisonerPatronymic));
 
             int surnameId = GetRandomId(minId, surnames.Length);
             int nameId = GetRandomId(minId, names.Length);
             int patronymicId = GetRandomId(minId, patronymics.Length);
 
-            string fullName = $"{(SurnamePrisoner)surnameId} {(NamePrisoner)nameId} {(PatronymicPrisoner)patronymicId}";
+            string fullName = $"{(PrisonerSurname)surnameId} {(PrisonerName)nameId} {(PrisonerPatronymic)patronymicId}";
 
             return fullName;
         }

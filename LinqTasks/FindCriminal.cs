@@ -7,14 +7,14 @@ namespace LinqTasks
 {
     internal class FindCriminal
     {
-        static void Main(string[] args)
+        void Find()
         {
             Interpol interpol = new Interpol();
             interpol.Work();
         }
     }
 
-    enum SurnameCriminal
+    enum CriminalSurname
     {
         Smith,
         Brown,
@@ -23,7 +23,7 @@ namespace LinqTasks
         Petrov
     }
 
-    enum NameCriminal
+    enum CriminalName
     {
         William,
         Ivan,
@@ -36,7 +36,7 @@ namespace LinqTasks
         Alex
     }
 
-    enum PatronymicCriminal
+    enum CriminalPatronymic
     {
         Adamson,
         Dixon,
@@ -203,7 +203,7 @@ namespace LinqTasks
 
     class Criminal
     {
-        private Random _random = new Random();
+        private readonly Random _random = new Random();
 
         public Criminal()
         {
@@ -243,15 +243,15 @@ namespace LinqTasks
 
         private string GetRandomFullName(int minId)
         {
-            Array surnames = Enum.GetValues(typeof(SurnameCriminal));
-            Array names = Enum.GetValues(typeof(NameCriminal));
-            Array patronymics = Enum.GetValues(typeof(PatronymicCriminal));
+            Array surnames = Enum.GetValues(typeof(CriminalSurname));
+            Array names = Enum.GetValues(typeof(CriminalName));
+            Array patronymics = Enum.GetValues(typeof(CriminalPatronymic));
 
-            int surnameId = GetRandomId(surnames, minId);
-            int nameId = GetRandomId(names, minId);
-            int patronymicId = GetRandomId(patronymics, minId);
+            int surnameId = GetRandomId(minId, surnames.Length);
+            int nameId = GetRandomId(minId, names.Length);
+            int patronymicId = GetRandomId(minId, patronymics.Length);
 
-            string fullName = $"{(SurnameCriminal)surnameId} {(NameCriminal)nameId} {(PatronymicCriminal)patronymicId}";
+            string fullName = $"{(CriminalSurname)surnameId} {(CriminalName)nameId} {(CriminalPatronymic)patronymicId}";
 
             return fullName;
         }
@@ -260,7 +260,7 @@ namespace LinqTasks
         {
             Array nations = Enum.GetValues(typeof(Nation));
 
-            int nationId = GetRandomId(nations, minId);
+            int nationId = GetRandomId(minId, nations.Length);
 
             return (Nation)nationId;
         }
@@ -272,6 +272,6 @@ namespace LinqTasks
             return _random.Next() > halfMaxValue;
         }
 
-        private int GetRandomId(Array array, int minId) => _random.Next(minId, array.Length) - 1;
+        private int GetRandomId(int minId, int arrayLength) => _random.Next(minId, arrayLength) - 1;
     }
 }

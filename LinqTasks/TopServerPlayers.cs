@@ -7,7 +7,7 @@ namespace LinqTasks
 {
     internal class TopServerPlayers
     {
-        static void Main(string[] args)
+        void Work()
         {
             Server server = new Server();
 
@@ -116,7 +116,6 @@ namespace LinqTasks
             Array names = Enum.GetValues(typeof(PlayerName));
 
             int nameId = GetRandomId(minId, names.Length);
-
             PlayerName name = (PlayerName)nameId;
 
             return name.ToString();

@@ -7,7 +7,7 @@ namespace LinqTasks
 {
     internal class WeaponsReport
     {
-        static void Main(string[] args)
+        void Generate()
         {
             MilitaryUnit militaryUnit = new MilitaryUnit();
 
